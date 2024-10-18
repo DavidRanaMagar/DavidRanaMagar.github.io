@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import {Button, TextField, Grid2, Box} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import useAuth from "../hooks/useAuth"
+import axios from '../api/axios';
+
 
 const LoginPage = () => {
+    const { setAuth } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [users, setUsers] = useState([]);
@@ -12,7 +15,7 @@ const LoginPage = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('http://34.239.138.222:3001/user');
+                const response = await axios.get('/user');
                 setUsers(response.data);  // Store users in state
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -30,6 +33,10 @@ const LoginPage = () => {
         );
 
         if (user) {
+
+            const role = user.role;
+            setAuth({user, username, password, role})
+
             if (user.role === 0) {
                 navigate('/customer');
             } else if (user.role === 1) {
@@ -76,7 +83,7 @@ const LoginPage = () => {
                 <Grid2 size={12} style={{textAlign: "center"}}>
                     <Button
                         variant="contained"
-                        onClick={handleLogin}  // Call handleLogin on button click
+                        onClick={handleLogin}
                     >
                         Login
                     </Button>
