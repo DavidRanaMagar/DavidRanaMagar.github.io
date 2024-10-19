@@ -9,7 +9,7 @@ const AddressList = () => {
         // Function to fetch address data from the API
         const fetchAddresses = async () => {
             try {
-                const response = await fetch('http://34.239.138.222:3001/address'); // Replace with your API URL
+                const response = await fetch('http://3.94.130.218/:3001/address'); // Replace with your API URL
                 const data = await response.json();
                 setAddresses(data); // Set the addresses in state
             } catch (error) {
