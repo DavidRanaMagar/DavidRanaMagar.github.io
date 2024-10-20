@@ -7,6 +7,7 @@ import RequireAuth from './Components/RequireAuth';
 import Address from './Components/Address';
 import Navbar from './Components/Navbar';
 import CustomerForm from './Components/CustomerForm';
+import CustomerList from './Components/CustomerList';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
@@ -28,6 +29,7 @@ function App() {
                   <Route path="/" element={<HomePage/>}/>
                   <Route path="/addAddress" element={<Address/>}/>
                   <Route path="/addCustomer" element={<CustomerForm/>}/>
+                  <Route path="/customers" element={<CustomerList/>}/>
                       {/* public */}
                       <Route path="/login" element={<LoginPage/>}/>
 
