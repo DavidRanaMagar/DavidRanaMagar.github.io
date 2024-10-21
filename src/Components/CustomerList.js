@@ -64,7 +64,7 @@ const CustomerView = () => {
                   <TableCell>{customer.firstName}</TableCell>
                   <TableCell>{customer.lastName}</TableCell>
                   <TableCell>{customer.dob}</TableCell>
-                  <TableCell>{customer.sex === 1 ? 'Male' : customer.sex === 2 ? 'Female' : 'Non-Binary'}</TableCell>
+                  <TableCell>{customer.sex === 0 ? 'Male' : customer.sex === 1 ? 'Female' : customer.sex === 3 ? 'Non-Binary': ''}</TableCell>
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>{customer.phone}</TableCell>
                   <TableCell>

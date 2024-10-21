@@ -49,9 +49,9 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                         email: response.data.email,
                         phone: response.data.phone,
                         dob: response.data.dob,
-                        sex: response.data.gender.sexCode, // Assuming sexCode is in the gender object
+                        sex: response.data.gender.sexCode, 
                         creditCardNumber: response.data.creditCardNumber,
-                        expiryDate: response.data.expiryDate,
+                        expiryDate: response.data.expiryDate ? response.data.expiryDate.slice(0, 7) : '',
                         cvv: response.data.cvv,
                         customerAddress: {
                             streetAddress: response.data.customerAddress.streetAddress,
