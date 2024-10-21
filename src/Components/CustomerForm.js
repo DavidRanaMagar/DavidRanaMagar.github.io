@@ -27,7 +27,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
     useEffect(() => {
         const fetchSexOptions = async () => {
             try {
-                const response = await axios.get('http://3.94.130.218:3001/sex');
+                const response = await axios.get('/sex');
                 setSexOptions(response.data);
             } catch (error) {
                 console.error('Error fetching sex options:', error);
@@ -42,14 +42,14 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
         const fetchCustomerData = async () => {
             if (customerID) {
                 try {
-                    const response = await axios.get(`http://3.94.130.218:3001/customer/${customerID}`);
+                    const response = await axios.get(`/customer/${customerID}`);
                     setCustomer({
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,
                         email: response.data.email,
                         phone: response.data.phone,
                         dob: response.data.dob,
-                        sex: response.data.gender.sexCode, // Assuming sexCode is in the gender object
+                        sex: response.data.sex.gender.sexCode, // Assuming sexCode is in the gender object
                         creditCardNumber: response.data.creditCardNumber,
                         expiryDate: response.data.expiryDate,
                         cvv: response.data.cvv,
@@ -121,11 +121,11 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
 
             if (customerID) {
                 // Update existing customer
-                const response = await axios.put(`http://3.94.130.218:3001/customer/${customerID}`, dataToSend);
+                await axios.put(`/customer/${customerID}`, dataToSend);
                 alert('Customer updated successfully!');
             } else {
                 // Create new customer
-                const response = await axios.post('http://3.94.130.218:3001/customer', dataToSend);
+                await axios.post('/customer', dataToSend);
                 alert('Customer created successfully!');
             }
             setSelectedCustomerID(null); // Reset selected customer

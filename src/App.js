@@ -4,7 +4,6 @@ import AdminView from './Components/views/AdminView';
 import CustomerView from './Components/views/CustomerView';
 import LoginPage from './Components/LoginPage';
 import RequireAuth from './Components/RequireAuth';
-import Address from './Components/Address';
 import Navbar from './Components/Navbar';
 import CustomerForm from './Components/CustomerForm';
 import CustomerList from './Components/CustomerList';
@@ -22,21 +21,20 @@ const darkTheme = createTheme({
 function App() {
   return (
       <ThemeProvider theme={darkTheme}>
-            <Navbar />
+          <Navbar />
           <header className="App-header">
               <BrowserRouter>
                   <Routes>
-                  <Route path="/" element={<HomePage/>}/>
-                  <Route path="/addAddress" element={<Address/>}/>
-                  <Route path="/addCustomer" element={<CustomerForm/>}/>
-                  <Route path="/customers" element={<CustomerList/>}/>
                       {/* public */}
+                      <Route path="/" element={<HomePage/>}/>
+                      <Route path="/addCustomer" element={<CustomerForm/>}/>
                       <Route path="/login" element={<LoginPage/>}/>
 
                       {/* private | need authentication to access */}
                       <Route element={<RequireAuth />}>
                           <Route path="/admin" element={<AdminView/>}/>
                           <Route path="/customer" element={<CustomerView/>}/>
+                          <Route path="/customers" element={<CustomerList/>}/>
                       </Route>
                   </Routes>
               </BrowserRouter>

@@ -22,7 +22,7 @@ const CustomerView = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get('http://3.94.130.218:3001/customer');
+        const response = await axios.get('/customer');
         setCustomers(response.data);
       } catch (error) {
         console.error('Error fetching customer data:', error);
@@ -64,7 +64,7 @@ const CustomerView = () => {
                   <TableCell>{customer.firstName}</TableCell>
                   <TableCell>{customer.lastName}</TableCell>
                   <TableCell>{customer.dob}</TableCell>
-                  <TableCell>{customer.sex === 1 ? 'Male' : customer.sex === 2 ? 'Female' : 'Non-Binary'}</TableCell>
+                  <TableCell>{customer.sex === 0 ? 'Male' : customer.sex === 1 ? 'Female' : 'Non-Binary'}</TableCell>
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>{customer.phone}</TableCell>
                   <TableCell>
