@@ -7,6 +7,8 @@ import RequireAuth from './Components/RequireAuth';
 import Navbar from './Components/Navbar';
 import CustomerForm from './Components/CustomerForm';
 import CustomerList from './Components/CustomerList';
+import Unauthorized from './Components/Unauthorized';
+import Register from './Components/Register';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
@@ -27,15 +29,22 @@ function App() {
                   <Routes>
                       {/* public */}
                       <Route path="/" element={<HomePage/>}/>
-                      <Route path="/addCustomer" element={<CustomerForm/>}/>
                       <Route path="/login" element={<LoginPage/>}/>
+                      <Route path="/unauthorized" element={<Unauthorized/>}/>
+                      <Route path="/register" element={<Register/>}/>
+
 
                       {/* private | need authentication to access */}
-                      <Route element={<RequireAuth />}>
+                      <Route element={<RequireAuth allowedRoles={['admin']}/>}>
                           <Route path="/admin" element={<AdminView/>}/>
-                          <Route path="/customer" element={<CustomerView/>}/>
                           <Route path="/customers" element={<CustomerList/>}/>
+                          <Route path="/addCustomer" element={<CustomerForm/>}/>
                       </Route>
+
+                      <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
+                          <Route path="/customer" element={<CustomerView/>}/>
+                      </Route>
+
                   </Routes>
               </BrowserRouter>
           </header>

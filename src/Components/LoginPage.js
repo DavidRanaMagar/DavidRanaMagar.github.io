@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {Button, TextField, Grid2, Box} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import {Button, TextField, Grid2, Box, Link} from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useAuth from "../hooks/useAuth"
 import axios from '../api/axios';
 
@@ -9,7 +9,10 @@ const LoginPage = () => {
     const { setAuth } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const handleLogin = async (e) => {
         e.preventDefault();  // Prevent page refresh
@@ -20,14 +23,9 @@ const LoginPage = () => {
             if (response.data) {
                 const { userId, role } = response.data;
                 setAuth({ userId, role });
-
-                if (role === 'customer') {
-                    navigate('/customer');
-                } else if (role === 'admin') {
-                    navigate('/admin');
-                } else {
-                    alert('Could not find role');
-                }
+                setUsername('');
+                setPassword('');
+                navigate(from, { replace: true });
             } else {
                 alert('Invalid username or password');
             }
@@ -77,6 +75,14 @@ const LoginPage = () => {
                     >
                         Login
                     </Button>
+                </Grid2>
+                <Grid2 size={6} style={{textAlign: "right"}}>
+                    <h6>Need an account?</h6>
+                </Grid2>
+                <Grid2 size={6} style={{textAlign: "left"}}>
+                    <Link href="/register" color="inherit">
+                        <h6>Register</h6>
+                    </Link>
                 </Grid2>
             </Grid2>
         </Box>
