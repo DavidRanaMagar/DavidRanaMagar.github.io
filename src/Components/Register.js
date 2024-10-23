@@ -1,9 +1,12 @@
-import {Button, Grid2, MenuItem, TextField, Typography, Container} from "@mui/material";
-import React, {useState} from "react";
-import axios from "axios";
+import {Button, Grid2, MenuItem, TextField, Typography, Container} from '@mui/material';
+import React, {useState} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
+import axios from '../api/axios';
 
 const Register = () => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
     const [customer, setCustomer] = useState({
         firstName: '',
         lastName: '',
@@ -17,7 +20,9 @@ const Register = () => {
         user: {
             username: '',
             password: '',
-            role: 'customer' //default for customer signup
+            role: 0, //default for customer role
+            createdBy: 'new user',
+            updatedBy: 'new user'
         },
         customerAddress: {
             streetAddress: '',
@@ -51,14 +56,25 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const dataToSend = {
-                ...customer,
-                customerAddress: customer.customerAddress // Ensure right format
-            };
-            await axios.post('/customer', dataToSend);
-            alert('Account created successfully!');
+            const response = await axios.post('/user/register', {
+                username: customer.user.username,
+            });
+
+            if (response.data.userExists === "true") {
+                alert('This username is already taken');
+            } else {
+                const dataToSend = {
+                    ...customer,
+                    user: customer.user,
+                    customerAddress: customer.customerAddress // Ensure right format
+                };
+
+                await axios.post('/customer', dataToSend);
+                alert('Account created successfully!');
+                navigate('/login')
+            }
         } catch (error) {
-            console.error('Error saving customer:', error);
+            console.error('Error creating account:', error);
             alert('Failed to create account');
         }
     };
