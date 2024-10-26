@@ -12,7 +12,7 @@ import {
   Container,
   Button
 } from '@mui/material';
-import axios from 'axios';
+import axios from '../api/axios';
 import CustomerForm from './CustomerForm'; // Assuming you have the form in another file
 
 const CustomerView = () => {

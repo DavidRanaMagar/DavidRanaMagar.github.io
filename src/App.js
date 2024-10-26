@@ -1,14 +1,15 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {Route, Routes, BrowserRouter} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import HomePage from './Components/HomePage';
-import AdminView from './Components/views/AdminView';
-import CustomerView from './Components/views/CustomerView';
 import LoginPage from './Components/LoginPage';
 import RequireAuth from './Components/RequireAuth';
+import { AuthProvider } from './context/AuthProvider';
 import Navbar from './Components/Navbar';
 import CustomerForm from './Components/CustomerForm';
 import CustomerList from './Components/CustomerList';
 import Unauthorized from './Components/Unauthorized';
 import Register from './Components/Register';
+import BookTicket from "./Components/BookTicket";
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
@@ -19,12 +20,22 @@ const darkTheme = createTheme({
     },
 });
 
-
 function App() {
-  return (
+
+    const [auth, setAuth] = useState(() => {
+        const storedAuth = localStorage.getItem("auth");
+        return storedAuth ? JSON.parse(storedAuth) : {};
+    });
+
+    useEffect(() => {
+        localStorage.setItem("auth", JSON.stringify(auth));
+    }, [auth]);
+
+    return (
       <ThemeProvider theme={darkTheme}>
           <Navbar />
           <header className="App-header">
+              <AuthProvider auth={auth} setAuth={setAuth}>
               <BrowserRouter>
                   <Routes>
                       {/* public */}
@@ -32,24 +43,23 @@ function App() {
                       <Route path="/login" element={<LoginPage/>}/>
                       <Route path="/unauthorized" element={<Unauthorized/>}/>
                       <Route path="/register" element={<Register/>}/>
-
+                      <Route path="/bookticket" element={<BookTicket/>}/>
 
                       {/* private | need authentication to access */}
                       <Route element={<RequireAuth allowedRoles={['admin']}/>}>
-                          <Route path="/admin" element={<AdminView/>}/>
                           <Route path="/customers" element={<CustomerList/>}/>
                           <Route path="/addCustomer" element={<CustomerForm/>}/>
                       </Route>
 
                       <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
-                          <Route path="/customer" element={<CustomerView/>}/>
-                      </Route>
 
+                      </Route>
                   </Routes>
               </BrowserRouter>
+              </AuthProvider>
           </header>
       </ThemeProvider>
-  );
+    );
 }
 
 export default App;
