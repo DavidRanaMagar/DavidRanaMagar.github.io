@@ -1,34 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid } from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Typography,
+    Grid2,
+    Divider,
+    TextField,
+    Button,
+} from '@mui/material';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement } from 'chart.js';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    PointElement
+} from 'chart.js';
 
-// Register required Chart.js components
+
 ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
-const EmployeeHoursReport = () => {
+const EmployeeHoursReport = ({ employeeID }) => {
     const [employeeHours, setEmployeeHours] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchEmployeeHours = async () => {
-            try {
-                const response = await axios.get('/employeeHours/40'); // Adjust the URL to match your backend endpoint
-                setEmployeeHours(response.data);
-            } catch (error) {
-                setError('Failed to fetch employee hours data.');
-            } finally {
-                setLoading(false);
-            }
-        };
 
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    useEffect(() => {
+        // Fetch employee hours on initial render
         fetchEmployeeHours();
-    }, []);
+    }, [employeeID]);
+
+    // Function to fetch employee hours
+    const fetchEmployeeHours = async () => {
+        try {
+            const response = await axios.get(`/employeeHours/${employeeID}`);
+            setEmployeeHours(response.data);
+        } catch (error) {
+            setError('Failed to fetch employee hours data.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Function to search employee hours by date
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get('/employeeHours/search', {
+                params: {
+                    employeeID,
+                    startDate,
+                    endDate,
+                },
+            });
+            setEmployeeHours(response.data); // Update state with search results
+        } catch (error) {
+            setError('Failed to fetch employee hours for the selected dates.');
+        }
+    };
 
     if (loading) return <Typography>Loading...</Typography>;
     if (error) return <Typography color="error">{error}</Typography>;
+
+    // Extract employee details from the first record
+    const employee = employeeHours.length > 0 ? employeeHours[0].employee : {};
 
     // Transform data for chart
     const dates = employeeHours.map(record => record.workDate);
@@ -71,16 +118,65 @@ const EmployeeHoursReport = () => {
     };
 
     return (
-        <Grid container spacing={4}>
-            <Grid item xs={12}>
+        <Grid2 container spacing={4} size={12}>
+            <Grid2 item size={12}>
                 <Typography variant="h6" style={{ padding: '16px' }}>Employee Hours Report</Typography>
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 item size={12}>
+                <TextField
+                    label="Start Date"
+                    type="date"
+                    variant="outlined"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    style={{ marginRight: '16px' }}
+                />
+                <TextField
+                    label="End Date"
+                    type="date"
+                    variant="outlined"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    style={{ marginRight: '16px' }}
+                />
+                <Button variant="contained" color="primary" onClick={handleSearch}>
+                    Search
+                </Button>
+            </Grid2>
+            <Grid2 item size={12}>
+                <Typography variant="h6" gutterBottom>Employee Details</Typography>
+                <Divider />
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Employee ID</TableCell>
+                                <TableCell><Typography variant="h6">First Name: </Typography> {employee.firstName} {employee.lastName}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell><Typography variant="h6">Job Title: </Typography> {employee.jobTitle}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell><Typography variant="h6">Email: </Typography> {employee.email}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell><Typography variant="h6">Department: </Typography> {employee.department}</TableCell>
+                            </TableRow>
+                        </TableHead>
+                    </Table>
+                </TableContainer>
+            </Grid2>
+            <Grid2 item size={12}>
+                <Typography variant="h6" gutterBottom>Employee Hours</Typography>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
                                 <TableCell>Work Date</TableCell>
                                 <TableCell>Hours Worked</TableCell>
                             </TableRow>
@@ -88,7 +184,6 @@ const EmployeeHoursReport = () => {
                         <TableBody>
                             {employeeHours.map((record, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{record.employeeID}</TableCell>
                                     <TableCell>{record.workDate}</TableCell>
                                     <TableCell>{record.hoursWorked}</TableCell>
                                 </TableRow>
@@ -96,14 +191,14 @@ const EmployeeHoursReport = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 item size={12}>
                 <Paper style={{ padding: '16px' }}>
                     <Typography variant="h6" style={{ marginBottom: '16px' }}>Hours Worked Over Time</Typography>
                     <Line data={chartData} options={chartOptions} />
                 </Paper>
-            </Grid>
-        </Grid>
+            </Grid2>
+        </Grid2>
     );
 };
 
