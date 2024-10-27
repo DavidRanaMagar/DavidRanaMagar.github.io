@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button, Container, Typography, Grid2, MenuItem } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import {TextField, Button, Container, Typography, Grid2, MenuItem} from '@mui/material';
 import axios from 'axios';
+import {Construction} from '@mui/icons-material';
 
-const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
+const CustomerForm = ({customerID, setSelectedCustomerID}) => {
     const [customer, setCustomer] = useState({
         firstName: '',
         lastName: '',
@@ -44,29 +45,27 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                 try {
                     const response = await axios.get(`/customer/${customerID}`);
                     setCustomer({
-                        firstName: response.data.firstName,
-                        lastName: response.data.lastName,
-                        email: response.data.email,
-                        phone: response.data.phone,
-                        dob: response.data.dob,
-                        sex: response.data.sex.gender.sexCode, // Assuming sexCode is in the gender object
-                        // sex: response.data.gender.sexCode, 
-                        creditCardNumber: response.data.creditCardNumber,
+                        firstName: response.data.firstName || '',
+                        lastName: response.data.lastName || '',
+                        email: response.data.email || '',
+                        phone: response.data.phone || '',
+                        dob: response.data.dob || '',
+                        sex: response.data.sex || '',
+                        creditCardNumber: response.data.creditCardNumber || '',
                         expiryDate: response.data.expiryDate ? response.data.expiryDate.slice(0, 7) : '',
-                        cvv: response.data.cvv,
+                        cvv: response.data.cvv || '',
                         customerAddress: {
-                            streetAddress: response.data.customerAddress.streetAddress,
-                            city: response.data.customerAddress.city,
-                            state: response.data.customerAddress.state,
-                            postalCode: response.data.customerAddress.postalCode,
-                            country: response.data.customerAddress.country,
+                            streetAddress: response.data.customerAddress.streetAddress || '',
+                            city: response.data.customerAddress.city || '',
+                            state: response.data.customerAddress.state || '',
+                            postalCode: response.data.customerAddress.postalCode || '',
+                            country: response.data.customerAddress.country || '',
                         }
                     });
                 } catch (error) {
                     console.error('Error fetching customer data:', error);
                 }
             } else {
-                // Reset form for new customer
                 setCustomer({
                     firstName: '',
                     lastName: '',
@@ -87,13 +86,12 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                 });
             }
         };
-
         fetchCustomerData();
     }, [customerID]);
 
     // Handle form input changes
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         if (name in customer.customerAddress) {
             // If the input is related to the customer address, update the address object
             setCustomer(prevCustomer => ({
@@ -105,7 +103,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
             }));
         } else {
             // Otherwise, update the main customer object
-            setCustomer({ ...customer, [name]: value });
+            setCustomer({...customer, [name]: value});
         }
     };
 
@@ -117,7 +115,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
             const dataToSend = {
                 ...customer,
                 // Ensure customerAddress is in the right format when sending
-                customerAddress: customer.customerAddress 
+                customerAddress: customer.customerAddress
             };
 
             if (customerID) {
@@ -144,7 +142,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
             <form onSubmit={handleSubmit}>
                 <Grid2 container spacing={2}>
                     {/* Customer Details */}
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="First Name"
                             name="firstName"
@@ -155,7 +153,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="Last Name"
                             name="lastName"
@@ -166,7 +164,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12}>
+                    <Grid2 size={12}>
                         <TextField
                             label="Email"
                             name="email"
@@ -176,7 +174,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             margin="normal"
                         />
                     </Grid2>
-                    <Grid2 item xs={12}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Phone"
                             name="phone"
@@ -186,7 +184,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             margin="normal"
                         />
                     </Grid2>
-                    <Grid2 item xs={12}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Date of Birth"
                             name="dob"
@@ -195,34 +193,34 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={{shrink: true}}
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12}>
+                    <Grid2 size={6}>
                         <TextField
                             select
-                            label="Sex"
+                            label="Gender"
                             name="sex"
-                            value={customer.sex}
+                            value={Number(customer.sex)}
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
                             required
                         >
-                            {sexOptions.map((option) => (
-                                <MenuItem key={option.sexCode} value={option.sexCode}>
-                                    {option.sex}
+                            {sexOptions.map((gender) => (
+                                <MenuItem key={gender.sexCode} value={Number(gender.sexCode)}>
+                                    {gender.sex}
                                 </MenuItem>
                             ))}
                         </TextField>
                     </Grid2>
 
                     {/* Address Fields */}
-                    <Grid2 item xs={12}>
+                    <Grid2 item size={12}>
                         <Typography variant="h6">Address</Typography>
                     </Grid2>
-                    <Grid2 item xs={12}>
+                    <Grid2 item size={12}>
                         <TextField
                             label="Street Address"
                             name="streetAddress"
@@ -233,7 +231,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="City"
                             name="city"
@@ -244,7 +242,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="State"
                             name="state"
@@ -255,7 +253,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="Postal Code"
                             name="postalCode"
@@ -266,7 +264,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="Country"
                             name="country"
@@ -279,10 +277,10 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                     </Grid2>
 
                     {/* Credit Card Details */}
-                    <Grid2 item xs={12}>
+                    <Grid2 item size={12}>
                         <Typography variant="h6">Payment Details</Typography>
                     </Grid2>
-                    <Grid2 item xs={12} sm={6}>
+                    <Grid2 item size={12}>
                         <TextField
                             label="Credit Card Number"
                             name="creditCardNumber"
@@ -293,7 +291,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={3}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="Expiry Date"
                             name="expiryDate"
@@ -305,7 +303,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item xs={12} sm={3}>
+                    <Grid2 item size={6}>
                         <TextField
                             label="CVV"
                             name="cvv"
@@ -317,7 +315,7 @@ const CustomerForm = ({ customerID, setSelectedCustomerID }) => {
                         />
                     </Grid2>
                 </Grid2>
-                <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+                <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>
                     {customerID ? 'Update Customer' : 'Submit'}
                 </Button>
             </form>
