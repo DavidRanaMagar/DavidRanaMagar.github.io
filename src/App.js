@@ -12,6 +12,7 @@ import EmployeeList from './Components/EmployeeList';
 
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import './App.css';
+import EmployeeHoursReport from "./Components/EmployeeHoursReport";
 
 const darkTheme = createTheme({
     palette: {
@@ -35,6 +36,7 @@ function App() {
                         {/* private | made public to test */}
                         <Route path="/customers" element={<CustomerList/>}/>
                         <Route path="/employees" element={<EmployeeList/>}/>
+                        <Route path="/employeeHoursReport" element={<EmployeeHoursReport/>}/>
                         {/* private | need authentication to access */}
                         <Route element={<RequireAuth allowedRoles={['admin']}/>}>
                             <Route path="/admin" element={<AdminView/>}/>
