@@ -32,11 +32,14 @@ function App() {
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/unauthorized" element={<Unauthorized/>}/>
                         <Route path="/register" element={<Register/>}/>
+                        {/* private | made public to test */}
+                        <Route path="/customers" element={<CustomerList/>}/>
+                        <Route path="/employees" element={<EmployeeList/>}/>
                         {/* private | need authentication to access */}
                         <Route element={<RequireAuth allowedRoles={['admin']}/>}>
                             <Route path="/admin" element={<AdminView/>}/>
-                            <Route path="/customers" element={<CustomerList/>}/>
-                            <Route path="/employees" element={<EmployeeList/>}/>
+                            {/*<Route path="/customers" element={<CustomerList/>}/>*/}
+                            {/*<Route path="/employees" element={<EmployeeList/>}/>*/}
                         </Route>
 
                         <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>

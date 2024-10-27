@@ -18,7 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import CustomerForm from './CustomerForm';
 
-const CustomerView = () => {
+const CustomerList = () => {
     const [customers, setCustomers] = useState([]);
     const [selectedCustomerID, setSelectedCustomerID] = useState(null);
     const [isCreating, setIsCreating] = useState(false); // Track create mode
@@ -132,4 +132,4 @@ const CustomerView = () => {
     );
 };
 
-export default CustomerView;
+export default CustomerList;

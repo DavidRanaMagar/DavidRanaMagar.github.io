@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TextField, Button, Container, Typography, Grid2, MenuItem} from '@mui/material';
 import axios from 'axios';
-import {Construction} from '@mui/icons-material';
 
 const CustomerForm = ({customerID, setSelectedCustomerID}) => {
     const [customer, setCustomer] = useState({
