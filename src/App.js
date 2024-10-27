@@ -43,7 +43,6 @@ function App() {
                       <Route path="/login" element={<LoginPage/>}/>
                       <Route path="/unauthorized" element={<Unauthorized/>}/>
                       <Route path="/register" element={<Register/>}/>
-                      <Route path="/bookticket" element={<BookTicket/>}/>
 
                       {/* private | need authentication to access */}
                       <Route element={<RequireAuth allowedRoles={['admin']}/>}>
@@ -52,7 +51,7 @@ function App() {
                       </Route>
 
                       <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
-
+                          <Route path="/bookticket" element={<BookTicket/>}/>
                       </Route>
                   </Routes>
               </BrowserRouter>

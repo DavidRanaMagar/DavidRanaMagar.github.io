@@ -64,8 +64,8 @@ const Register = () => {
             } else {
                 const dataToSend = {
                     ...customer,
-                    user: customer.user,
-                    customerAddress: customer.customerAddress // Ensure right format
+                    customerAddress: customer.customerAddress, // Ensure right format
+                    user: customer.user
                 };
 
                 await axios.post('/customer', dataToSend);
