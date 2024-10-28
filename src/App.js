@@ -16,6 +16,7 @@ import './App.css';
 import EmployeeSearch from "./Components/EmployeeSearch";
 import {AuthProvider} from "./context/AuthProvider";
 import AdminHome from "./Components/AdminHome";
+import Product from "./Components/Product";
 
 const darkTheme = createTheme({
     palette: {
@@ -45,6 +46,7 @@ function App() {
                             <Route path="/login" element={<LoginPage/>}/>
                             <Route path="/unauthorized" element={<Unauthorized/>}/>
                             <Route path="/register" element={<Register/>}/>
+                            <Route path="/products" element={<Product/>}/>
 
                             {/* private | need authentication to access */}
                             <Route element={<RequireAuth allowedRoles={['admin']}/>}>

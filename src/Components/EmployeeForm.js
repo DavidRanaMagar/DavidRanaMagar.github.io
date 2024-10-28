@@ -120,7 +120,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                 await axios.put(`/employee/${employeeID}`, employee);
                 alert('Employee updated successfully!');
             } else {
-                await axios.post('/employee', employee);
+                await axios.post('/employee/naUser', employee);
                 alert('Employee created successfully!');
             }
             setSelectedEmployeeID(null);
