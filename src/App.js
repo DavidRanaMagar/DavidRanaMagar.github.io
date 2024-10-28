@@ -14,6 +14,7 @@ import EmployeeList from './Components/EmployeeList';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import './App.css';
 import EmployeeSearch from "./Components/EmployeeSearch";
+import {AuthProvider} from "./context/AuthProvider";
 
 const darkTheme = createTheme({
     palette: {
@@ -35,28 +36,30 @@ function App() {
         <ThemeProvider theme={darkTheme}>
             <Navbar/>
             <header className="App-header">
-                <BrowserRouter>
-                    <Routes>
-                        {/* public */}
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/unauthorized" element={<Unauthorized/>}/>
-                        <Route path="/register" element={<Register/>}/>
+                <AuthProvider auth={auth} setAuth={setAuth}>
+                    <BrowserRouter>
+                        <Routes>
+                            {/* public */}
+                            <Route path="/" element={<HomePage/>}/>
+                            <Route path="/login" element={<LoginPage/>}/>
+                            <Route path="/unauthorized" element={<Unauthorized/>}/>
+                            <Route path="/register" element={<Register/>}/>
 
-                        {/* private | need authentication to access */}
-                        <Route element={<RequireAuth allowedRoles={['admin']}/>}>
-                            <Route path="/customers" element={<CustomerList/>}/>
-                            <Route path="/employees" element={<EmployeeList/>}/>
-                            <Route path="/employeeHours" element={<EmployeeSearch/>}/>
-                            <Route path="/ticketsreport" element={<TicketsReport/>}/>
-                        </Route>
+                            {/* private | need authentication to access */}
+                            <Route element={<RequireAuth allowedRoles={['admin']}/>}>
+                                <Route path="/customers" element={<CustomerList/>}/>
+                                <Route path="/employees" element={<EmployeeList/>}/>
+                                <Route path="/employeeHours" element={<EmployeeSearch/>}/>
+                                <Route path="/ticketsreport" element={<TicketsReport/>}/>
+                            </Route>
 
-                        <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
-                            <Route path="/bookticket" element={<BookTicket/>}/>
-                        </Route>
+                            <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
+                                <Route path="/bookticket" element={<BookTicket/>}/>
+                            </Route>
 
-                    </Routes>
-                </BrowserRouter>
+                        </Routes>
+                    </BrowserRouter>
+                </AuthProvider>
             </header>
         </ThemeProvider>
     );
