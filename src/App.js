@@ -5,15 +5,16 @@ import LoginPage from './Components/LoginPage';
 import RequireAuth from './Components/RequireAuth';
 import { AuthProvider } from './context/AuthProvider';
 import Navbar from './Components/Navbar';
-import CustomerForm from './Components/CustomerForm';
 import CustomerList from './Components/CustomerList';
 import Unauthorized from './Components/Unauthorized';
 import Register from './Components/Register';
 import BookTicket from "./Components/BookTicket";
 import TicketsReport from "./Components/TicketsReport";
+import EmployeeList from './Components/EmployeeList';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
 import './App.css';
+import EmployeeSearch from "./Components/EmployeeSearch";
 
 const darkTheme = createTheme({
     palette: {
@@ -22,7 +23,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-
     const [auth, setAuth] = useState(() => {
         const storedAuth = localStorage.getItem("auth");
         return storedAuth ? JSON.parse(storedAuth) : {};
@@ -33,33 +33,36 @@ function App() {
     }, [auth]);
 
     return (
-      <ThemeProvider theme={darkTheme}>
-          <Navbar />
-          <header className="App-header">
-              <AuthProvider auth={auth} setAuth={setAuth}>
-              <BrowserRouter>
-                  <Routes>
-                      {/* public */}
-                      <Route path="/" element={<HomePage/>}/>
-                      <Route path="/login" element={<LoginPage/>}/>
-                      <Route path="/unauthorized" element={<Unauthorized/>}/>
-                      <Route path="/register" element={<Register/>}/>
+        <ThemeProvider theme={darkTheme}>
+            <Navbar/>
+            <header className="App-header">
+                <BrowserRouter>
+                    <Routes>
+                        {/* public */}
+                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/unauthorized" element={<Unauthorized/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                          
+                        {/* private | need authentication to access */}
+                        <Route element={<RequireAuth allowedRoles={['admin']}/>}>
+                            <Route path="/admin" element={<AdminView/>}/>
+                            <Route path="/customers" element={<CustomerList/>}/>
+                            <Route path="/employees" element={<EmployeeList/>}/>
+                            <Route path="/employeeHours" element={<EmployeeSearch/>}/>
+                            <Route path="/ticketsreport" element={<TicketsReport/>}/>
+                            {/*<Route path="/customers" element={<CustomerList/>}/>*/}
+                            {/*<Route path="/employees" element={<EmployeeList/>}/>*/}
+                        </Route>
 
-                      {/* private | need authentication to access */}
-                      <Route element={<RequireAuth allowedRoles={['admin']}/>}>
-                          <Route path="/customers" element={<CustomerList/>}/>
-                          <Route path="/addCustomer" element={<CustomerForm/>}/>
-                          <Route path="/ticketsreport" element={<TicketsReport/>}/>
-                      </Route>
+                        <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
+                            <Route path="/bookticket" element={<BookTicket/>}/>
+                        </Route>
 
-                      <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
-                          <Route path="/bookticket" element={<BookTicket/>}/>
-                      </Route>
-                  </Routes>
-              </BrowserRouter>
-              </AuthProvider>
-          </header>
-      </ThemeProvider>
+                    </Routes>
+                </BrowserRouter>
+            </header>
+        </ThemeProvider>
     );
 }
 
