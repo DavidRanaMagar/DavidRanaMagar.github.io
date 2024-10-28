@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import HomePage from './Components/HomePage';
 import LoginPage from './Components/LoginPage';
 import RequireAuth from './Components/RequireAuth';
-import { AuthProvider } from './context/AuthProvider';
 import Navbar from './Components/Navbar';
 import CustomerList from './Components/CustomerList';
 import Unauthorized from './Components/Unauthorized';
@@ -43,16 +42,13 @@ function App() {
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/unauthorized" element={<Unauthorized/>}/>
                         <Route path="/register" element={<Register/>}/>
-                          
+
                         {/* private | need authentication to access */}
                         <Route element={<RequireAuth allowedRoles={['admin']}/>}>
-                            <Route path="/admin" element={<AdminView/>}/>
                             <Route path="/customers" element={<CustomerList/>}/>
                             <Route path="/employees" element={<EmployeeList/>}/>
                             <Route path="/employeeHours" element={<EmployeeSearch/>}/>
                             <Route path="/ticketsreport" element={<TicketsReport/>}/>
-                            {/*<Route path="/customers" element={<CustomerList/>}/>*/}
-                            {/*<Route path="/employees" element={<EmployeeList/>}/>*/}
                         </Route>
 
                         <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
