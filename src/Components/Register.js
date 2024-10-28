@@ -188,6 +188,12 @@ const Register = () => {
                             <MenuItem key={2} value={2}>
                                 Non-Binary
                             </MenuItem>
+                            <MenuItem key={3} value={3}>
+                                Other
+                            </MenuItem>
+                            <MenuItem key={4} value={4}>
+                                Prefer not to say
+                            </MenuItem>
                         </TextField>
                     </Grid2>
 

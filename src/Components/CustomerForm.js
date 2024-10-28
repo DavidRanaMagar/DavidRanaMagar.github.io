@@ -22,21 +22,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
             country: ''
         }
     });
-    const [sexOptions, setSexOptions] = useState([]);
-
-    // Fetch sex options from the server
-    useEffect(() => {
-        const fetchSexOptions = async () => {
-            try {
-                const response = await axios.get('/sex');
-                setSexOptions(response.data);
-            } catch (error) {
-                console.error('Error fetching sex options:', error);
-            }
-        };
-
-        fetchSexOptions();
-    }, []);
 
     // Fetch customer data if customerID is provided
     useEffect(() => {
@@ -111,6 +96,8 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log('submit');
+
         try {
             const dataToSend = {
                 ...customer,
@@ -124,7 +111,8 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                 alert('Customer updated successfully!');
             } else {
                 // Create new customer
-                await axios.post('/customer', dataToSend);
+                console.log('submit1');
+                await axios.post('/customer/naUser', dataToSend);
                 alert('Customer created successfully!');
             }
             setSelectedCustomerID(null); // Reset selected customer
@@ -208,11 +196,21 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                             margin="normal"
                             required
                         >
-                            {sexOptions.map((gender) => (
-                                <MenuItem key={gender.sexCode} value={Number(gender.sexCode)}>
-                                    {gender.sex}
-                                </MenuItem>
-                            ))}
+                            <MenuItem key={0} value={0}>
+                                Male
+                            </MenuItem>
+                            <MenuItem key={1} value={1}>
+                                Female
+                            </MenuItem>
+                            <MenuItem key={2} value={2}>
+                                Non-Binary
+                            </MenuItem>
+                            <MenuItem key={3} value={3}>
+                                Other
+                            </MenuItem>
+                            <MenuItem key={4} value={4}>
+                                Prefer not to say
+                            </MenuItem>
                         </TextField>
                     </Grid2>
 

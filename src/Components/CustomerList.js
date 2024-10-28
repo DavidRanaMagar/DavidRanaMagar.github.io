@@ -101,10 +101,10 @@ const CustomerList = () => {
                                     <TableCell>{customer.email}</TableCell>
                                     <TableCell>{customer.phone}</TableCell>
                                     <TableCell>
-                                        <IconButton color="primary" onClick={() => handleRowClick(customer.employeeID)}>
+                                        <IconButton color="primary" onClick={() => handleRowClick(customer.customerID)}>
                                             <EditIcon/>
                                         </IconButton>
-                                        <IconButton color="secondary" onClick={() => handleDelete(customer.employeeID)}>
+                                        <IconButton color="secondary" onClick={() => handleDelete(customer.customerID)}>
                                             <DeleteIcon/>
                                         </IconButton>
                                     </TableCell>
