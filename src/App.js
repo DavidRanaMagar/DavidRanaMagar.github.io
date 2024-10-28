@@ -10,11 +10,12 @@ import Register from './Components/Register';
 import BookTicket from "./Components/BookTicket";
 import TicketsReport from "./Components/TicketsReport";
 import EmployeeList from './Components/EmployeeList';
-
+import CustomerHome from "./Components/CustomerHome";
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import './App.css';
 import EmployeeSearch from "./Components/EmployeeSearch";
 import {AuthProvider} from "./context/AuthProvider";
+import AdminHome from "./Components/AdminHome";
 
 const darkTheme = createTheme({
     palette: {
@@ -34,10 +35,10 @@ function App() {
 
     return (
         <ThemeProvider theme={darkTheme}>
-            <Navbar/>
-            <header className="App-header">
-                <AuthProvider auth={auth} setAuth={setAuth}>
-                    <BrowserRouter>
+            <AuthProvider auth={auth} setAuth={setAuth}>
+                <BrowserRouter>
+                    <Navbar/>
+                    <header className="App-header">
                         <Routes>
                             {/* public */}
                             <Route path="/" element={<HomePage/>}/>
@@ -47,6 +48,7 @@ function App() {
 
                             {/* private | need authentication to access */}
                             <Route element={<RequireAuth allowedRoles={['admin']}/>}>
+                                <Route path="/adminhome" element={<AdminHome/>}/>
                                 <Route path="/customers" element={<CustomerList/>}/>
                                 <Route path="/employees" element={<EmployeeList/>}/>
                                 <Route path="/employeeHours" element={<EmployeeSearch/>}/>
@@ -54,13 +56,14 @@ function App() {
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
+                                <Route path="/customerhome" element={<CustomerHome/>}/>
                                 <Route path="/bookticket" element={<BookTicket/>}/>
                             </Route>
 
                         </Routes>
-                    </BrowserRouter>
-                </AuthProvider>
-            </header>
+                    </header>
+                </BrowserRouter>
+            </AuthProvider>
         </ThemeProvider>
     );
 }

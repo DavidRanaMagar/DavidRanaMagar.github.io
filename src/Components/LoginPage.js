@@ -12,7 +12,7 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = async (e) => {
         e.preventDefault();  // Prevent page refresh
@@ -25,7 +25,13 @@ const LoginPage = () => {
                 setAuth({ userId, role });
                 setUsername('');
                 setPassword('');
-                navigate(from, { replace: true });
+                if (role === 'customer') {
+                    navigate('/customerhome');
+                } else if (role === 'admin') {
+                    navigate('/adminhome');
+                } else {
+                    navigate(from, { replace: true });
+                }
             } else {
                 alert('Invalid username or password');
             }
