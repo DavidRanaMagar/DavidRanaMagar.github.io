@@ -10,6 +10,7 @@ import CustomerList from './Components/CustomerList';
 import Unauthorized from './Components/Unauthorized';
 import Register from './Components/Register';
 import BookTicket from "./Components/BookTicket";
+import TicketsReport from "./Components/TicketsReport";
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
@@ -48,6 +49,7 @@ function App() {
                       <Route element={<RequireAuth allowedRoles={['admin']}/>}>
                           <Route path="/customers" element={<CustomerList/>}/>
                           <Route path="/addCustomer" element={<CustomerForm/>}/>
+                          <Route path="/ticketsreport" element={<TicketsReport/>}/>
                       </Route>
 
                       <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
