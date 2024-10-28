@@ -167,7 +167,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             </InputLabel>
                             <TextField
                                 id="Date of Birth"
-                                name="Date of Birth"
+                                name="dateOfBirth"
                                 type="date"
                                 value={employee.dateOfBirth}
                                 onChange={handleInputChange}
@@ -182,7 +182,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             </InputLabel>
                             <TextField
                                 id="Hire Date"
-                                name="Hire Date"
+                                name="hireDate"
                                 type="date"
                                 value={employee.hireDate}
                                 onChange={handleInputChange}
@@ -199,11 +199,21 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             onChange={handleInputChange}
                             fullWidth
                         >
-                            {genders.map((g) => (
-                                <MenuItem key={g.sexCode} value={g.sexCode}>
-                                    {g.sex}
-                                </MenuItem>
-                            ))}
+                            <MenuItem key={0} value={0}>
+                                Male
+                            </MenuItem>
+                            <MenuItem key={1} value={1}>
+                                Female
+                            </MenuItem>
+                            <MenuItem key={2} value={2}>
+                                Non-Binary
+                            </MenuItem>
+                            <MenuItem key={3} value={3}>
+                                Other
+                            </MenuItem>
+                            <MenuItem key={4} value={4}>
+                                Prefer not to say
+                            </MenuItem>
                         </TextField>
                     </Grid2>
                 </Grid2>
