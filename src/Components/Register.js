@@ -1,12 +1,11 @@
 import {Button, Grid2, MenuItem, TextField, Typography, Container} from '@mui/material';
-import React, {useState} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 
 const Register = () => {
 
     const navigate = useNavigate();
-    const location = useLocation();
     const [customer, setCustomer] = useState({
         firstName: '',
         lastName: '',
@@ -65,8 +64,8 @@ const Register = () => {
             } else {
                 const dataToSend = {
                     ...customer,
-                    user: customer.user,
-                    customerAddress: customer.customerAddress // Ensure right format
+                    customerAddress: customer.customerAddress, // Ensure right format
+                    user: customer.user
                 };
 
                 await axios.post('/customer', dataToSend);
@@ -166,7 +165,6 @@ const Register = () => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
-                            InputLabelProps={{shrink: true}}
                             required
                         />
                     </Grid2>
