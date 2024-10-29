@@ -4,9 +4,10 @@ import { Container, Typography, Button, Box } from '@mui/material';
 
 const paths = [
     { path: '/customers', label: 'View/Edit Customers' },
-    { path: '/employees', label: 'View/Edit Empoyees' },
+    { path: '/employees', label: 'View/Edit Employees' },
     { path: '/employeeHours', label: 'Employee Hours Reports' },
     { path: '/ticketsreport', label: 'Ticket Reports' },
+    { path: '/exhibition', label: 'Exhibition' },
 ];
 
 const AdminHome = () => {
