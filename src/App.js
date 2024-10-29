@@ -19,6 +19,7 @@ import AdminHome from "./Components/AdminHome";
 import ExhibitionForm from "./Components/ExhibitionForm";
 import Product from "./Components/Product";
 import EarningsReport from "./Components/EarningsReport";
+import GiftShopItemsReport from "./Components/GiftShopItemsReport";
 
 const darkTheme = createTheme({
     palette: {
@@ -58,6 +59,7 @@ function App() {
                                 <Route path="/employees" element={<EmployeeList/>}/>
                                 <Route path="/employeeHours" element={<EmployeeSearch/>}/>
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
+                                <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
                                 <Route path="/earningsreport" element={<EarningsReport/>}/>
                             </Route>
 

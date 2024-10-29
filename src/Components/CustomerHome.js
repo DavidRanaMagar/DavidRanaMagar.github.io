@@ -4,6 +4,7 @@ import {Box, Button, Container, Typography} from '@mui/material';
 
 const paths = [
     { path: '/bookticket', label: 'Book Ticket' },
+    { path: '/products', label: 'Products' },
 ];
 
 const CustomerHome = () => {

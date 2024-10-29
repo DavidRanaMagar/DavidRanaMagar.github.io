@@ -5,9 +5,12 @@ import { Container, Typography, Button, Box } from '@mui/material';
 const paths = [
     { path: '/customers', label: 'View/Edit Customers' },
     { path: '/employees', label: 'View/Edit Employees' },
-    { path: '/employeeHours', label: 'Employee Hours Reports' },
-    { path: '/ticketsreport', label: 'Ticket Reports' },
-    { path: '/exhibition', label: 'Exhibition' },
+    { path: '/exhibition', label: 'Create Exhibition' },
+    { path: '/products', label: 'View Products' },
+    { path: '/employeeHours', label: 'Employee Hours Report' },
+    { path: '/ticketsreport', label: 'Ticket Sales Report' },
+    { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
+    { path: '/earningsreport', label: 'Earnings Report' },
 ];
 
 const AdminHome = () => {
