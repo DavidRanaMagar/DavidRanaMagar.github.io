@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Button, Card, CardContent, CardMedia } from '@mui/material';
+import { Box, Container, Typography} from '@mui/material';
 
 const HomePage = () => {
     return (
