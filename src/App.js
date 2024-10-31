@@ -20,6 +20,7 @@ import ExhibitionForm from "./Components/ExhibitionForm";
 import Product from "./Components/Product";
 import DonationsReport from "./Components/DonationsReport";
 import GiftShopItemsReport from "./Components/GiftShopItemsReport";
+import LoanForm from "./Components/LoanForm";
 
 const darkTheme = createTheme({
     palette: {
@@ -49,7 +50,6 @@ function App() {
                             <Route path="/login" element={<LoginPage/>}/>
                             <Route path="/unauthorized" element={<Unauthorized/>}/>
                             <Route path="/register" element={<Register/>}/>
-                            <Route path="/exhibition" element={<ExhibitionForm/>}/>
                             <Route path="/products" element={<Product/>}/>
 
                             {/* private | need authentication to access */}
@@ -61,6 +61,8 @@ function App() {
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
                                 <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
+                                <Route path="/exhibition" element={<ExhibitionForm/>}/>
+                                <Route path="/loanform" element={<LoanForm/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
