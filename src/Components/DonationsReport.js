@@ -2,36 +2,44 @@ import React, { useState } from 'react';
 import { Button, Typography, Container, TextField, Box } from '@mui/material';
 import axios from '../api/axios';
 
-const EarningsReport = () => {
-    const [startDate, setStartDate] = useState(''); // State for start date
-    const [endDate, setEndDate] = useState(''); // State for end date
-    const [totalAmount, setTotalAmount] = useState(null); // Initially null for conditional rendering
+const DonationsReport = () => {
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [totalAmount, setTotalAmount] = useState(null);
 
-    // New function that takes the start and end dates as input and fetches the corresponding transactions
     const generateReportByDates = async (startDate, endDate) => {
-        try {
-            const response = await axios.get('/transaction', {
-                params: { startDate, endDate } // Assuming your API accepts date parameters
-            });
-            const transactions = response.data; // Assuming response.data is an array
 
-            const total = transactions.reduce(
-                (sum, transaction) => sum + transaction.transactionAmount, 0
+        if (startDate > endDate) {
+            alert('Please choose a valid date range.')
+            return;
+        }
+
+        try {
+            const response = await axios.post('/donation/dateRange', {
+                startDate,
+                endDate
+            });
+            const donations = response.data;
+
+            const total = donations.reduce(
+                (sum, donation) => sum + donation.donation, 0
             );
 
-            setTotalAmount(total); // Set the total amount based on filtered transactions
+            setTotalAmount(total);
 
             console.log('Total Amount:', total);
         } catch (error) {
-            console.error('Error fetching transactions:', error);
+            console.error('Error fetching donations:', error);
         }
     };
 
     const handleGenerateClick = () => {
+
+
         if (startDate && endDate) {
-            generateReportByDates(startDate, endDate);
+            generateReportByDates(new Date(startDate), new Date(endDate));
         } else {
-            console.error('Please select both start and end dates.');
+            alert('Please select both start and end dates.');
         }
     };
 
@@ -70,4 +78,4 @@ const EarningsReport = () => {
     );
 };
 
-export default EarningsReport;
+export default DonationsReport;

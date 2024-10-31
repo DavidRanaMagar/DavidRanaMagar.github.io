@@ -10,7 +10,7 @@ const paths = [
     { path: '/employeeHours', label: 'Employee Hours Report' },
     { path: '/ticketsreport', label: 'Ticket Sales Report' },
     { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
-    { path: '/earningsreport', label: 'Earnings Report' },
+    { path: '/donationsreport', label: 'Donations Report' },
 ];
 
 const AdminHome = () => {

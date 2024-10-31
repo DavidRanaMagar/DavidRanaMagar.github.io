@@ -18,7 +18,7 @@ import {AuthProvider} from "./context/AuthProvider";
 import AdminHome from "./Components/AdminHome";
 import ExhibitionForm from "./Components/ExhibitionForm";
 import Product from "./Components/Product";
-import EarningsReport from "./Components/EarningsReport";
+import DonationsReport from "./Components/DonationsReport";
 import GiftShopItemsReport from "./Components/GiftShopItemsReport";
 
 const darkTheme = createTheme({
@@ -60,7 +60,7 @@ function App() {
                                 <Route path="/employeeHours" element={<EmployeeSearch/>}/>
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
                                 <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
-                                <Route path="/earningsreport" element={<EarningsReport/>}/>
+                                <Route path="/donationsreport" element={<DonationsReport/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
