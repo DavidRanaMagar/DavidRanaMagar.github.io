@@ -15,7 +15,7 @@ import axios from '../api/axios';
 
 const TicketsReport = () => {
     const [tickets, setTickets] = useState([]);
-    const [setSales] = useState([]);
+    const [sales, setSales] = useState([]);
     const [saleTickets, setSaleTickets] = useState([]);
     const [ticketTypes, setTicketTypes] = useState([]);
     const [filteredTickets, setFilteredTickets] = useState([]);

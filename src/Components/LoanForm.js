@@ -43,7 +43,7 @@ const LoanForm = () => {
 
         fetchArtifacts();
         fetchLoanTypes();
-    }, [])
+    }, [loan.loanStartDate, loan.loanEndDate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -65,7 +65,7 @@ const LoanForm = () => {
         try {
             const loanResponse = await axios.post('/loan', loanData);
 
-            selectedArtifacts.map(async (artifactID) => {
+            await Promise.all(selectedArtifacts.map(async (artifactID) => {
                 const artifactLoanData = {
                     loanID: loanResponse.data.loanID,
                     artifactID: artifactID,
@@ -73,7 +73,7 @@ const LoanForm = () => {
                     updatedBy: 'collection manager',
                 }
                 await axios.post('/artifactsLoan', artifactLoanData);
-            })
+            }));
 
             setLoan({
                 loanTypeID: '',

@@ -85,15 +85,16 @@ const ExhibitionForm = () => {
         try {
             const exhibitionResponse = await axios.post('/exhibition', exhibitionData);
 
-            selectedArtifacts.map(async (artifactID) => {
+            await Promise.all(selectedArtifacts.map(async (artifactID) => {
                 const exhibitionArtifactData = {
                     exhibitionID: exhibitionResponse.data.exhibitionID,
                     artifactID: artifactID,
                     createdBy: 'curator',
                     updatedBy: 'curator',
-                }
+                };
+
                 await axios.post('/artifactsExhibition', exhibitionArtifactData);
-            })
+            }));
 
             setExhibition({
                 title: '',
