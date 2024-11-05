@@ -8,9 +8,8 @@ const DonationsReport = () => {
     const [totalAmount, setTotalAmount] = useState(null);
 
     const generateReportByDates = async (startDate, endDate) => {
-
         if (startDate > endDate) {
-            alert('Please choose a valid date range.')
+            alert('Please choose a valid date range.');
             return;
         }
 
@@ -26,7 +25,6 @@ const DonationsReport = () => {
             );
 
             setTotalAmount(total);
-
             console.log('Total Amount:', total);
         } catch (error) {
             console.error('Error fetching donations:', error);
@@ -34,13 +32,17 @@ const DonationsReport = () => {
     };
 
     const handleGenerateClick = () => {
-
-
         if (startDate && endDate) {
             generateReportByDates(new Date(startDate), new Date(endDate));
         } else {
             alert('Please select both start and end dates.');
         }
+    };
+
+    // Reset total amount when date range changes
+    const handleDateChange = (setter) => (e) => {
+        setter(e.target.value);
+        setTotalAmount(null);
     };
 
     return (
@@ -52,7 +54,7 @@ const DonationsReport = () => {
                     type="date"
                     InputLabelProps={{ shrink: true }}
                     value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
+                    onChange={handleDateChange(setStartDate)}
                 />
 
                 {/* End Date Picker */}
@@ -61,7 +63,7 @@ const DonationsReport = () => {
                     type="date"
                     InputLabelProps={{ shrink: true }}
                     value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
+                    onChange={handleDateChange(setEndDate)}
                 />
             </Box>
 
@@ -69,9 +71,9 @@ const DonationsReport = () => {
                 Generate Report
             </Button>
 
-            {totalAmount !== null && ( // Conditionally render total amount only after clicking the button
+            {totalAmount !== null && (
                 <Typography variant="h4" gutterBottom>
-                    Total Sales Amount from {startDate} to {endDate}: ${totalAmount}
+                    Total Donation Amount from {startDate} to {endDate}: ${totalAmount}
                 </Typography>
             )}
         </Container>
