@@ -13,40 +13,40 @@ import {
 } from '@mui/material';
 import axios from '../api/axios';
 import DeleteIcon from "@mui/icons-material/Delete";
-import ExhibitionForm from "./ExhibitionForm";
+import LoanForm from "./LoanForm";
 
-const ExhibitionList = () => {
-    const [exhibitions, setExhibitions] = useState([]);
-    const [locationConversions, setLocationConversions] = useState({});
+const LoanList = () => {
+    const [loans, setLoans] = useState([]);
+    const [loanTypeConversions, setLoanTypeConversions] = useState({});
     const [isCreating, setIsCreating] = useState(false);
 
     useEffect(() => {
-        const fetchExhibitions = async () => {
+        const fetchLoans = async () => {
             try {
-                const response = await axios.get('/exhibition');
-                setExhibitions(response.data);
+                const response = await axios.get('/loan');
+                setLoans(response.data);
             } catch (error) {
                 console.error('Error fetching customer data:', error);
             }
         }
 
-        const fetchLocations = async () => {
+        const fetchLoanTypes = async () => {
             try {
-                const response = await axios.get('/location');
+                const response = await axios.get('/loanType');
 
-                setLocationConversions(Object.fromEntries(
-                    response.data.map(location => [location.locationID, `${location.building} : ${location.floor} : ${location.section}`])
+                setLoanTypeConversions(Object.fromEntries(
+                    response.data.map(loanType => [loanType.loanTypeID, loanType.title])
                 ));
             } catch (error) {
-                console.error('Error fetching locations:', error);
+                console.error('Error fetching loan types:', error);
             }
         };
 
-        fetchExhibitions();
-        fetchLocations();
+        fetchLoans();
+        fetchLoanTypes();
     }, [])
 
-    const handleCreateExhibition = () => {
+    const handleCreateLoan = () => {
         setIsCreating(true);
     }
 
@@ -54,15 +54,15 @@ const ExhibitionList = () => {
         setIsCreating(false);
     }
 
-    const handleDelete = async (exhibitionID) => {
-        if (window.confirm('Are you sure you want to delete this exhibition?')) {
+    const handleDelete = async (loanID) => {
+        if (window.confirm('Are you sure you want to delete this loan?')) {
             try {
-                await axios.delete(`/exhibition/${exhibitionID}`);
-                setExhibitions(exhibitions.filter(exhibition => exhibition.exhibitionID !== exhibitionID));
-                alert('Exhibition deleted successfully!');
+                await axios.delete(`/loan/${loanID}`);
+                setLoans(loans.filter(loan => loan.loanID !== loanID));
+                alert('Loan deleted successfully!');
             } catch (err) {
-                console.error('Error deleting exhibition:', err);
-                alert('Failed to delete exhibition');
+                console.error('Error deleting loan:', err);
+                alert('Failed to delete loan');
             }
         }
     }
@@ -71,40 +71,36 @@ const ExhibitionList = () => {
         <Container maxWidth="lg" mb={4}>
             <Box mt={4} mb={4} display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="h4" align="center" gutterBottom>
-                    Exhibition Information
+                    Loan Information
                 </Typography>
             </Box>
             {!isCreating ? (
                 <Container maxWidth="lg">
                     <Box  mb={4} display="flex" justifyContent="flex-end" alignItems="flex-end">
-                        <Button variant="contained" color="primary" onClick={handleCreateExhibition}>
-                            Create New Exhibition
+                        <Button variant="contained" color="primary" onClick={handleCreateLoan}>
+                            Create New Loan
                         </Button>
                     </Box>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell><Typography variant="h6">Title</Typography></TableCell>
-                                    <TableCell><Typography variant="h6">Artist</Typography></TableCell>
+                                    <TableCell><Typography variant="h6">Borrower</Typography></TableCell>
+                                    <TableCell><Typography variant="h6">Type</Typography></TableCell>
                                     <TableCell><Typography variant="h6">Start Date</Typography></TableCell>
                                     <TableCell><Typography variant="h6">End Date</Typography></TableCell>
-                                    <TableCell><Typography variant="h6">Time</Typography></TableCell>
-                                    <TableCell><Typography variant="h6">Location</Typography></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {exhibitions.map((exhibition) => (
-                                    <TableRow key={exhibition.exhibitionID}>
-                                        <TableCell>{exhibition.title}</TableCell>
-                                        <TableCell>{exhibition.artist}</TableCell>
-                                        <TableCell>{exhibition.startDate}</TableCell>
-                                        <TableCell>{exhibition.endDate}</TableCell>
-                                        <TableCell>{exhibition.timeSlot}</TableCell>
-                                        <TableCell>{locationConversions[exhibition.locationID]}</TableCell>
+                                {loans.map((loan) => (
+                                    <TableRow key={loan.loanID}>
+                                        <TableCell>{loan.borrowerLender}</TableCell>
+                                        <TableCell>{loanTypeConversions[loan.loanTypeID]}</TableCell>
+                                        <TableCell>{loan.loanStartDate}</TableCell>
+                                        <TableCell>{loan.loanEndDate}</TableCell>
                                         <TableCell>
                                             <IconButton color="secondary"
-                                                        onClick={() => handleDelete(exhibition.exhibitionID)}>
+                                                        onClick={() => handleDelete(loan.loanID)}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </TableCell>
@@ -121,11 +117,11 @@ const ExhibitionList = () => {
                             Back to List
                         </Button>
                     </Box>
-                    <ExhibitionForm/>
+                    <LoanForm/>
                 </Container>
             )}
         </Container>
     );
 };
 
-export default ExhibitionList;
+export default LoanList;

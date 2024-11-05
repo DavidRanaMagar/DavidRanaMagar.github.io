@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import axios from 'axios';
+import axios from "../api/axios";
 import CustomerForm from './CustomerForm';
 
 const CustomerList = () => {

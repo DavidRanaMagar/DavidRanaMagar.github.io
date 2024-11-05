@@ -6,7 +6,7 @@ const paths = [
     { path: '/customers', label: 'View/Create Customers' },
     { path: '/employees', label: 'View/Create Employees' },
     { path: '/exhibitions', label: 'View/Create Exhibitions' },
-    { path: '/loanform', label: 'Record Loan' },
+    { path: '/loans', label: 'View/Record Loan' },
     { path: '/products', label: 'View Products' },
     { path: '/employeeHours', label: 'Employee Hours Report' },
     { path: '/ticketsreport', label: 'Ticket Sales Report' },
