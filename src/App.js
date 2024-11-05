@@ -16,11 +16,11 @@ import './App.css';
 import EmployeeSearch from "./Components/EmployeeSearch";
 import {AuthProvider} from "./context/AuthProvider";
 import AdminHome from "./Components/AdminHome";
-import ExhibitionForm from "./Components/ExhibitionForm";
 import Product from "./Components/Product";
 import DonationsReport from "./Components/DonationsReport";
 import GiftShopItemsReport from "./Components/GiftShopItemsReport";
-import LoanForm from "./Components/LoanForm";
+import ExhibitionList from "./Components/ExhibitionList";
+import LoanList from "./Components/LoanList";
 
 const darkTheme = createTheme({
     palette: {
@@ -61,8 +61,8 @@ function App() {
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
                                 <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
-                                <Route path="/exhibition" element={<ExhibitionForm/>}/>
-                                <Route path="/loanform" element={<LoanForm/>}/>
+                                <Route path="/exhibitions" element={<ExhibitionList/>}/>
+                                <Route path="/loans" element={<LoanList/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>

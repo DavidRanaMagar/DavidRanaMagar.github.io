@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Button, Box } from '@mui/material';
 
 const paths = [
-    { path: '/customers', label: 'View/Edit Customers' },
-    { path: '/employees', label: 'View/Edit Employees' },
-    { path: '/exhibition', label: 'Create Exhibition' },
-    { path: '/loanform', label: 'Record Loan' },
+    { path: '/customers', label: 'View/Create Customers' },
+    { path: '/employees', label: 'View/Create Employees' },
+    { path: '/exhibitions', label: 'View/Create Exhibitions' },
+    { path: '/loans', label: 'View/Record Loan' },
     { path: '/products', label: 'View Products' },
     { path: '/employeeHours', label: 'Employee Hours Report' },
     { path: '/ticketsreport', label: 'Ticket Sales Report' },
