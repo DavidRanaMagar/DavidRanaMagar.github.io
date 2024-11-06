@@ -79,7 +79,7 @@ const LoginPage = () => {
                         variant="contained"
                         onClick={handleLogin}
                     >
-                        Login
+                        Click To Login
                     </Button>
                 </Grid2>
                 <Grid2 size={6} style={{textAlign: "right"}}>
