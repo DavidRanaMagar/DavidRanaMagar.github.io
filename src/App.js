@@ -21,6 +21,8 @@ import DonationsReport from "./Components/DonationsReport";
 import GiftShopItemsReport from "./Components/GiftShopItemsReport";
 import ExhibitionList from "./Components/ExhibitionList";
 import LoanList from "./Components/LoanList";
+import DepartmentList from './Components/DepartmentList';
+
 
 const darkTheme = createTheme({
     palette: {
@@ -63,6 +65,7 @@ function App() {
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
                                 <Route path="/exhibitions" element={<ExhibitionList/>}/>
                                 <Route path="/loans" element={<LoanList/>}/>
+                                <Route path="/departments" element={<DepartmentList/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
