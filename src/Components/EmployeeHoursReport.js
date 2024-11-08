@@ -188,6 +188,14 @@ const EmployeeHoursReport = ({ employeeID }) => {
                                     <TableCell>{record.hoursWorked}</TableCell>
                                 </TableRow>
                             ))}
+                            <TableRow>
+                                <TableCell><strong>Total</strong></TableCell>
+                                <TableCell>
+                                    <strong>
+                                        {employeeHours.reduce((total, record) => total + record.hoursWorked, 0)}
+                                    </strong>
+                                </TableCell>
+                            </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
