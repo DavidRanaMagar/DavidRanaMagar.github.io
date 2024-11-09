@@ -1,7 +1,7 @@
 import {
     Box,
     Button, Checkbox,
-    Container, Grid2,
+    Container, Grid2, MenuItem,
     Paper,
     Table, TableBody,
     TableCell,
@@ -15,25 +15,25 @@ import axios from '../api/axios';
 
 const TicketsReport = () => {
     const [tickets, setTickets] = useState([]);
-    const [sales, setSales] = useState([]);
-    const [saleTickets, setSaleTickets] = useState([]);
+    const [aggregates, setAggregates] = useState([]);
+
     const [ticketTypes, setTicketTypes] = useState([]);
-    const [filteredTickets, setFilteredTickets] = useState([]);
-    const [selectedTicketTypes, setSelectedTicketTypes] = useState(new Set());
+    const [selectedTicketTypes, setSelectedTicketTypes] = useState([]);
     const [ticketStatuses, setTicketStatuses] = useState([]);
-    const [selectedTicketStatuses, setSelectedTicketStatuses] = useState(new Set());
+    const [selectedTicketStatuses, setSelectedTicketStatuses] = useState([]);
 
     const [eventDateRange, setEventDateRange] = useState(['', '']);
     const [purchaseDateRange, setPurchaseDateRange] = useState(['', '']);
     const [timeSlotRange, setTimeSlotRange] = useState(['', '']);
+    const [periodType, setPeriodType] = useState('');
 
     useEffect(() => {
         const fetchTickets = async () => {
             try {
                 const response = await axios.get('/ticket');
+
                 setTickets(response.data);
-                setFilteredTickets(response.data);
-            } catch (error) {
+                     } catch (error) {
                 console.error('Error fetching tickets.', error);
             }
         };
@@ -41,30 +41,18 @@ const TicketsReport = () => {
         const fetchTicketStatuses = async () => {
             try {
                 const response = await axios.get('/ticketStatus');
-                setTicketStatuses(response.data);
 
-                setSelectedTicketStatuses(response.data.reduce((acc, status) => {
-                    acc.add(status.ticketStatusCode);
-                    return acc;
-                }, new Set()));
+                setTicketStatuses(response.data);
             } catch (error) {
                 console.error('Error fetching ticket Statuses.', error);
             }
         }
 
-        const fetchSales = async () => {
+        const fectchTicketTypes = async () => {
             try {
-                const [saleResponse, saleTicketResponse, ticketTypeResponse] = await Promise.all([
-                    axios.get('/sale'),
-                    axios.get('/saleTicket'),
-                    axios.get('/ticketType'),
-                ]);
+                const ticketTypeResponse = await axios.get('/ticketType');
 
-                setSales(saleResponse.data);
-                setSaleTickets(saleTicketResponse.data);
                 setTicketTypes(ticketTypeResponse.data);
-
-                setSelectedTicketTypes(new Set(ticketTypeResponse.data.map(t => t.ticketTypeCode)));
             } catch (error) {
                 console.error('Error fetching sales or ticket data.', error);
             }
@@ -72,59 +60,60 @@ const TicketsReport = () => {
 
         fetchTickets();
         fetchTicketStatuses();
-        fetchSales();
+        fectchTicketTypes();
     }, []);
 
-    const getTicketSale = (ticketID) => {
-        const saleTicket = saleTickets.find(st => st.ticketID === ticketID);
-        return saleTicket ? saleTicket.saleID : '-';
-    };
 
     const getTicketPrice = (ticketTypeCode) => {
         const ticketType = ticketTypes.find((type) => type.ticketTypeCode === ticketTypeCode);
         return ticketType ? ticketType.ticketPrice : 'N/A';
     };
 
-    const timeStringToDate = (timeString) => {
+    const formatTime = (timeString) => {
         const [hours, minutes] = timeString.split(':').map(Number);
         const date = new Date();
         date.setHours(hours, minutes, 0, 0);
-        return date;
+
+        if (isNaN(date)) {
+            return null;
+        }
+
+        const h = String(date.getHours()).padStart(2, '0');
+        const m = String(date.getMinutes()).padStart(2, '0');
+        const s = String(date.getSeconds()).padStart(2, '0');
+        return `${h}:${m}:${s}`;
     };
 
-
-    const handleTypeCheckboxChange = (ticketTypeCode) => {
+    const handleTypeCheckboxChange = (type) => {
         setSelectedTicketTypes((prev) => {
-            const updatedSet = new Set(prev);
-            if (updatedSet.has(ticketTypeCode)) {
-                updatedSet.delete(ticketTypeCode);
+            const updatedArray = [...prev];
+            if (updatedArray.includes(type)) {
+                return updatedArray.filter(code => code !== type);
             } else {
-                updatedSet.add(ticketTypeCode);
+                return [...updatedArray, type];
             }
-            return updatedSet;
         });
     };
 
-    const handleStatusCheckboxChange = (StatusCode) => {
+    const handleStatusCheckboxChange = (status) => {
         setSelectedTicketStatuses((prev) => {
-            const updatedSet = new Set(prev);
-            if (updatedSet.has(StatusCode)) {
-                updatedSet.delete(StatusCode);
+            const updatedArray = [...prev];
+            if (updatedArray.includes(status)) {
+                return updatedArray.filter(code => code !== status);
             } else {
-                updatedSet.add(StatusCode);
+                return [...updatedArray, status];
             }
-            return updatedSet;
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const eventDateLower = new Date(eventDateRange[0]);
         const eventDateUpper = new Date(eventDateRange[1]);
         const purchaseDateLower = new Date(purchaseDateRange[0]);
         const purchaseDateUpper = new Date(purchaseDateRange[1]);
-        const timeSlotLower = timeStringToDate(timeSlotRange[0]).getTime();
-        const timeSlotUpper = timeStringToDate(timeSlotRange[1]).getTime();
+        const timeSlotLower = formatTime(timeSlotRange[0]);
+        const timeSlotUpper = formatTime(timeSlotRange[1]);
 
         if (eventDateLower > eventDateUpper) {
             alert("Please choose a valid event date range.")
@@ -137,28 +126,35 @@ const TicketsReport = () => {
             return;
         }
 
-        const filtered = tickets.filter(ticket => {
-            const eventDate = new Date(ticket.eventDate);
-            const purchaseDate = new Date(ticket.purchaseDate);
-            const ticketTime = timeStringToDate(ticket.timeSlot).getTime();
-            const isEventDateInRange =
-                (eventDate >= eventDateLower || isNaN(eventDateLower.getTime())) &&
-                (eventDate <= eventDateUpper || isNaN(eventDateUpper.getTime()));
-            const isPurchaseDateInRange =
-                (purchaseDate >= purchaseDateLower || isNaN(purchaseDateLower.getTime())) &&
-                (purchaseDate <= purchaseDateUpper || isNaN(purchaseDateUpper.getTime()));
-            const isTimeSlotInRange =
-                (ticketTime >= timeSlotLower || isNaN(timeSlotLower)) &&
-                (ticketTime <= timeSlotUpper || isNaN(timeSlotUpper));
+        try {
 
-            const isTypeSelected = selectedTicketTypes.has(ticket.ticketType);
-            const isStatusSelected = selectedTicketStatuses.has(ticket.ticketStatus);
+            const body = {
+                eventDateLower,
+                eventDateUpper,
+                purchaseDateLower,
+                purchaseDateUpper,
+                timeSlotLower,
+                timeSlotUpper,
+                selectedTicketTypes,
+                selectedTicketStatuses
+            }
 
-            return isEventDateInRange && isPurchaseDateInRange &&
-                isTimeSlotInRange && isTypeSelected && isStatusSelected;
-        });
+            const [ticketsResponse, aggregatesResponse] = await Promise.all([
+                axios.post('/ticket/filter', body),
+                periodType === 'monthly'
+                    ? axios.post('/ticket/filter/monthly', body)
+                    : periodType === 'quarterly'
+                        ? axios.post('/ticket/filter/quarterly', body)
+                        : periodType === 'yearly'
+                            ? axios.post('/ticket/filter/yearly', body)
+                            : Promise.resolve({ data: [] })
+            ]);
 
-        setFilteredTickets(filtered);
+            setAggregates(aggregatesResponse.data);
+            setTickets(ticketsResponse.data)
+        } catch (error) {
+            console.error('Error fetching filtered tickets.', error);
+        }
     };
 
     return (
@@ -169,6 +165,21 @@ const TicketsReport = () => {
                         <Button variant="contained" color="primary" type="submit">
                             Apply Filters
                         </Button>
+                    </Grid2>
+                    <Grid2 size={3}>
+                        <TextField
+                            select
+                            variant="outlined"
+                            label="Period Type"
+                            InputLabelProps={{ shrink: true }}
+                            value={periodType}
+                            onChange={(e) => setPeriodType(e.target.value)}
+                            fullWidth
+                        >
+                            <MenuItem value={'monthly'}>Monthly</MenuItem>
+                            <MenuItem value={'quarterly'}>Quarterly</MenuItem>
+                            <MenuItem value={'yearly'}>Yearly</MenuItem>
+                        </TextField>
                     </Grid2>
                     <Grid2 size={3}>
                         <TextField
@@ -236,7 +247,7 @@ const TicketsReport = () => {
                         <TextField
                             type="time"
                             variant="outlined"
-                            label="Time Slot Before:"
+                            label="Time Slot After:"
                             InputLabelProps={{ shrink: true }}
                             value={timeSlotRange[0]}
                             onChange={(e) =>
@@ -251,7 +262,7 @@ const TicketsReport = () => {
                         <TextField
                             type="time"
                             variant="outlined"
-                            label="Time Slot After:"
+                            label="Time Slot Before:"
                             InputLabelProps={{ shrink: true }}
                             value={timeSlotRange[1]}
                             onChange={(e) =>
@@ -262,12 +273,13 @@ const TicketsReport = () => {
                             fullWidth
                         />
                     </Grid2>
+                    <Grid2 size={3}/>
                     <Grid2 container size={3} spacing={1}>
                         {ticketTypes.map((ticketType) => (
                             <React.Fragment key={ticketType.ticketTypeCode}>
                                 <Grid2 size={3}>
                                     <Checkbox
-                                        checked={selectedTicketTypes.has(ticketType.ticketTypeCode)}
+                                        checked={selectedTicketTypes.includes(ticketType.ticketTypeCode)}
                                         onChange={() => handleTypeCheckboxChange(ticketType.ticketTypeCode)}
                                     />
                                 </Grid2>
@@ -282,7 +294,7 @@ const TicketsReport = () => {
                             <React.Fragment key={ticketStatus.ticketStatusCode}>
                                 <Grid2 container alignItems="center" size={3}>
                                     <Checkbox
-                                        checked={selectedTicketStatuses.has(ticketStatus.ticketStatusCode)}
+                                        checked={selectedTicketStatuses.includes(ticketStatus.ticketStatusCode)}
                                         onChange={() => handleStatusCheckboxChange(ticketStatus.ticketStatusCode)}
                                     />
                                 </Grid2>
@@ -296,8 +308,26 @@ const TicketsReport = () => {
             </form>
             <Box mt={4}>
                 <Typography variant="h4">Ticket Sale Results</Typography>
-                <Typography variant="h6">Found - {filteredTickets.length} tickets</Typography>
-                <Typography variant="h6">Total Sales - ${filteredTickets.reduce((sum, ticket) => sum + (ticketTypes.find(t => t.ticketTypeCode === ticket.ticketType)?.ticketPrice || 0), 0)}.00</Typography>
+
+                {periodType === 'monthly' ? (
+                    <Typography variant="h5">--Monthly Sales--</Typography>
+                ) : periodType === 'quarterly' ? (
+                    <Typography variant="h5">--Quarterly Sales--</Typography>
+                ) : periodType === 'yearly' ? (
+                    <Typography variant="h5">--Yearly Sales--</Typography>
+                ) : null}
+
+                {aggregates.map((entry) =>
+                    <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Period: {entry.period} - Tickets Sold: {entry.ticketCount} - Total Earnings: ${entry.totalAmount}</Typography>
+                )}
+
+                <Typography variant="h4">
+                    &nbsp;
+                </Typography>
+
+                <Typography variant="h5">--Total Sales and Ticket List--</Typography>
+                <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Found - {tickets.length} tickets</Typography>
+                <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Total Sales - ${tickets.reduce((sum, ticket) => sum + (ticketTypes.find(t => t.ticketTypeCode === ticket.ticketType)?.ticketPrice || 0), 0)}.00</Typography>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="tickets">
                         <TableHead>
@@ -309,12 +339,11 @@ const TicketsReport = () => {
                                 <TableCell>Event Date</TableCell>
                                 <TableCell>Time Slot</TableCell>
                                 <TableCell>Ticket Status</TableCell>
-                                <TableCell>Sale ID</TableCell>
                                 <TableCell>Ticket Price</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredTickets.map(ticket => {
+                            {tickets.map(ticket => {
                                 return (
                                     <TableRow key={ticket.ticketID}>
                                         <TableCell>{ticket.ticketID}</TableCell>
@@ -323,8 +352,7 @@ const TicketsReport = () => {
                                         <TableCell>{ticket.purchaseDate}</TableCell>
                                         <TableCell>{ticket.eventDate}</TableCell>
                                         <TableCell>{ticket.timeSlot}</TableCell>
-                                        <TableCell>{ticket.ticketStatus}</TableCell>
-                                        <TableCell>{getTicketSale(ticket.ticketID)}</TableCell>
+                                        <TableCell>{ticketStatuses.find((status) => status.ticketStatusCode === ticket.ticketStatus)?.ticketStatus}</TableCell>
                                         <TableCell>${getTicketPrice(ticket.ticketType)}.00</TableCell>
                                     </TableRow>
                                 );
