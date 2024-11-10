@@ -24,6 +24,7 @@ import LoanList from "./Components/LoanList";
 import DepartmentList from './Components/DepartmentList';
 import Cart from "./Components/Cart";
 import MyTickets from './Components/MyTickets';
+import CustomerDonation from './Components/CustomerDonation';
 
 
 const darkTheme = createTheme({
@@ -130,6 +131,7 @@ function App() {
                                 <Route path="/" element={<HomePage/>}/>
                                 <Route path="/customerhome" element={<CustomerHome/>}/>
                                 <Route path="/bookticket" element={<BookTicket/>}/>
+                                <Route path="/customerdonation" element={<CustomerDonation/>}/>
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
                             </Route>
 

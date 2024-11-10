@@ -7,6 +7,7 @@ const paths = [
     { path: '/bookticket', label: 'Book Ticket' },
     { path: '/products', label: 'Products' },
     { path: '/mytickets', label: 'Ticket Status' },
+    { path: '/customerdonation', label: 'Donate' },
 ];
 
 const CustomerHome = () => {
