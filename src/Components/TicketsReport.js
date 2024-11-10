@@ -365,7 +365,7 @@ const TicketsReport = () => {
                 </TableContainer>
             </Box>
         </Container>
-    );  
+    );
 };
 
 export default TicketsReport;

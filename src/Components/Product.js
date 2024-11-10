@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardMedia, CardContent, Typography, Grid, Container, Button } from '@mui/material';
-import axios from 'axios';
+import { Card, CardMedia, CardContent, Typography, Grid, Container, Button, Snackbar, Alert } from '@mui/material';
+import axios from "axios";
 
-function Product() {
+function Product({ addToCart }) {  // Receive addToCart as a prop
     const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);  // Snackbar visibility state
+    const [snackbarMessage, setSnackbarMessage] = useState('');  // Snackbar message state
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -18,19 +19,22 @@ function Product() {
         fetchProducts();
     }, []);
 
+    const handleAddToCart = (product) => {
+        addToCart(product);  // Add the product to the cart
+        setSnackbarMessage(`${product.title} has been added to your cart!`);  // Set the message
+        setOpenSnackbar(true);  // Show the snackbar
+    };
 
-    // add it to the cart and give an alert
-    const handleBuy = (product) => {
-        setCart((prevCart) => [...prevCart, product]);
-        alert(`Added ${product.title} to cart!`);
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);  // Hide the snackbar
     };
 
     return (
         <Container maxWidth="lg">
             <Grid container spacing={2} sx={{ padding: '20px' }}>
                 {products.map((product) => (
-                    <Grid item xs={12} sm={6} md={3} key={product.giftShopItemID}>
-                        <Card sx={{ width: '100%', maxWidth: 300, height: 380, textAlign: 'center' }}>
+                    <Grid item xs={3} key={product.giftShopItemID}>
+                        <Card sx={{ width: '100%', maxWidth: 300, height: 350, display: 'flex', flexDirection: 'column' }}>
                             <CardMedia
                                 component="img"
                                 height="200"
@@ -38,55 +42,48 @@ function Product() {
                                 alt={product.title}
                                 sx={{ objectFit: 'cover' }}
                             />
-                            <CardContent>
-                                <Typography variant="h6" component="div">
+                            <CardContent sx={{ flexGrow: 1 }}>
+                                {/* Truncate long title */}
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    sx={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}>
                                     {product.title}
                                 </Typography>
                                 <Typography variant="h4" component="div">
                                     ${product.price}
                                 </Typography>
 
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => handleBuy(product)}
-                                    sx={{ marginTop: '10px' }}
-                                >
-                                    Add To Cart
-                                </Button>
+                                
 
                             </CardContent>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleAddToCart(product)}  // Call the handler here
+                                sx={{ margin: '10px' }}  // Add some margin around the button for spacing
+                            >
+                                Add to Cart
+                            </Button>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
-            <div
-                style={{
-                    position: 'fixed',
-                    bottom: '20px',
-                    right: '20px',
-                    backgroundColor: 'yellow',
-                    borderRadius: '50%',
-                    padding: '15px',
-                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-                    zIndex: 1000,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                }}
-                onClick={() => alert('Go to cart!')} // insert the actual cart page here
+
+            {/* Snackbar for notification */}
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}  // Snackbar will auto-hide after 3 seconds
+                onClose={handleCloseSnackbar}
             >
-                <span
-                    style={{
-                        fontSize: '24px',
-                        fontWeight: 'bold',
-                        color: 'black',
-                    }}
-                >
-                    🛒
-                </span>
-            </div>
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 }
