@@ -12,6 +12,8 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
 
 const Navbar = () => {
     const { auth, setAuth } = useAuth(); // Access setAuth from context
@@ -44,6 +46,20 @@ const Navbar = () => {
         [ { label: 'Logout', action: handleLogout } ] // Logged in items
         : [ { label: 'Login', action: handleLogin } ]; // Logged out items
 
+    // cart
+    const getCartItemCount = () => {
+        const savedCartItems = localStorage.getItem('cartItems');
+        const cartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
+        return cartItems.length;
+    };
+
+    const cartItemCount = getCartItemCount(); // Get the number of items in the cart
+
+    const handleCartClick = () => {
+        // Navigate to the cart page or open a cart modal
+        navigate('/cart');
+    };
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -70,6 +86,19 @@ const Navbar = () => {
                     <Box sx={{ flexGrow: 1 }} />
 
                     <Box sx={{ flexGrow: 0 }}>
+                        {auth.userId && (
+                            <IconButton
+                                onClick={handleCartClick}
+                                sx={{ p: 0, marginRight: 2 }}
+                            >
+                                <Badge
+                                    badgeContent={cartItemCount}
+                                    color="error"
+                                >
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                        )}
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

@@ -22,6 +22,7 @@ import GiftShopItemsReport from "./Components/GiftShopItemsReport";
 import ExhibitionList from "./Components/ExhibitionList";
 import LoanList from "./Components/LoanList";
 import DepartmentList from './Components/DepartmentList';
+import Cart from "./Components/Cart";
 
 
 const darkTheme = createTheme({
@@ -40,6 +41,57 @@ function App() {
         localStorage.setItem("auth", JSON.stringify(auth));
     }, [auth]);
 
+    // cart
+    const [cartItems, setCartItems] = useState(() => {
+        // Initialize cartItems from localStorage if it exists
+        const savedCartItems = localStorage.getItem('cartItems');
+        return savedCartItems ? JSON.parse(savedCartItems) : [];
+    });
+
+    const addToCart = (product, quantity = 1) => {
+        setCartItems((prevItems) => {
+            // Check if the product already exists in the cart
+            const existingItem = prevItems.find(item => item.giftShopItemID === product.giftShopItemID);
+
+            if (existingItem) {
+                // If the item exists, increase the quantity
+                return prevItems.map(item =>
+                    item.giftShopItemID === product.giftShopItemID
+                        ? { ...item, quantity: item.quantity + quantity } // Increase quantity
+                        : item
+                );
+            } else {
+                // If the item doesn't exist, add it with the specified quantity
+                return [...prevItems, { ...product, quantity }];
+            }
+        });
+    };
+
+    const updateCartQuantity = (itemId, action) => {
+        setCartItems((prevItems) => {
+            return prevItems.map((item) => {
+                if (item.giftShopItemID === itemId) {
+                    if (action === 'increase') {
+                        return { ...item, quantity: item.quantity + 1 };
+                    } else if (action === 'decrease' && item.quantity > 1) {
+                        return { ...item, quantity: item.quantity - 1 };
+                    }
+                }
+                return item;
+            });
+        });
+    };
+
+    const removeFromCart = (itemId) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.giftShopItemID !== itemId));
+    };
+
+    // Automatically save cartItems to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }, [cartItems]);
+
+
     return (
         <ThemeProvider theme={darkTheme}>
             <AuthProvider auth={auth} setAuth={setAuth}>
@@ -52,7 +104,12 @@ function App() {
                             <Route path="/login" element={<LoginPage/>}/>
                             <Route path="/unauthorized" element={<Unauthorized/>}/>
                             <Route path="/register" element={<Register/>}/>
-                            <Route path="/products" element={<Product/>}/>
+                            {/*<Route path="/products" element={<Product/>}/>*/}
+                            {/*added below*/}
+                            <Route path="/products" element={<Product addToCart={addToCart} />} />
+                            <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart}
+                                                               updateCartQuantity={updateCartQuantity} setCartItems={setCartItems}/>} />
+
 
                             {/* private | need authentication to access */}
                             <Route element={<RequireAuth allowedRoles={['admin']}/>}>
