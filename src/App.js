@@ -25,6 +25,8 @@ import DepartmentList from './Components/DepartmentList';
 import Cart from "./Components/Cart";
 import MyTickets from './Components/MyTickets';
 import CustomerDonation from './Components/CustomerDonation';
+import StaffHome from './Components/StaffHome';
+import ManagerHome from './Components/ManagerHome';
 
 
 const darkTheme = createTheme({
@@ -133,6 +135,18 @@ function App() {
                                 <Route path="/bookticket" element={<BookTicket/>}/>
                                 <Route path="/customerdonation" element={<CustomerDonation/>}/>
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
+                            </Route>
+
+                             {/* private routes for admins and staff */}
+                            <Route element={<RequireAuth allowedRoles={['admin', 'staff']} />}>
+                                <Route path="/staffhome" element={<StaffHome />} /> 
+                                
+                            </Route>
+
+                            {/* private routes for admins and manager */}
+                            <Route element={<RequireAuth allowedRoles={['admin', 'manager']} />}>
+                                <Route path="/managerhome" element={<ManagerHome />} /> 
+                                
                             </Route>
 
                         </Routes>

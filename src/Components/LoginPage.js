@@ -29,7 +29,14 @@ const LoginPage = () => {
                     navigate('/customerhome');
                 } else if (role === 'admin') {
                     navigate('/adminhome');
-                } else {
+                } 
+                else if (role === 'staff') {
+                    navigate('/staffhome');
+                }
+                else if (role === 'manager') {
+                    navigate('/managerhome');
+                }
+                else {
                     navigate(from, { replace: true });
                 }
             } else {

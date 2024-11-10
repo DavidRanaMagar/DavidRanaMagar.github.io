@@ -42,7 +42,7 @@ const CustomerDonation = () => {
                 totalPrice: donationAmount,
                 createdBy: 'online user',
                 updatedBy: 'online user',
-                employeeID: '163' // Placeholder employee for online purchases
+                employeeID: '163' // Placeholder 
             });
 
             const saleID = saleResponse.data.saleID;
