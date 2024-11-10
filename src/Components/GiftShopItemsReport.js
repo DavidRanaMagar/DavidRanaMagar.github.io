@@ -3,7 +3,7 @@ import {
     Button,
     Checkbox,
     Container,
-    Grid2,
+    Grid2, MenuItem,
     Paper,
     Table,
     TableBody,
@@ -18,18 +18,24 @@ import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 
 const GiftShopItemsReport = () => {
-    const [products, setProducts] = useState([]);
-    const [salesData, setSalesData] = useState([]); // State for sales data
+    const [giftShopItems, setGiftShopItems] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState(new Set());
+    const [aggregates, setAggregates] = useState([]);
+
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [priceRange, setPriceRange] = useState(['', '']);
-    const [filteredSalesData, setFilteredSalesData] = useState([]);
+    const [periodType, setPeriodType] = useState('');
+    const [displayedPeriodType, setDisplayedPeriodType] = useState('');
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchGiftShopItems = async () => {
             try {
-                const response = await axios.get('/giftShopItem');
-                setProducts(response.data);
+                const response = await axios.post('/giftShopItem/filter', {
+                    minPrice: null,
+                    maxPrice: null,
+                    selectedCategories: [],
+                });
+                setGiftShopItems(response.data);
             } catch (error) {
                 console.error('Error fetching products.', error);
             }
@@ -39,40 +45,30 @@ const GiftShopItemsReport = () => {
             try {
                 const response = await axios.get('/category');
                 setCategories(response.data);
-                setSelectedCategories(new Set(response.data.map(c => c.categoryID)));
             } catch (error) {
                 console.error('Error fetching categories.', error);
             }
         };
 
-        const fetchSalesData = async () => {
-            try {
-                const response = await axios.get('/saleGiftShopItem'); // Adjust this to your actual endpoint
-                setSalesData(response.data);
-            } catch (error) {
-                console.error('Error fetching sales data.', error);
-            }
-        };
-
-        fetchProducts();
+        fetchGiftShopItems();
         fetchCategories();
-        fetchSalesData();
     }, []);
 
-    const handleCategoryChange = (categoryId) => {
+    const handleCategoryChange = (category) => {
         setSelectedCategories((prev) => {
-            const updatedSet = new Set(prev);
-            if (updatedSet.has(categoryId)) {
-                updatedSet.delete(categoryId);
+            const updatedArray = [...prev];
+            if (updatedArray.includes(category)) {
+                return updatedArray.filter(code => code !== category);
             } else {
-                updatedSet.add(categoryId);
+                return [...updatedArray, category];
             }
-            return updatedSet;
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setDisplayedPeriodType(periodType);
         const minPrice = parseFloat(priceRange[0]) || 0;
         const maxPrice = parseFloat(priceRange[1]) || Infinity;
 
@@ -81,27 +77,57 @@ const GiftShopItemsReport = () => {
             return;
         }
 
-        // Filter sales data based on selected categories and price range
-        const filtered = salesData.filter(sale => {
-            const product = products.find(p => p.giftShopItemID === sale.giftShopItemID);
-            const isCategorySelected = selectedCategories.has(product?.categoryID);
-            const isPriceInRange = product ? (product.price >= minPrice && product.price <= maxPrice) : false;
-            return isCategorySelected && isPriceInRange;
-        });
+        try {
 
-        setFilteredSalesData(filtered);
+            const body = {
+                minPrice,
+                maxPrice,
+                selectedCategories
+            }
+
+            const [itemsResponse, aggregatesResponse] = await Promise.all([
+                axios.post('/giftShopItem/filter', body),
+                periodType === 'monthly'
+                    ? axios.post('/giftShopItem/filter/monthly', body)
+                    : periodType === 'quarterly'
+                        ? axios.post('/giftShopItem/filter/quarterly', body)
+                        : periodType === 'yearly'
+                            ? axios.post('/giftShopItem/filter/yearly', body)
+                            : Promise.resolve({data: []})
+            ]);
+
+            setAggregates(aggregatesResponse.data)
+            setGiftShopItems(itemsResponse.data);
+        } catch (error) {
+            console.error('Error fetching gift shop items.', error);
+        }
     };
 
     return (
         <Container maxWidth="md">
             <form onSubmit={handleSubmit}>
                 <Grid2 container spacing={2}>
-                    <Grid2 xs={12}>
+                    <Grid2 size={12}>
                         <Button variant="contained" color="primary" type="submit">
                             Apply Filters
                         </Button>
                     </Grid2>
-                    <Grid2 xs={6}>
+                    <Grid2 size={3}>
+                        <TextField
+                            select
+                            variant="outlined"
+                            label="Period Type"
+                            InputLabelProps={{ shrink: true }}
+                            value={periodType}
+                            onChange={(e) => setPeriodType(e.target.value)}
+                            fullWidth
+                        >
+                            <MenuItem value={'monthly'}>Monthly</MenuItem>
+                            <MenuItem value={'quarterly'}>Quarterly</MenuItem>
+                            <MenuItem value={'yearly'}>Yearly</MenuItem>
+                        </TextField>
+                    </Grid2>
+                    <Grid2 size={3}>
                         <TextField
                             type="number"
                             variant="outlined"
@@ -113,7 +139,7 @@ const GiftShopItemsReport = () => {
                             fullWidth
                         />
                     </Grid2>
-                    <Grid2 xs={6}>
+                    <Grid2 size={3}>
                         <TextField
                             type="number"
                             variant="outlined"
@@ -133,7 +159,7 @@ const GiftShopItemsReport = () => {
                             <Grid2 container spacing={2} size={4}>
                                 <Grid2 size={3} alignItems="center">
                                     <Checkbox
-                                        checked={selectedCategories.has(category.categoryID)}
+                                        checked={selectedCategories.includes(category.categoryID)}
                                         onChange={() => handleCategoryChange(category.categoryID)}
                                     />
                                 </Grid2>
@@ -147,16 +173,30 @@ const GiftShopItemsReport = () => {
             </form>
             <Box mt={4}>
                 <Typography variant="h4">Gift Shop Sales Results</Typography>
-                <Typography variant="h6">Found - {filteredSalesData.length} products</Typography>
-                <Typography variant="h6">Total Sales - ${filteredSalesData.reduce((sum, sale) => {
-                    const product = products.find(p => p.giftShopItemID === sale.giftShopItemID);
-                    return sum + (product ? product.price : 0);
-                }, 0)}</Typography>
+
+                {displayedPeriodType === 'monthly' ? (
+                    <Typography variant="h5">--Monthly Sales--</Typography>
+                ) : displayedPeriodType === 'quarterly' ? (
+                    <Typography variant="h5">--Quarterly Sales--</Typography>
+                ) : displayedPeriodType === 'yearly' ? (
+                    <Typography variant="h5">--Yearly Sales--</Typography>
+                ) : null}
+
+                {aggregates.map((entry) =>
+                    <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Period: {entry.period} - Items Sold: {entry.giftShopItemCount} - Total Earnings: ${entry.totalAmount}</Typography>
+                )}
+
+                <Typography variant="h4">
+                    &nbsp;
+                </Typography>
+
+                <Typography variant="h5">--Total Sales and Item List--</Typography>
+                <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Found - {giftShopItems.length} products</Typography>
+                <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Total Sales - ${giftShopItems.reduce((sum, item) => sum + item.price, 0)}</Typography>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Sale ID</TableCell>
                                 <TableCell>Product ID</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Category</TableCell>
@@ -164,15 +204,13 @@ const GiftShopItemsReport = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredSalesData.map(sale => {
-                                const product = products.find(p => p.giftShopItemID === sale.giftShopItemID);
+                            {giftShopItems.map(item => {
                                 return (
-                                    <TableRow key={sale.saleGiftShopItemID}> {/* Adjust key to your actual sale item ID */}
-                                        <TableCell>{sale.saleID}</TableCell> {/* Assuming saleID is available in sales data */}
-                                        <TableCell>{product ? product.giftShopItemID : 'N/A'}</TableCell>
-                                        <TableCell>{product ? product.title : 'N/A'}</TableCell>
-                                        <TableCell>{categories.find(c => c.categoryID === product?.categoryID)?.title || 'N/A'}</TableCell>
-                                        <TableCell>${product ? product.price.toFixed(2) : 'N/A'}</TableCell>
+                                    <TableRow key={item.giftShopItemID}>
+                                        <TableCell>{item.giftShopItemID}</TableCell>
+                                        <TableCell>{item.title}</TableCell>
+                                        <TableCell>{categories.find(c => c.categoryID === item.categoryID).title}</TableCell>
+                                        <TableCell>${item.price.toFixed(2)}</TableCell>
                                     </TableRow>
                                 );
                             })}
