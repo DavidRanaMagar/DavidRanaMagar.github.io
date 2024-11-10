@@ -26,6 +26,7 @@ const TicketsReport = () => {
     const [purchaseDateRange, setPurchaseDateRange] = useState(['', '']);
     const [timeSlotRange, setTimeSlotRange] = useState(['', '']);
     const [periodType, setPeriodType] = useState('');
+    const [displayedPeriodType, setDisplayedPeriodType] = useState('');
 
     useEffect(() => {
         const fetchTickets = async () => {
@@ -33,7 +34,7 @@ const TicketsReport = () => {
                 const response = await axios.get('/ticket');
 
                 setTickets(response.data);
-                     } catch (error) {
+            } catch (error) {
                 console.error('Error fetching tickets.', error);
             }
         };
@@ -108,6 +109,8 @@ const TicketsReport = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setDisplayedPeriodType(periodType);
         const eventDateLower = new Date(eventDateRange[0]);
         const eventDateUpper = new Date(eventDateRange[1]);
         const purchaseDateLower = new Date(purchaseDateRange[0]);
@@ -309,16 +312,16 @@ const TicketsReport = () => {
             <Box mt={4}>
                 <Typography variant="h4">Ticket Sale Results</Typography>
 
-                {periodType === 'monthly' ? (
+                {displayedPeriodType === 'monthly' ? (
                     <Typography variant="h5">--Monthly Sales--</Typography>
-                ) : periodType === 'quarterly' ? (
+                ) : displayedPeriodType === 'quarterly' ? (
                     <Typography variant="h5">--Quarterly Sales--</Typography>
-                ) : periodType === 'yearly' ? (
+                ) : displayedPeriodType === 'yearly' ? (
                     <Typography variant="h5">--Yearly Sales--</Typography>
                 ) : null}
 
                 {aggregates.map((entry) =>
-                    <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Period: {entry.period} - Tickets Sold: {entry.ticketCount} - Total Earnings: ${entry.totalAmount}</Typography>
+                    <Typography key={entry.period} variant="h6" sx={{ color: '#e0e0e0' }}>Period: {entry.period} - Tickets Sold: {entry.ticketCount} - Total Earnings: ${entry.totalAmount}</Typography>
                 )}
 
                 <Typography variant="h4">
