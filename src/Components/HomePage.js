@@ -82,7 +82,7 @@ const HomePage = () => {
                         Welcome to the Museum of Fine Arts, Houston
                     </Typography>
                     <Typography variant="h5" sx={{ color: '#b0b0b0', mt: 2 }}>
-                        Experience art, culture, and history. You are currently not signed in.
+                        Experience art, culture, and history. If You are currently not signed in.
                     </Typography>
                     <Typography variant="body1" sx={{ color: '#9e9e9e', mt: 1 }}>
                         Log in by clicking the top right corner, or navigate home by clicking our logo in the top left.

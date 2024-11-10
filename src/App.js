@@ -22,6 +22,7 @@ import GiftShopItemsReport from "./Components/GiftShopItemsReport";
 import ExhibitionList from "./Components/ExhibitionList";
 import LoanList from "./Components/LoanList";
 import DepartmentList from './Components/DepartmentList';
+import MyTickets from './Components/MyTickets';
 
 
 const darkTheme = createTheme({
@@ -69,8 +70,10 @@ function App() {
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
+                                <Route path="/" element={<HomePage/>}/>
                                 <Route path="/customerhome" element={<CustomerHome/>}/>
                                 <Route path="/bookticket" element={<BookTicket/>}/>
+                                <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
                             </Route>
 
                         </Routes>

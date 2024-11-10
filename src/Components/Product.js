@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Card, CardMedia, CardContent, Typography, Grid2, Container} from '@mui/material';
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Card, CardMedia, CardContent, Typography, Grid, Container, Button } from '@mui/material';
+import axios from 'axios';
 
 function Product() {
     const [products, setProducts] = useState([]);
+    const [cart, setCart] = useState([]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -17,18 +18,25 @@ function Product() {
         fetchProducts();
     }, []);
 
+
+    // add it to the cart and give an alert
+    const handleBuy = (product) => {
+        setCart((prevCart) => [...prevCart, product]);
+        alert(`Added ${product.title} to cart!`);
+    };
+
     return (
         <Container maxWidth="lg">
-            <Grid2 container spacing={2} sx={{padding: '20px'}}>
+            <Grid container spacing={2} sx={{ padding: '20px' }}>
                 {products.map((product) => (
-                    <Grid2 size={3} key={product.giftShopItemID}>
-                        <Card sx={{width: '100%', maxWidth: 300, height: 320, textAlign: 'center'}}>
+                    <Grid item xs={12} sm={6} md={3} key={product.giftShopItemID}>
+                        <Card sx={{ width: '100%', maxWidth: 300, height: 380, textAlign: 'center' }}>
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image={'https://mfashop.mfah.org/cdn/shop/files/True_Lobster_Brooch_Pin_TL_1080x_b37ebec6-c0ad-47af-8837-b026bad0bb2c_900x.jpg?v=1721254860'}
+                                image={product.imageUrl || 'https://via.placeholder.com/300'}
                                 alt={product.title}
-                                sx={{objectFit: 'cover'}}
+                                sx={{ objectFit: 'cover' }}
                             />
                             <CardContent>
                                 <Typography variant="h6" component="div">
@@ -37,11 +45,48 @@ function Product() {
                                 <Typography variant="h4" component="div">
                                     ${product.price}
                                 </Typography>
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => handleBuy(product)}
+                                    sx={{ marginTop: '10px' }}
+                                >
+                                    Add To Cart
+                                </Button>
+
                             </CardContent>
                         </Card>
-                    </Grid2>
+                    </Grid>
                 ))}
-            </Grid2>
+            </Grid>
+            <div
+                style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    backgroundColor: 'yellow',
+                    borderRadius: '50%',
+                    padding: '15px',
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+                    zIndex: 1000,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                }}
+                onClick={() => alert('Go to cart!')} // insert the actual cart page here
+            >
+                <span
+                    style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        color: 'black',
+                    }}
+                >
+                    🛒
+                </span>
+            </div>
         </Container>
     );
 }
