@@ -36,6 +36,15 @@ const LoginPage = () => {
                 else if (role === 'manager') {
                     navigate('/managerhome');
                 }
+                else if (role === 'curator') {
+                    navigate('/curatorhome');
+                }
+                else if (role === 'collectionManager') {
+                    navigate('/collectionhome');
+                }
+                else if (role === 'inventoryManager') {
+                    navigate('/inventoryhome');
+                }
                 else {
                     navigate(from, { replace: true });
                 }

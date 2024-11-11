@@ -27,6 +27,9 @@ import MyTickets from './Components/MyTickets';
 import CustomerDonation from './Components/CustomerDonation';
 import StaffHome from './Components/StaffHome';
 import ManagerHome from './Components/ManagerHome';
+import InventoryManagerHome from "./Components/InventoryManagerHome";
+import CuratorHome from "./Components/CuratorHome";
+import CollectionManagerHome from "./Components/CollectionManagerHome";
 
 
 const darkTheme = createTheme({
@@ -108,24 +111,16 @@ function App() {
                             <Route path="/login" element={<LoginPage/>}/>
                             <Route path="/unauthorized" element={<Unauthorized/>}/>
                             <Route path="/register" element={<Register/>}/>
-                            {/*<Route path="/products" element={<Product/>}/>*/}
-                            {/*added below*/}
                             <Route path="/products" element={<Product addToCart={addToCart} />} />
                             <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart}
                                                                updateCartQuantity={updateCartQuantity} setCartItems={setCartItems}/>} />
-
 
                             {/* private | need authentication to access */}
                             <Route element={<RequireAuth allowedRoles={['admin']}/>}>
                                 <Route path="/adminhome" element={<AdminHome/>}/>
                                 <Route path="/customers" element={<CustomerList/>}/>
-                                <Route path="/employees" element={<EmployeeList/>}/>
-                                <Route path="/employeeHours" element={<EmployeeSearch/>}/>
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
-                                <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
-                                <Route path="/exhibitions" element={<ExhibitionList/>}/>
-                                <Route path="/loans" element={<LoanList/>}/>
                                 <Route path="/departments" element={<DepartmentList/>}/>
                             </Route>
 
@@ -139,14 +134,29 @@ function App() {
 
                              {/* private routes for admins and staff */}
                             <Route element={<RequireAuth allowedRoles={['admin', 'staff']} />}>
-                                <Route path="/staffhome" element={<StaffHome />} /> 
-                                
+                                <Route path="/staffhome" element={<StaffHome />} />
                             </Route>
 
                             {/* private routes for admins and manager */}
                             <Route element={<RequireAuth allowedRoles={['admin', 'manager']} />}>
-                                <Route path="/managerhome" element={<ManagerHome />} /> 
-                                
+                                <Route path="/managerhome" element={<ManagerHome />} />
+                                <Route path="/employeeHours" element={<EmployeeSearch/>}/>
+                                <Route path="/employees" element={<EmployeeList/>}/>
+                            </Route>
+
+                            <Route element={<RequireAuth allowedRoles={['admin', 'curator']} />}>
+                                <Route path="/curatorhome" element={<CuratorHome/>}/>
+                                <Route path="/exhibitions" element={<ExhibitionList/>}/>
+                            </Route>
+
+                            <Route element={<RequireAuth allowedRoles={['admin', 'collectionManager']} />}>
+                                <Route path="/collectionhome" element={<CollectionManagerHome/>}/>
+                                <Route path="/loans" element={<LoanList/>}/>
+                            </Route>
+
+                            <Route element={<RequireAuth allowedRoles={['admin', 'inventoryManager']} />}>
+                                <Route path="/inventoryhome" element={<InventoryManagerHome/>}/>
+                                <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
                             </Route>
 
                         </Routes>

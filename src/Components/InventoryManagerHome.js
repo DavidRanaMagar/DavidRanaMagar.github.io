@@ -3,18 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Container, Typography } from '@mui/material';
 
 const paths = [
-    { path: '/bookticket', label: 'Book Ticket' },
-    { path: '/products', label: 'Products' },
-    { path: '/mytickets', label: 'Ticket Status' },
-    { path: '/customerdonation', label: 'Donate' },
+    { path: '/products', label: 'View Products' },
+    { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
 ];
 
-const CustomerHome = () => {
+const InventoryManagerHome = () => {
     const navigate = useNavigate();
 
     return (
-        <Container 
-            maxWidth="sm" 
+        <Container
+            maxWidth="sm"
             sx={{
                 py: 6,
                 display: 'flex',
@@ -25,18 +23,18 @@ const CustomerHome = () => {
                 borderRadius: 2,
             }}
         >
-            <Typography 
-                variant="h4" 
-                align="center" 
+            <Typography
+                variant="h4"
+                align="center"
                 sx={{ mb: 4, fontWeight: 'medium' }}
             >
-                Welcome, Customer
+                Welcome, Gift Shop Inventory Manager
             </Typography>
 
-            <Box 
-                display="flex" 
-                flexDirection="column" 
-                width="100%" 
+            <Box
+                display="flex"
+                flexDirection="column"
+                width="100%"
                 gap={2}
             >
                 {paths.map(({ path, label }) => (
@@ -56,4 +54,4 @@ const CustomerHome = () => {
     );
 };
 
-export default CustomerHome;
+export default InventoryManagerHome;

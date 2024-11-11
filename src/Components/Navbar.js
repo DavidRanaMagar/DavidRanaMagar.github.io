@@ -30,8 +30,21 @@ const Navbar = () => {
             navigate('/customerhome');
         } else if (auth.role === 'admin') {
             navigate('/adminhome');
-        } else {
-            navigate('/');
+        }
+        else if (auth.role === 'staff') {
+            navigate('/staffhome');
+        }
+        else if (auth.role === 'manager') {
+            navigate('/managerhome');
+        }
+        else if (auth.role === 'curator') {
+            navigate('/curatorhome');
+        }
+        else if (auth.role === 'collectionManager') {
+            navigate('/collectionhome');
+        }
+        else if (auth.role === 'inventoryManager') {
+            navigate('/inventoryhome');
         }
     };
 
