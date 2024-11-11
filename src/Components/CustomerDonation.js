@@ -7,7 +7,6 @@ const CustomerDonation = () => {
     const { auth } = useAuth();
     const [customerID, setCustomerID] = useState(null);
     const [donationAmount, setDonationAmount] = useState('');
-    const [message, setMessage] = useState(null);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
@@ -16,6 +15,7 @@ const CustomerDonation = () => {
         const fetchCustomer = async () => {
             try {
                 const response = await axios.get(`/customer/user/${auth.userId}`);
+
                 setCustomerID(response.data.customerID);
             } catch (error) {
                 console.error('Error fetching customerID:', error);
@@ -27,6 +27,11 @@ const CustomerDonation = () => {
     const handleDonateClick = async (e) => {
         e.preventDefault();
 
+        if (!customerID) {
+            console.log('No customer ID');
+            return;
+        }
+
         if (!donationAmount || parseFloat(donationAmount) <= 0) {
             setSnackbarMessage('Please enter a valid donation amount.');
             setSnackbarSeverity('error');
@@ -37,25 +42,26 @@ const CustomerDonation = () => {
         try {
             const today = new Date();
 
-            // Create a new sale record for the donation
-            const saleResponse = await axios.post('/sale', {
-                totalPrice: donationAmount,
-                createdBy: 'online user',
-                updatedBy: 'online user',
-                employeeID: '163' // Placeholder 
-            });
-
-            const saleID = saleResponse.data.saleID;
-
-            // Record the transaction
-            await axios.post('/saleTransaction', {
+            // create new transaction record and get transactionID
+            const transactionResponse = await axios.post('/transaction', {
                 customerID: customerID,
                 transactionAmount: donationAmount,
                 paymentMethod: 'Credit Card',
                 transactionDate: today,
-                saleID: saleID,
                 createdBy: 'online user',
                 updatedBy: 'online user'
+            });
+
+            const transactionID = transactionResponse.data.transactionID;
+
+            // Create a new donation record with transactionID
+            await axios.post('/donation', {
+                customerID: customerID,
+                transactionID: transactionID,
+                donation: donationAmount,
+                donationDate: today,
+                createdBy: 'online user',
+                updatedBy: 'online user',
             });
 
             setSnackbarMessage(`Thank you for your donation of $${donationAmount}!`);

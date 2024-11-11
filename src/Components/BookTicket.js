@@ -57,6 +57,14 @@ const BookTicket = () => {
     };
 
     useEffect(() => {
+        const calculateTotalPrice = () => {
+            const total = ticketTypes.reduce((acc, ticket) => {
+                const quantity = tickets[ticket.ticketTypeCode] || 0;
+                return acc + ticket.ticketPrice * quantity;
+            }, 0);
+            setTotalPrice(total);
+        };
+
         calculateTotalPrice();
     }, [tickets, ticketTypes]);
 

@@ -1,6 +1,6 @@
 import {
-    Box,
-    Container,
+    Box, Button,
+    Container, Paper,
     Table,
     TableBody,
     TableCell,
@@ -13,60 +13,64 @@ import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 
 const MyTickets = ({ userID }) => {
+    const [customerID, setCustomerID] = useState(null);
     const [tickets, setTickets] = useState([]);
     const [ticketStatuses, setTicketStatuses] = useState([]);
-    const [filteredTickets, setFilteredTickets] = useState([]);
 
-    // Log userID to ensure it's being passed correctly
+    // fetch types on mount, no dependants so it gets its own effect
     useEffect(() => {
-        console.log('userID:', userID);
-    }, [userID]);
-
-    // Fetch tickets and ticket statuses on component mount
-    useEffect(() => {
-        if (!userID) {
-            console.log('No userID provided');
-            return; // Exit early if no userID
-        }
-
-        const fetchTickets = async () => {
-            try {
-                const response = await axios.get('/ticket');
-                console.log('Fetched Tickets:', response.data);
-                setTickets(response.data); // Assuming the tickets data structure is correct
-            } catch (error) {
-                console.error('Error fetching tickets.', error);
-            }
-        };
-
         const fetchTicketStatuses = async () => {
             try {
                 const response = await axios.get('/ticketStatus');
-                console.log('Fetched Ticket Statuses:', response.data);
+
                 setTicketStatuses(response.data); // Assuming this has ticketStatusCode and ticketStatus
             } catch (error) {
                 console.error('Error fetching ticket statuses.', error);
             }
         };
 
-        fetchTickets();
         fetchTicketStatuses();
-    }, [userID]); // Ensure effect runs only when userID is available
+    }, []);
 
-    // Filter tickets when both tickets and userID are available
+    // Fetch customer when userID updates / page mounts
     useEffect(() => {
-        if (!userID || tickets.length === 0) return;  // Exit early if userID or tickets are unavailable
+        if (!userID) {
+            console.log('No userID provided');
+            return;
+        }
 
-        // Filter tickets by matching customerID
-        const filtered = tickets.filter(ticket => {
-            const ticketCustomerID = String(ticket.customerID).trim();
-            const userCustomerID = String(userID).trim();
-            return ticketCustomerID === userCustomerID;
-        });
+        const fetchCustomer = async () => {
+            try {
+                const response = await axios.get(`/customer/user/${userID}`);
 
-        console.log('Filtered Tickets:', filtered); // Log filtered tickets
-        setFilteredTickets(filtered);
-    }, [userID, tickets]); // Run whenever tickets or userID changes
+                setCustomerID(response.data.customerID);
+            } catch (error) {
+                console.error('Error fetching customerID:', error);
+            }
+        };
+
+        fetchCustomer();
+    }, [userID]);
+
+    // fetch tickets when customerID updates
+    useEffect(() => {
+        if (!customerID) {
+            console.log('No customerID provided');
+            return;
+        }
+
+        const fetchTickets = async () => {
+            try {
+                const response = await axios.get(`/ticket/customer/${customerID}`);
+
+                setTickets(response.data);
+            } catch (error) {
+                console.error('Error fetching tickets.', error);
+            }
+        };
+
+        fetchTickets();
+    }, [customerID]);
 
     // Get the ticket status based on ticketStatusCode
     const getTicketStatus = (ticketStatusCode) => {
@@ -74,32 +78,47 @@ const MyTickets = ({ userID }) => {
         return ticketStatus ? ticketStatus.ticketStatus : 'N/A';
     };
 
+    const handleRefund = (ticketID) => {
+
+    }
+
     return (
         <Container maxWidth="md">
             <Box mt={4}>
                 <Typography variant="h4">My Tickets</Typography>
-                {filteredTickets.length === 0 ? (
+                {tickets.length === 0 ? (
                     <Typography variant="h6">No tickets found.</Typography>
                 ) : (
                     <>
-                        <Typography variant="h6">Found - {filteredTickets.length} tickets</Typography>
-                        <TableContainer>
+                        <Typography variant="h6">Found - {tickets.length} tickets</Typography>
+                        <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="tickets">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Ticket ID</TableCell>
-                                        <TableCell>Event Date</TableCell>
-                                        <TableCell>Time Slot</TableCell>
-                                        <TableCell>Ticket Status</TableCell>
+                                        <TableCell variant="h5">Ticket ID</TableCell>
+                                        <TableCell variant="h5">Event Date</TableCell>
+                                        <TableCell variant="h5">Time Slot</TableCell>
+                                        <TableCell variant="h5">Ticket Status</TableCell>
+                                        <TableCell variant="h5">Action</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {filteredTickets.map(ticket => (
+                                    {tickets.map(ticket => (
                                         <TableRow key={ticket.ticketID}>
                                             <TableCell>{ticket.ticketID}</TableCell>
                                             <TableCell>{ticket.eventDate}</TableCell>
                                             <TableCell>{ticket.timeSlot}</TableCell>
                                             <TableCell>{getTicketStatus(ticket.ticketStatus)}</TableCell>
+                                            <TableCell>
+                                                {getTicketStatus(ticket.ticketStatus) === "Active" ? (
+                                                    <Button variant="contained" color="primary"
+                                                            onClick={() => handleRefund(ticket.ticketID)}>
+                                                        Refund
+                                                    </Button>
+                                                ) : (
+                                                    <TableCell></TableCell>
+                                                )}
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
