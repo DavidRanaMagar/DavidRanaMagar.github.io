@@ -16,6 +16,8 @@ const MyTickets = ({ userID }) => {
     const [customerID, setCustomerID] = useState(null);
     const [tickets, setTickets] = useState([]);
     const [ticketStatuses, setTicketStatuses] = useState([]);
+    const [refetchTrigger, setRefetchTrigger] = useState(false);
+
 
     // fetch types on mount, no dependants so it gets its own effect
     useEffect(() => {
@@ -70,7 +72,7 @@ const MyTickets = ({ userID }) => {
         };
 
         fetchTickets();
-    }, [customerID]);
+    }, [customerID, refetchTrigger]);
 
     // Get the ticket status based on ticketStatusCode
     const getTicketStatus = (ticketStatusCode) => {
@@ -78,8 +80,19 @@ const MyTickets = ({ userID }) => {
         return ticketStatus ? ticketStatus.ticketStatus : 'N/A';
     };
 
-    const handleRefund = (ticketID) => {
+    const handleRefund = async (ticketID) => {
+        if (window.confirm('Are you sure you want to refund this?')) {
+            try {
+                await axios.put(`/ticket/${ticketID}/status`, {
+                    ticketStatus: 4
+                });
 
+                alert('Your account has been refunded.');
+                setRefetchTrigger(prev => !prev);
+            } catch (error) {
+                console.error('Error fetching tickets.', error);
+            }
+        }
     }
 
     return (

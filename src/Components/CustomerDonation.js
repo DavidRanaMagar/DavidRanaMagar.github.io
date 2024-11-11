@@ -10,6 +10,7 @@ const CustomerDonation = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
         const fetchCustomer = async () => {
@@ -95,6 +96,13 @@ const CustomerDonation = () => {
                     fullWidth
                     value={donationAmount}
                     onChange={(e) => setDonationAmount(e.target.value)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    InputLabelProps={{
+                        style: {
+                            display: isFocused || donationAmount ? 'none' : 'block',
+                        },
+                    }}
                     sx={{
                         '& .MuiInputBase-root': {
                             borderRadius: '8px',
