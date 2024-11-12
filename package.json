@@ -14,7 +14,6 @@
     "axios": "^1.7.7",
     "babel": "^5.8.38",
     "chart.js": "^4.4.5",
-    "date-fns": "^4.1.0",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
@@ -48,5 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://3.94.130.218:3001"
 }
