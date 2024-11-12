@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
-    Container, IconButton,
+    Container, Drawer, IconButton, List, ListItem, ListItemText,
     Paper,
     Table,
     TableBody,
@@ -19,6 +19,9 @@ const LoanList = () => {
     const [loans, setLoans] = useState([]);
     const [loanTypeConversions, setLoanTypeConversions] = useState({});
     const [isCreating, setIsCreating] = useState(false);
+
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [selectedArtifacts, setSelectedArtifacts] = useState([]);
 
     useEffect(() => {
         const fetchLoans = async () => {
@@ -54,6 +57,10 @@ const LoanList = () => {
         setIsCreating(false);
     }
 
+    const handleDrawerClose = () => {
+        setIsDrawerOpen(false);
+    };
+
     const handleDelete = async (loanID) => {
         if (window.confirm('Are you sure you want to delete this loan?')) {
             try {
@@ -66,6 +73,14 @@ const LoanList = () => {
             }
         }
     }
+
+    const handleRowClick = async (loanID) => {
+        // Fetch artifacts for this exhibition
+        const response = await axios.get(`/loan/${loanID}/artifacts`);
+        console.log(response.data)
+        setSelectedArtifacts(response.data);
+        setIsDrawerOpen(true);
+    };
 
     return (
         <Container maxWidth="lg" mb={4}>
@@ -93,7 +108,7 @@ const LoanList = () => {
                             </TableHead>
                             <TableBody>
                                 {loans.map((loan) => (
-                                    <TableRow key={loan.loanID}>
+                                    <TableRow key={loan.loanID} onClick={() => handleRowClick(loan.loanID)}>
                                         <TableCell>{loan.borrowerLender}</TableCell>
                                         <TableCell>{loanTypeConversions[loan.loanTypeID]}</TableCell>
                                         <TableCell>
@@ -121,6 +136,18 @@ const LoanList = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
+                        <Box width={300}>
+                            <Typography variant="h6" style={{ padding: '16px' }}>Artifacts</Typography>
+                            <List>
+                                {selectedArtifacts.map(artifact => (
+                                    <ListItem key={artifact.artifactID}>
+                                        <ListItemText primary={artifact.title} secondary={artifact.creator} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Box>
+                    </Drawer>
                 </Container>
             ) : (
                 <Container maxWidth="lg">

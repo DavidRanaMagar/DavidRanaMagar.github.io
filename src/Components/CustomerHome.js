@@ -4,8 +4,9 @@ import { Box, Button, Container, Typography } from '@mui/material';
 
 const paths = [
     { path: '/bookticket', label: 'Book Ticket' },
+    { path: '/mytickets', label: 'My Tickets' },
     { path: '/products', label: 'Products' },
-    { path: '/mytickets', label: 'Ticket Status' },
+    { path: '/purchasehistory', label: 'Gift Shop Purchase History' },
     { path: '/customerdonation', label: 'Donate' },
 ];
 

@@ -92,6 +92,7 @@ const ArtifactList = () => {
                         <TableBody>
                             {artifacts.map((artifact) => (
                                 <TableRow key={artifact.artifactID} hover>
+                                    <TableCell>{artifact.artifactID}</TableCell>
                                     <TableCell>{artifact.title}</TableCell>
                                     <TableCell>{artifact.creator}</TableCell>
                                     <TableCell>{artifact.artifactStatusID}</TableCell>

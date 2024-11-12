@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
-    Container, IconButton,
+    Container, Drawer, IconButton, List, ListItem, ListItemText,
     Paper,
     Table,
     TableBody,
@@ -19,6 +19,9 @@ const ExhibitionList = () => {
     const [exhibitions, setExhibitions] = useState([]);
     const [locationConversions, setLocationConversions] = useState({});
     const [isCreating, setIsCreating] = useState(false);
+
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [selectedArtifacts, setSelectedArtifacts] = useState([]);
 
     useEffect(() => {
         const fetchExhibitions = async () => {
@@ -54,6 +57,10 @@ const ExhibitionList = () => {
         setIsCreating(false);
     }
 
+    const handleDrawerClose = () => {
+        setIsDrawerOpen(false);
+    };
+
     const handleDelete = async (exhibitionID) => {
         if (window.confirm('Are you sure you want to delete this exhibition?')) {
             try {
@@ -66,6 +73,14 @@ const ExhibitionList = () => {
             }
         }
     }
+
+    const handleRowClick = async (exhibitionID) => {
+        // Fetch artifacts for this exhibition
+        const response = await axios.get(`/exhibition/${exhibitionID}/artifacts`);
+        console.log(response.data)
+        setSelectedArtifacts(response.data);
+        setIsDrawerOpen(true);
+    };
 
     return (
         <Container maxWidth="lg" mb={4}>
@@ -95,7 +110,7 @@ const ExhibitionList = () => {
                             </TableHead>
                             <TableBody>
                                 {exhibitions.map((exhibition) => (
-                                    <TableRow key={exhibition.exhibitionID}>
+                                    <TableRow key={exhibition.exhibitionID} onClick={() => handleRowClick(exhibition.exhibitionID)}>
                                         <TableCell>{exhibition.title}</TableCell>
                                         <TableCell>{exhibition.artist}</TableCell>
                                         <TableCell>
@@ -125,6 +140,18 @@ const ExhibitionList = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
+                        <Box width={300}>
+                            <Typography variant="h6" style={{ padding: '16px' }}>Artifacts</Typography>
+                            <List>
+                                {selectedArtifacts.map(artifact => (
+                                    <ListItem key={artifact.artifactID}>
+                                        <ListItemText primary={artifact.title} secondary={artifact.creator} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Box>
+                    </Drawer>
                 </Container>
             ) : (
                 <Container maxWidth="lg">

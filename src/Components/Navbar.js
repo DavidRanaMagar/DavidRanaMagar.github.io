@@ -46,6 +46,9 @@ const Navbar = () => {
         else if (auth.role === 'inventoryManager') {
             navigate('/inventoryhome');
         }
+        else {
+            navigate('/');
+        }
     };
 
     const handleLogout = () => {
@@ -99,7 +102,7 @@ const Navbar = () => {
                     <Box sx={{ flexGrow: 1 }} />
 
                     <Box sx={{ flexGrow: 0 }}>
-                        {auth.userId && (
+                        {auth.role === 'customer' && (
                             <IconButton
                                 onClick={handleCartClick}
                                 sx={{ p: 0, marginRight: 2 }}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Container, Typography } from '@mui/material';
 
 const paths = [
-    { path: '/products', label: 'View Products' },
+    { path: '/giftShopItems', label: 'View/Modify Gift Shop Item' },
     { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
 ];
 

@@ -32,6 +32,7 @@ import CuratorHome from "./Components/CuratorHome";
 import CollectionManagerHome from "./Components/CollectionManagerHome";
 import ArtifactList from "./Components/ArtifactList";
 import GiftShopItemList from "./Components/GiftShopItemList";
+import PurchaseHistory from "./Components/PurchaseHistory";
 
 
 const darkTheme = createTheme({
@@ -124,8 +125,6 @@ function App() {
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
                                 <Route path="/departments" element={<DepartmentList/>}/>
-                                <Route path="/artifacts" element={<ArtifactList/>}/>
-                                <Route path="/giftShopItems" element={<GiftShopItemList/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
@@ -134,6 +133,7 @@ function App() {
                                 <Route path="/bookticket" element={<BookTicket/>}/>
                                 <Route path="/customerdonation" element={<CustomerDonation/>}/>
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
+                                <Route path="/purchasehistory" element={<PurchaseHistory/>} />
                             </Route>
 
                              {/* private routes for admins and staff */}
@@ -155,12 +155,14 @@ function App() {
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'collectionManager']} />}>
                                 <Route path="/collectionhome" element={<CollectionManagerHome/>}/>
+                                <Route path="/artifacts" element={<ArtifactList/>}/>
                                 <Route path="/loans" element={<LoanList/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'inventoryManager']} />}>
                                 <Route path="/inventoryhome" element={<InventoryManagerHome/>}/>
                                 <Route path="/giftshopitemreport" element={<GiftShopItemsReport/>}/>
+                                <Route path="/giftShopItems" element={<GiftShopItemList/>}/>
                             </Route>
 
                         </Routes>
