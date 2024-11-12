@@ -306,7 +306,7 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                     </Grid2>
                 </Grid2>
                 <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>
-                    {customerID ? 'Update Customer' : 'Submit'}
+                    {customerID ? 'Update Customer' : 'Create Customer'}
                 </Button>
             </form>
         </Container>

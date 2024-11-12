@@ -286,7 +286,7 @@ const ArtifactForm = ({artifactID, setSelectedArtifactID}) => {
                     </Grid2>
                 </Grid2>
                 <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>
-                    {artifactID ? 'Update Artifact' : 'Submit'}
+                    {artifactID ? 'Update Artifact' : 'Create Artifact'}
                 </Button>
             </form>
         </Container>

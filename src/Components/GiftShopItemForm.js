@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {TextField, Button, Container, Typography, Grid2, MenuItem, InputLabel, FormControl} from '@mui/material';
+import {TextField, Button, Container, Typography, Grid2, MenuItem} from '@mui/material';
 import axios from 'axios';
 
 const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
@@ -16,8 +16,7 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
         imageUrl: '',
         stock: '',
         totalNumberSold: '',
-        categoryID: '',
-        category: ''
+        categoryID: ''
     });
     const [categories, setCategories] = useState([]);
 
@@ -43,20 +42,19 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
                 try {
                     const response = await axios.get(`/giftShopItem/${giftShopItemID}`);
                     setGiftShopItem({
-                        title: response.data.title,
-                        description: response.data.description,
-                        designer: response.data.designer,
-                        origin: response.data.origin,
-                        material: response.data.material,
-                        dimension: response.data.dimension,
-                        price: response.data.price,
-                        dealPrice: response.data.dealPrice,
-                        costPrice: response.data.costPrice,
-                        imageUrl: response.data.imageUrl,
-                        stock: response.data.stock,
-                        totalNumberSold: response.data.totalNumberSold,
-                        categoryID: response.data.categoryID,
-                        category: response.data.category,
+                        title: response.data.title || '',
+                        description: response.data.description || '',
+                        designer: response.data.designer || '',
+                        origin: response.data.origin || '',
+                        material: response.data.material || '',
+                        dimension: response.data.dimension || '',
+                        price: response.data.price || '',
+                        dealPrice: response.data.dealPrice || '',
+                        costPrice: response.data.costPrice || '',
+                        imageUrl: response.data.imageUrl || '',
+                        stock: response.data.stock || '',
+                        totalNumberSold: response.data.totalNumberSold || '',
+                        categoryID: response.data.categoryID || '',
                     });
                 } catch (error) {
                     console.error('Error fetching Gift Shop Item data:', error);
@@ -76,7 +74,6 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
                     stock: '',
                     totalNumberSold: '',
                     categoryID: '',
-                    category: '',
                 });
             }
         };
@@ -85,7 +82,11 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
     }, [giftShopItemID]);
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
+        setGiftShopItem(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -130,20 +131,20 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="description"
-                            name="description"
-                            value={giftShopItem.description}
+                            label="origin"
+                            name="origin"
+                            value={giftShopItem.origin}
                             onChange={handleInputChange}
                             fullWidth
                             margin='normal'
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 item size={12}>
                         <TextField
-                            label="origin"
-                            name="origin"
-                            value={giftShopItem.origin}
+                            label="description"
+                            name="description"
+                            value={giftShopItem.description}
                             onChange={handleInputChange}
                             fullWidth
                             margin='normal'
@@ -174,8 +175,8 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="dimension"
-                            name="dimension"
+                            label="price"
+                            name="price"
                             value={giftShopItem.price}
                             onChange={handleInputChange}
                             fullWidth
@@ -229,19 +230,8 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="stock"
-                            name="stock"
-                            value={giftShopItem.totalNumberSold}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin='normal'
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="stock"
-                            name="stock"
+                            label="totalNumberSold"
+                            name="totalNumberSold"
                             value={giftShopItem.totalNumberSold}
                             onChange={handleInputChange}
                             fullWidth
@@ -250,8 +240,25 @@ const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
                         />
                     </Grid2>
                 </Grid2>
+                <Grid2 size={6}>
+                    <TextField
+                        select
+                        label="Category"
+                        name="categoryID"
+                        value={giftShopItem.categoryID}
+                        onChange={handleInputChange}
+                        fullWidth
+                        InputLabelProps={{shrink: true}}
+                    >
+                        {categories.map((category) => (
+                            <MenuItem key={category.categoryID} value={category.categoryID}>
+                                {category.title}
+                            </MenuItem>)
+                        )}
+                    </TextField>
+                </Grid2>
                 <Button variant="contained" color="primary" type="submit" sx={{mt: 3}}>
-                    {giftShopItem ? 'Update Gift Shop Item' : 'Create Gift Shop Item'}
+                    {giftShopItemID ? 'Update Gift Shop Item' : 'Create Gift Shop Item'}
                 </Button>
             </form>
         </Container>

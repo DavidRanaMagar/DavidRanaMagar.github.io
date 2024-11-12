@@ -19,7 +19,7 @@ import axios from 'axios';
 import GiftShopItemForm from "./GiftShopItemForm";
 
 const GiftShopList = () => {
-    const [giftShopItems, setGiftSopItems] = useState([]);
+    const [giftShopItems, setGiftShopItems] = useState([]);
     const [selectedGiftShopItemID, setSelectedGiftShopItemID] = useState(null);
     const [isCreating, setIsCreating] = useState(false); // Track create mode
 
@@ -27,7 +27,7 @@ const GiftShopList = () => {
         const fetchGiftShopItems = async () => {
             try {
                 const response = await axios.get('/giftShopItem');
-                setGiftSopItems(response.data);
+                setGiftShopItems(response.data);
             } catch (err) {
                 console.error('Error fetching gift shop item data:', err);
             }
@@ -56,8 +56,8 @@ const GiftShopList = () => {
     const handleDelete = async (giftShopItemID) => {
         if (window.confirm('Are you sure you want to delete this Gift Shop Item?')) {
             try {
-                await axios.delete(`/giftshopitem/${giftShopItemID}`);
-                setGiftSopItems(giftShopItems.filter(giftShopItem => giftShopItem.giftShopItemID !== giftShopItemID));
+                await axios.delete(`/giftShopItem/${giftShopItemID}`);
+                setGiftShopItems(giftShopItems.filter(giftShopItem => giftShopItem.giftShopItemID !== giftShopItemID));
                 alert('Gift Shop Item deleted successfully!');
             } catch (err) {
                 console.error('Error deleting Gift Shop Item:', err);
@@ -102,10 +102,10 @@ const GiftShopList = () => {
                                     <TableCell>{giftShopItem.price}</TableCell>
                                     <TableCell>{giftShopItem.totalNumberSold}</TableCell>
                                     <TableCell>
-                                        <IconButton color="primary" onClick={() => handleRowClick(giftShopItems.giftShopItemID)}>
+                                        <IconButton color="primary" onClick={() => handleRowClick(giftShopItem.giftShopItemID)}>
                                             <EditIcon/>
                                         </IconButton>
-                                        <IconButton color="secondary" onClick={() => handleDelete(giftShopItems.giftShopItemID)}>
+                                        <IconButton color="secondary" onClick={() => handleDelete(giftShopItem.giftShopItemID)}>
                                             <DeleteIcon/>
                                         </IconButton>
                                     </TableCell>
