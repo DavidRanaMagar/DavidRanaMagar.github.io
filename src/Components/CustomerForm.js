@@ -78,12 +78,9 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         if (name in customer.customerAddress) {
-            // If the input is related to the customer address, update the address object
-            setCustomer(prevCustomer => ({
-                ...prevCustomer,
-                customerAddress: {
-                    ...prevCustomer.customerAddress,
-                    [name]: value
+            setCustomer(prev => ({
+                ...prev,
+                customerAddress: {...prev.customerAddress, [name]: value
                 }
             }));
         } else {
@@ -188,13 +185,11 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                     <Grid2 size={6}>
                         <TextField
                             select
-                            label="Gender"
+                            label="Sex"
                             name="sex"
-                            value={Number(customer.sex)}
+                            value={customer.gender}
                             onChange={handleInputChange}
                             fullWidth
-                            margin="normal"
-                            required
                         >
                             <MenuItem key={0} value={0}>
                                 Male

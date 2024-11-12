@@ -4,22 +4,21 @@ import axios from 'axios';
 
 const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
     const [employee, setEmployee] = useState({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        hireDate: '',
-        jobTitle: '',
-        salary: '',
-        phoneNumber: '',
-        email: '',
-        department: '',
-        gender: '',
-        employeeAddress: {
-            streetAddress: '',
-            city: '',
-            state: '',
-            postalCode: '',
-            country: ''
+        title: '',
+        creator: '',
+        description: '',
+        dateCreated: '',
+        imgURL: '',
+        acquiredDate: '',
+        artifactStatusID: '',
+        dimension: '',
+        storedLocationID: '',
+        material: '',
+        owner: '',
+        location: {
+            building: '',
+            floor: '',
+            section: '',
         }
     });
 

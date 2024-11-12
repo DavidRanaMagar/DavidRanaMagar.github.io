@@ -30,6 +30,8 @@ import ManagerHome from './Components/ManagerHome';
 import InventoryManagerHome from "./Components/InventoryManagerHome";
 import CuratorHome from "./Components/CuratorHome";
 import CollectionManagerHome from "./Components/CollectionManagerHome";
+import ArtifactList from "./Components/ArtifactList";
+import GiftShopItemList from "./Components/GiftShopItemList";
 
 
 const darkTheme = createTheme({
@@ -122,6 +124,8 @@ function App() {
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
                                 <Route path="/departments" element={<DepartmentList/>}/>
+                                <Route path="/artifacts" element={<ArtifactList/>}/>
+                                <Route path="/giftShopItems" element={<GiftShopItemList/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
