@@ -7,12 +7,13 @@ const paths = [
     { path: '/employees', label: 'View/Create Employees' },
     { path: '/exhibitions', label: 'View/Create Exhibitions' },
     { path: '/loans', label: 'View/Record Loan' },
-    { path: '/products', label: 'View Products' },
     { path: '/employeeHours', label: 'Employee Hours Report' },
     { path: '/ticketsreport', label: 'Ticket Sales Report' },
     { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
     { path: '/donationsreport', label: 'Donations Report' },
     { path: '/departments', label: 'View/Modify Departments' },
+    { path: '/artifacts', label: 'View/Modify Artifacts' },
+    { path: '/giftShopItem', label: 'View/Modify Gift Shop Item' },
 ];
 
 const AdminHome = () => {
