@@ -13,7 +13,7 @@ const paths = [
     { path: '/donationsreport', label: 'Donations Report' },
     { path: '/departments', label: 'View/Modify Departments' },
     { path: '/artifacts', label: 'View/Modify Artifacts' },
-    { path: '/giftShopItem', label: 'View/Modify Gift Shop Item' },
+    { path: '/giftShopItems', label: 'View/Modify Gift Shop Item' },
 ];
 
 const AdminHome = () => {
