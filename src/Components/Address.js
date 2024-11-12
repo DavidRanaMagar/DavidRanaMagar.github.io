@@ -24,7 +24,6 @@ const AddressForm = () => {
     
     try {
       const response = await axios.post('http://3.94.130.218:3001/address', formData);
-      console.log('Address saved successfully:', response.data);
       // Optionally reset the form
       setFormData({
         streetAddress: '',

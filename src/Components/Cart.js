@@ -21,14 +21,12 @@ function Cart({cartItems, removeFromCart, updateCartQuantity, setCartItems}) {
     // Handle quantity increase and decrease
     const handleIncreaseQuantity = (itemId) => {
         updateCartQuantity(itemId, 'increase');
-        console.log(auth);
     };
 
     const handleDecreaseQuantity = (itemId) => {
         updateCartQuantity(itemId, 'decrease');
     };
     useEffect(() => {
-        console.log(auth);
         const fetchCustomer = async () => {
             try {
                 const response = await axios.get(`/customer/user/${auth.userId}`);
@@ -42,7 +40,6 @@ function Cart({cartItems, removeFromCart, updateCartQuantity, setCartItems}) {
 
     const handleBuyClick = async (e) => {
         e.preventDefault();
-        console.log(customerID);
         try {
             const today = new Date();
             const saleResponse = await axios.post('/sale', {

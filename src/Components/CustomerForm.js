@@ -93,8 +93,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log('submit');
-
         try {
             const dataToSend = {
                 ...customer,
@@ -108,7 +106,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                 alert('Customer updated successfully!');
             } else {
                 // Create new customer
-                console.log('submit1');
                 await axios.post('/customer/naUser', dataToSend);
                 alert('Customer created successfully!');
             }

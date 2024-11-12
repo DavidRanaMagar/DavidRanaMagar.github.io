@@ -49,7 +49,6 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
             if (employeeID) {
                 try {
                     const response = await axios.get(`/employee/${employeeID}`);
-                    console.log('employee info', response.data);
                     setEmployee({
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,

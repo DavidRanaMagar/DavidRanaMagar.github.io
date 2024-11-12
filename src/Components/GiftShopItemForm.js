@@ -2,144 +2,126 @@ import React, {useState, useEffect} from 'react';
 import {TextField, Button, Container, Typography, Grid2, MenuItem, InputLabel, FormControl} from '@mui/material';
 import axios from 'axios';
 
-const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
-    const [employee, setEmployee] = useState({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        hireDate: '',
-        jobTitle: '',
-        salary: '',
-        phoneNumber: '',
-        email: '',
-        department: '',
-        gender: '',
-        employeeAddress: {
-            streetAddress: '',
-            city: '',
-            state: '',
-            postalCode: '',
-            country: ''
-        }
+const GiftShopItemForm = ({giftShopItemID, setSelectedGiftShopItemID}) => {
+    const [giftShopItem, setGiftShopItem] = useState({
+        title: '',
+        description: '',
+        designer: '',
+        origin: '',
+        material: '',
+        dimension: '',
+        price: '',
+        dealPrice: '',
+        costPrice: '',
+        imageUrl: '',
+        stock: '',
+        totalNumberSold: '',
+        categoryID: '',
+        category: ''
     });
-
-    const [jobTitles, setJobTitles] = useState([]);
-    const [departments, setDepartments] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchCategoriesData = async () => {
             try {
-                const [jobResponse, deptResponse] = await Promise.all([
-                    axios.get('/jobTitle'),
-                    axios.get('/department'),
+                const [cateResponse] = await Promise.all([
+                    axios.get('/category')
                 ]);
 
-                setJobTitles(jobResponse.data);
-                setDepartments(deptResponse.data);
+                setCategories(cateResponse.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchData();
+        fetchCategoriesData();
     }, []);
 
     useEffect(() => {
-        const fetchEmployeeData = async () => {
-            if (employeeID) {
+        const fetchGiftShopItemData = async () => {
+            if (giftShopItemID) {
                 try {
-                    const response = await axios.get(`/employee/${employeeID}`);
-                    console.log('employee info', response.data);
-                    setEmployee({
-                        firstName: response.data.firstName,
-                        lastName: response.data.lastName,
-                        dateOfBirth: response.data.dateOfBirth,
-                        hireDate: response.data.hireDate,
-                        jobTitle: response.data.jobTitle,
-                        salary: response.data.salary,
-                        phoneNumber: response.data.phoneNumber,
-                        email: response.data.email,
-                        department: response.data.department,
-                        gender: response.data.gender,
-                        employeeAddress: {
-                            streetAddress: response.data.employeeAddress.streetAddress,
-                            city: response.data.employeeAddress.city,
-                            state: response.data.employeeAddress.state,
-                            postalCode: response.data.employeeAddress.postalCode,
-                            country: response.data.employeeAddress.country,
-                        }
+                    const response = await axios.get(`/giftShopItem/${giftShopItemID}`);
+                    setGiftShopItem({
+                        title: response.data.title,
+                        description: response.data.description,
+                        designer: response.data.designer,
+                        origin: response.data.origin,
+                        material: response.data.material,
+                        dimension: response.data.dimension,
+                        price: response.data.price,
+                        dealPrice: response.data.dealPrice,
+                        costPrice: response.data.costPrice,
+                        imageUrl: response.data.imageUrl,
+                        stock: response.data.stock,
+                        totalNumberSold: response.data.totalNumberSold,
+                        categoryID: response.data.categoryID,
+                        category: response.data.category,
                     });
                 } catch (error) {
-                    console.error('Error fetching employee data:', error);
+                    console.error('Error fetching Gift Shop Item data:', error);
                 }
             } else {
-                setEmployee({
-                    firstName: '',
-                    lastName: '',
-                    dateOfBirth: '',
-                    hireDate: '',
-                    jobTitle: '',
-                    salary: '',
-                    phoneNumber: '',
-                    email: '',
-                    department: '',
-                    gender: '',
-                    employeeAddress: {
-                        streetAddress: '',
-                        city: '',
-                        state: '',
-                        postalCode: '',
-                        country: ''
-                    }
+                setGiftShopItem({
+                    title: '',
+                    description: '',
+                    designer: '',
+                    origin: '',
+                    material: '',
+                    dimension: '',
+                    price: '',
+                    dealPrice: '',
+                    costPrice: '',
+                    imageUrl: '',
+                    stock: '',
+                    totalNumberSold: '',
+                    categoryID: '',
+                    category: '',
                 });
             }
         };
 
-        fetchEmployeeData();
-    }, [employeeID]);
+        fetchGiftShopItemData();
+    }, [giftShopItemID]);
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
-        if (name in employee.employeeAddress) {
-            setEmployee(prev => ({
-                ...prev,
-                employeeAddress: {...prev.employeeAddress, [name]: value}
-            }));
-        } else {
-            setEmployee({...employee, [name]: value});
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (employeeID) {
-                await axios.put(`/employee/${employeeID}`, employee);
-                alert('Employee updated successfully!');
+            const dataToSend = {
+                ...giftShopItem
+            };
+            if (giftShopItemID) {
+                await axios.put(`/giftShopItem/${giftShopItemID}`, dataToSend);
+                alert('Gift Shop Item updated successfully!');
             } else {
-                await axios.post('/employee/naUser', employee);
-                alert('Employee created successfully!');
+                // Create new customer
+                await axios.post('/giftShopItem', dataToSend);
+                alert('Customer created successfully!');
             }
-            setSelectedEmployeeID(null);
+            setSelectedGiftShopItemID(null);
         } catch (error) {
-            console.error('Error saving employee:', error);
-            alert('Failed to save employee');
+            console.error('Error saving Gift Shop Item:', error);
+            alert('Failed to save Gift Shop Item');
         }
     };
 
     return (
         <Container maxWidth="sm">
             <Typography variant="h4" gutterBottom>
-                {employeeID ? 'Edit Employee' : 'Employee Form'}
+                {giftShopItemID ? 'Edit Gift Shop Item' : 'Gift Shop Item Form'}
             </Typography>
             <form onSubmit={handleSubmit}>
                 <Typography variant="h6" gutterBottom>Personal Information</Typography>
                 <Grid2 container spacing={2}>
                     <Grid2 item size={6}>
                         <TextField
-                            label="First Name"
-                            name="firstName"
-                            value={employee.firstName}
+                            label="title"
+                            name="title"
+                            value={giftShopItem.title}
                             onChange={handleInputChange}
                             fullWidth
                             margin='normal'
@@ -148,9 +130,9 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="Last Name"
-                            name="lastName"
-                            value={employee.lastName}
+                            label="description"
+                            name="description"
+                            value={giftShopItem.description}
                             onChange={handleInputChange}
                             fullWidth
                             margin='normal'
@@ -158,193 +140,122 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                         />
                     </Grid2>
                     <Grid2 item size={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <InputLabel htmlFor="Date of Birth" shrink>
-                                Date of Birth
-                            </InputLabel>
-                            <TextField
-                                id="Date of Birth"
-                                name="dateOfBirth"
-                                type="date"
-                                value={employee.dateOfBirth}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </FormControl>
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <InputLabel htmlFor="Hire Date" shrink>
-                                Hire Date
-                            </InputLabel>
-                            <TextField
-                                id="Hire Date"
-                                name="hireDate"
-                                type="date"
-                                value={employee.hireDate}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </FormControl>
-                    </Grid2>
-                    <Grid2 item size={6}>
                         <TextField
-                            select
-                            label="Gender"
-                            name="gender"
-                            value={employee.gender}
+                            label="origin"
+                            name="origin"
+                            value={giftShopItem.origin}
                             onChange={handleInputChange}
                             fullWidth
-                        >
-                            <MenuItem key={0} value={0}>
-                                Male
-                            </MenuItem>
-                            <MenuItem key={1} value={1}>
-                                Female
-                            </MenuItem>
-                            <MenuItem key={2} value={2}>
-                                Non-Binary
-                            </MenuItem>
-                            <MenuItem key={3} value={3}>
-                                Other
-                            </MenuItem>
-                            <MenuItem key={4} value={4}>
-                                Prefer not to say
-                            </MenuItem>
-                        </TextField>
-                    </Grid2>
-                </Grid2>
-
-                <Typography variant="h6" gutterBottom sx={{mt: 2}}>Contact Information</Typography>
-                <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Phone Number"
-                            name="phoneNumber"
-                            value={employee.phoneNumber}
-                            onChange={handleInputChange}
-                            fullWidth
+                            margin='normal'
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="Email"
-                            name="email"
-                            value={employee.email}
+                            label="material"
+                            name="material"
+                            value={giftShopItem.material}
                             onChange={handleInputChange}
                             fullWidth
-                        />
-                    </Grid2>
-                </Grid2>
-
-                <Typography variant="h6" gutterBottom sx={{mt: 2}}>Address</Typography>
-                <Grid2 container spacing={2}>
-                    <Grid2 item size={12}>
-                        <TextField
-                            label="Street Address"
-                            name="streetAddress"
-                            value={employee.employeeAddress.streetAddress}
-                            onChange={handleInputChange}
-                            fullWidth
+                            margin='normal'
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="City"
-                            name="city"
-                            value={employee.employeeAddress.city}
+                            label="dimension"
+                            name="dimension"
+                            value={giftShopItem.dimension}
                             onChange={handleInputChange}
                             fullWidth
+                            margin='normal'
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="State"
-                            name="state"
-                            value={employee.employeeAddress.state}
+                            label="dimension"
+                            name="dimension"
+                            value={giftShopItem.price}
                             onChange={handleInputChange}
                             fullWidth
+                            margin='normal'
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="Postal Code"
-                            name="postalCode"
-                            value={employee.employeeAddress.postalCode}
+                            label="dealPrice"
+                            name="dealPrice"
+                            value={giftShopItem.dealPrice}
                             onChange={handleInputChange}
                             fullWidth
+                            margin='normal'
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="Country"
-                            name="country"
-                            value={employee.employeeAddress.country}
+                            label="costPrice"
+                            name="costPrice"
+                            value={giftShopItem.costPrice}
                             onChange={handleInputChange}
                             fullWidth
+                            margin='normal'
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 item size={6}>
+                        <TextField
+                            label="imageUrl"
+                            name="imageUrl"
+                            value={giftShopItem.imageUrl}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin='normal'
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 item size={6}>
+                        <TextField
+                            label="stock"
+                            name="stock"
+                            value={giftShopItem.stock}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin='normal'
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 item size={6}>
+                        <TextField
+                            label="stock"
+                            name="stock"
+                            value={giftShopItem.totalNumberSold}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin='normal'
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 item size={6}>
+                        <TextField
+                            label="stock"
+                            name="stock"
+                            value={giftShopItem.totalNumberSold}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin='normal'
                             required
                         />
                     </Grid2>
                 </Grid2>
-
-                <Typography variant="h6" gutterBottom sx={{mt: 2}}>Job Details</Typography>
-                <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
-                        <TextField
-                            select
-                            label="Job Title"
-                            name="jobTitle"
-                            value={employee.jobTitle}
-                            onChange={handleInputChange}
-                            fullWidth
-                            required
-                        >
-                            {jobTitles.map((job) => (
-                                <MenuItem key={job.jobTitleID} value={job.jobTitleID}>
-                                    {job.title}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Salary"
-                            name="salary"
-                            value={employee.salary}
-                            onChange={handleInputChange}
-                            fullWidth
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            select
-                            label="Department"
-                            name="department"
-                            value={employee.department}
-                            onChange={handleInputChange}
-                            fullWidth
-                        >
-                            {departments.map((dept) => (
-                                <MenuItem key={dept.departmentID} value={dept.departmentID}>
-                                    {dept.title}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid2>
-                </Grid2>
-
                 <Button variant="contained" color="primary" type="submit" sx={{mt: 3}}>
-                    {employeeID ? 'Update Employee' : 'Create Employee'}
+                    {giftShopItem ? 'Update Gift Shop Item' : 'Create Gift Shop Item'}
                 </Button>
             </form>
         </Container>
     );
 };
 
-export default EmployeeForm;
+export default GiftShopItemForm;

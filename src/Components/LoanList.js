@@ -96,8 +96,20 @@ const LoanList = () => {
                                     <TableRow key={loan.loanID}>
                                         <TableCell>{loan.borrowerLender}</TableCell>
                                         <TableCell>{loanTypeConversions[loan.loanTypeID]}</TableCell>
-                                        <TableCell>{loan.loanStartDate}</TableCell>
-                                        <TableCell>{loan.loanEndDate}</TableCell>
+                                        <TableCell>
+                                            {new Date(loan.loanStartDate).toLocaleDateString("en-US", {
+                                                month: "2-digit",
+                                                day: "2-digit",
+                                                year: "numeric"
+                                            })}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(loan.loanEndDate).toLocaleDateString("en-US", {
+                                                month: "2-digit",
+                                                day: "2-digit",
+                                                year: "numeric"
+                                            })}
+                                        </TableCell>
                                         <TableCell>
                                             <IconButton color="secondary"
                                                         onClick={() => handleDelete(loan.loanID)}>

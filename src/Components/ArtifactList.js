@@ -100,7 +100,7 @@ const ArtifactList = () => {
                                         <IconButton color="primary" onClick={() => handleRowClick(artifact.artifactID)}>
                                             <EditIcon/>
                                         </IconButton>
-                                        <IconButton color="secondary" onClick={() => handleDelete(artifact.artifact)}>
+                                        <IconButton color="secondary" onClick={() => handleDelete(artifact.artifactID)}>
                                             <DeleteIcon/>
                                         </IconButton>
                                     </TableCell>

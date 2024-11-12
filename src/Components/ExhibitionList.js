@@ -98,8 +98,20 @@ const ExhibitionList = () => {
                                     <TableRow key={exhibition.exhibitionID}>
                                         <TableCell>{exhibition.title}</TableCell>
                                         <TableCell>{exhibition.artist}</TableCell>
-                                        <TableCell>{exhibition.startDate}</TableCell>
-                                        <TableCell>{exhibition.endDate}</TableCell>
+                                        <TableCell>
+                                            {new Date(exhibition.startDate).toLocaleDateString("en-US", {
+                                                month: "2-digit",
+                                                day: "2-digit",
+                                                year: "numeric"
+                                            })}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(exhibition.endDate).toLocaleDateString("en-US", {
+                                                month: "2-digit",
+                                                day: "2-digit",
+                                                year: "numeric"
+                                            })}
+                                        </TableCell>
                                         <TableCell>{exhibition.timeSlot}</TableCell>
                                         <TableCell>{locationConversions[exhibition.locationID]}</TableCell>
                                         <TableCell>

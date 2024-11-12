@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {TextField, Button, Container, Typography, Grid2, MenuItem, InputLabel, FormControl} from '@mui/material';
+import {TextField, Button, Container, Typography, Grid2, MenuItem} from '@mui/material';
 import axios from 'axios';
+import { format } from 'date-fns';
 
-const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
-    const [employee, setEmployee] = useState({
+
+const ArtifactForm = ({artifactID, setSelectedArtifactID}) => {
+    const [artifact, setArtifact] = useState({
         title: '',
         creator: '',
         description: '',
         dateCreated: '',
-        imgURL: '',
+        imageURL: '',
         acquiredDate: '',
         artifactStatusID: '',
         dimension: '',
-        storedLocationID: '',
         material: '',
         owner: '',
         location: {
@@ -22,328 +23,275 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
         }
     });
 
-    const [jobTitles, setJobTitles] = useState([]);
-    const [departments, setDepartments] = useState([]);
-
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [jobResponse, deptResponse] = await Promise.all([
-                    axios.get('/jobTitle'),
-                    axios.get('/department'),
-                ]);
-
-                setJobTitles(jobResponse.data);
-                setDepartments(deptResponse.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const fetchEmployeeData = async () => {
-            if (employeeID) {
+        const fetchArtifactData = async () => {
+            if (artifactID) {
                 try {
-                    const response = await axios.get(`/employee/${employeeID}`);
-                    console.log('employee info', response.data);
-                    setEmployee({
-                        firstName: response.data.firstName,
-                        lastName: response.data.lastName,
-                        dateOfBirth: response.data.dateOfBirth,
-                        hireDate: response.data.hireDate,
-                        jobTitle: response.data.jobTitle,
-                        salary: response.data.salary,
-                        phoneNumber: response.data.phoneNumber,
-                        email: response.data.email,
-                        department: response.data.department,
-                        gender: response.data.gender,
-                        employeeAddress: {
-                            streetAddress: response.data.employeeAddress.streetAddress,
-                            city: response.data.employeeAddress.city,
-                            state: response.data.employeeAddress.state,
-                            postalCode: response.data.employeeAddress.postalCode,
-                            country: response.data.employeeAddress.country,
+                    const response = await axios.get(`/artifacts/${artifactID}`);
+                    setArtifact({
+                        title: response.data.title || '',
+                        creator: response.data.creator || '',
+                        description: response.data.description || '',
+                        dateCreated: response.data.dateCreated || '',
+                        imageURL: response.data.imageURL || '',
+                        acquiredDate: response.data.acquiredDate || '',
+                        artifactStatusID: response.data.artifactStatusID || '',
+                        dimension: response.data.dimension || '',
+                        material: response.data.material || '',
+                        owner: response.data.owner || '',
+                        location: {
+                            building: response.data.location.building || '',
+                            floor: response.data.location.floor || '',
+                            section: response.data.location.section || '',
                         }
                     });
                 } catch (error) {
-                    console.error('Error fetching employee data:', error);
+                    console.error('Error fetching Artifact data:', error);
                 }
             } else {
-                setEmployee({
-                    firstName: '',
-                    lastName: '',
-                    dateOfBirth: '',
-                    hireDate: '',
-                    jobTitle: '',
-                    salary: '',
-                    phoneNumber: '',
-                    email: '',
-                    department: '',
-                    gender: '',
-                    employeeAddress: {
-                        streetAddress: '',
-                        city: '',
-                        state: '',
-                        postalCode: '',
-                        country: ''
+                setArtifact({
+                    title: '',
+                    creator: '',
+                    description: '',
+                    dateCreated: '',
+                    imageURL: '',
+                    acquiredDate: '',
+                    artifactStatusID: '',
+                    dimension: '',
+                    material: '',
+                    owner: '',
+                    location: {
+                        building: '',
+                        floor: '',
+                        section: '',
                     }
                 });
             }
         };
-
-        fetchEmployeeData();
-    }, [employeeID]);
+        fetchArtifactData();
+    }, [artifactID]);
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
-        if (name in employee.employeeAddress) {
-            setEmployee(prev => ({
+        if (name in artifact.location) {
+            setArtifact(prev => ({
                 ...prev,
-                employeeAddress: {...prev.employeeAddress, [name]: value}
+                location: {...prev.location, [name]: value}
             }));
         } else {
-            setEmployee({...employee, [name]: value});
+            setArtifact({...artifact, [name]: value});
         }
     };
 
+    // Handle form submit
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            if (employeeID) {
-                await axios.put(`/employee/${employeeID}`, employee);
-                alert('Employee updated successfully!');
+            const dataToSend = {
+                ...artifact,
+                location: artifact.location
+            };
+
+            if (artifactID) {
+                // Update existing artifacts
+                await axios.put(`/artifacts/${artifactID}`, dataToSend);
+                alert('Artifact updated successfully!');
             } else {
-                await axios.post('/employee/naUser', employee);
-                alert('Employee created successfully!');
+                // Create new Artifact
+                await axios.post('/artifacts', dataToSend);
+                alert('Artifact created successfully!');
             }
-            setSelectedEmployeeID(null);
+            setSelectedArtifactID(null); // Reset selected Artifact
         } catch (error) {
-            console.error('Error saving employee:', error);
-            alert('Failed to save employee');
+            console.error('Error saving Artifact:', error);
+            alert('Failed to save Artifact');
         }
     };
 
     return (
         <Container maxWidth="sm">
             <Typography variant="h4" gutterBottom>
-                {employeeID ? 'Edit Employee' : 'Employee Form'}
+                {artifactID ? 'Edit Artifact' : 'Artifact Form'}
             </Typography>
             <form onSubmit={handleSubmit}>
-                <Typography variant="h6" gutterBottom>Personal Information</Typography>
                 <Grid2 container spacing={2}>
+                    {/* Artifact Details */}
                     <Grid2 item size={6}>
                         <TextField
-                            label="First Name"
-                            name="firstName"
-                            value={employee.firstName}
+                            label="title"
+                            name="title"
+                            value={artifact.title}
                             onChange={handleInputChange}
                             fullWidth
-                            margin='normal'
+                            margin="normal"
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="Last Name"
-                            name="lastName"
-                            value={employee.lastName}
+                            label="creator"
+                            name="creator"
+                            value={artifact.creator}
                             onChange={handleInputChange}
                             fullWidth
-                            margin='normal'
+                            margin="normal"
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <InputLabel htmlFor="Date of Birth" shrink>
-                                Date of Birth
-                            </InputLabel>
-                            <TextField
-                                id="Date of Birth"
-                                name="dateOfBirth"
-                                type="date"
-                                value={employee.dateOfBirth}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </FormControl>
+                    <Grid2 size={12}>
+                        <TextField
+                            label="description"
+                            name="description"
+                            value={artifact.description}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                        />
                     </Grid2>
-                    <Grid2 item size={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <InputLabel htmlFor="Hire Date" shrink>
-                                Hire Date
-                            </InputLabel>
-                            <TextField
-                                id="Hire Date"
-                                name="hireDate"
-                                type="date"
-                                value={employee.hireDate}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </FormControl>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="dateCreated"
+                            name="dateCreated"
+                            type="date"
+                            value={artifact.dateCreated ? format(new Date(artifact.dateCreated), 'yyyy-MM-dd') : ''}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                            InputLabelProps={{shrink: true}}
+                            required
+                        />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="Image URL"
+                            name="imageURL"
+                            value={artifact.imageURL}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="acquiredDate"
+                            name="acquiredDate"
+                            type="date"
+                            value={artifact.acquiredDate ? format(new Date(artifact.acquiredDate), 'yyyy-MM-dd') : ''}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                            InputLabelProps={{shrink: true}}
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="dimension"
+                            name="dimension"
+                            value={artifact.dimension}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="material"
+                            name="material"
+                            value={artifact.material}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="owner"
+                            name="owner"
+                            value={artifact.owner}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 size={6}>
                         <TextField
                             select
-                            label="Gender"
-                            name="gender"
-                            value={employee.gender}
+                            label="artifactStatusID"
+                            name="artifactStatusID"
+                            value={artifact.artifactStatusID}
                             onChange={handleInputChange}
                             fullWidth
                         >
-                            <MenuItem key={0} value={0}>
-                                Male
-                            </MenuItem>
                             <MenuItem key={1} value={1}>
-                                Female
+                                On Display
                             </MenuItem>
                             <MenuItem key={2} value={2}>
-                                Non-Binary
+                                In Storage
                             </MenuItem>
                             <MenuItem key={3} value={3}>
-                                Other
+                                On Loan
                             </MenuItem>
                             <MenuItem key={4} value={4}>
-                                Prefer not to say
+                                Under Conservation
+                            </MenuItem>
+                            <MenuItem key={5} value={5}>
+                                Returned
+                            </MenuItem>
+                            <MenuItem key={6} value={6}>
+                                Deaccessioned
                             </MenuItem>
                         </TextField>
                     </Grid2>
-                </Grid2>
-
-                <Typography variant="h6" gutterBottom sx={{mt: 2}}>Contact Information</Typography>
-                <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Phone Number"
-                            name="phoneNumber"
-                            value={employee.phoneNumber}
-                            onChange={handleInputChange}
-                            fullWidth
-                            required
-                        />
+                    <Grid2 item size={12}>
+                        <Typography variant="h6">Location</Typography>
                     </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Email"
-                            name="email"
-                            value={employee.email}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                    </Grid2>
-                </Grid2>
-
-                <Typography variant="h6" gutterBottom sx={{mt: 2}}>Address</Typography>
-                <Grid2 container spacing={2}>
                     <Grid2 item size={12}>
                         <TextField
-                            label="Street Address"
-                            name="streetAddress"
-                            value={employee.employeeAddress.streetAddress}
+                            label="Building"
+                            name="building"
+                            value={artifact.location.building}
                             onChange={handleInputChange}
                             fullWidth
+                            margin="normal"
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="City"
-                            name="city"
-                            value={employee.employeeAddress.city}
+                            label="floor"
+                            name="floor"
+                            value={artifact.location.floor}
                             onChange={handleInputChange}
                             fullWidth
+                            margin="normal"
                             required
                         />
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
-                            label="State"
-                            name="state"
-                            value={employee.employeeAddress.state}
+                            label="section"
+                            name="section"
+                            value={artifact.location.section}
                             onChange={handleInputChange}
                             fullWidth
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Postal Code"
-                            name="postalCode"
-                            value={employee.employeeAddress.postalCode}
-                            onChange={handleInputChange}
-                            fullWidth
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Country"
-                            name="country"
-                            value={employee.employeeAddress.country}
-                            onChange={handleInputChange}
-                            fullWidth
+                            margin="normal"
                             required
                         />
                     </Grid2>
                 </Grid2>
-
-                <Typography variant="h6" gutterBottom sx={{mt: 2}}>Job Details</Typography>
-                <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
-                        <TextField
-                            select
-                            label="Job Title"
-                            name="jobTitle"
-                            value={employee.jobTitle}
-                            onChange={handleInputChange}
-                            fullWidth
-                            required
-                        >
-                            {jobTitles.map((job) => (
-                                <MenuItem key={job.jobTitleID} value={job.jobTitleID}>
-                                    {job.title}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Salary"
-                            name="salary"
-                            value={employee.salary}
-                            onChange={handleInputChange}
-                            fullWidth
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            select
-                            label="Department"
-                            name="department"
-                            value={employee.department}
-                            onChange={handleInputChange}
-                            fullWidth
-                        >
-                            {departments.map((dept) => (
-                                <MenuItem key={dept.departmentID} value={dept.departmentID}>
-                                    {dept.title}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid2>
-                </Grid2>
-
-                <Button variant="contained" color="primary" type="submit" sx={{mt: 3}}>
-                    {employeeID ? 'Update Employee' : 'Create Employee'}
+                <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>
+                    {artifactID ? 'Update Artifact' : 'Submit'}
                 </Button>
             </form>
         </Container>
     );
 };
 
-export default EmployeeForm;
+
+export default ArtifactForm;
