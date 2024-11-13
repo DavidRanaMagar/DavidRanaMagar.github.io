@@ -18,7 +18,6 @@ const MyTickets = ({ userID }) => {
     const [ticketStatuses, setTicketStatuses] = useState([]);
     const [refetchTrigger, setRefetchTrigger] = useState(false);
 
-
     // fetch types on mount, no dependants so it gets its own effect
     useEffect(() => {
         const fetchTicketStatuses = async () => {

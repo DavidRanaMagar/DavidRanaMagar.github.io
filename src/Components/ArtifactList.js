@@ -21,7 +21,9 @@ import ArtifactForm from "./ArtifactForm";
 const ArtifactList = () => {
     const [artifacts, setArtifacts] = useState([]);
     const [selectedArtifactID, setSelectedArtifactID] = useState(null);
-    const [isCreating, setIsCreating] = useState(false); // Track create mode
+    const [artifactStatusConversions, setArtifactStatusConversions] = useState({});
+    const [isCreating, setIsCreating] = useState(false);
+    const [refetchTrigger, setRefetchTrigger] = useState(false)
 
     useEffect(() => {
         const fetchArtifacts = async () => {
@@ -32,8 +34,20 @@ const ArtifactList = () => {
                 console.error('Error fetching artifact data:', err);
             }
         };
+
+        const fetchStatuses = async () => {
+            try {
+                const response = await axios.get('/artifactsStatus');
+                setArtifactStatusConversions(Object.fromEntries(
+                    response.data.map(status => [status.artifactStatusID, status.title])
+                ));
+            } catch (err) {
+                console.error('Error fetching artifact statuses:', err);
+            }
+        };
         fetchArtifacts();
-    }, []);
+        fetchStatuses();
+    }, [refetchTrigger]);
 
     // Open form for editing
     const handleRowClick = (artifactID) => {
@@ -51,6 +65,7 @@ const ArtifactList = () => {
     const clearSelection = () => {
         setSelectedArtifactID(null);
         setIsCreating(false); // Exit create mode when form is closed
+        setRefetchTrigger(!refetchTrigger);
     };
 
     const handleDelete = async (artifactID) => {
@@ -95,7 +110,7 @@ const ArtifactList = () => {
                                     <TableCell>{artifact.artifactID}</TableCell>
                                     <TableCell>{artifact.title}</TableCell>
                                     <TableCell>{artifact.creator}</TableCell>
-                                    <TableCell>{artifact.artifactStatusID}</TableCell>
+                                    <TableCell>{artifactStatusConversions[artifact.artifactStatusID]}</TableCell>
                                     <TableCell>{artifact.owner}</TableCell>
                                     <TableCell>
                                         <IconButton color="primary" onClick={() => handleRowClick(artifact.artifactID)}>

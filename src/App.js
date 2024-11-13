@@ -33,6 +33,14 @@ import CollectionManagerHome from "./Components/CollectionManagerHome";
 import ArtifactList from "./Components/ArtifactList";
 import GiftShopItemList from "./Components/GiftShopItemList";
 import PurchaseHistory from "./Components/PurchaseHistory";
+import CustomerExhibition from './Components/CustomerExhibition';
+
+
+import MembershipSignup from "./Components/MembershipSignup";
+
+
+
+
 
 
 const darkTheme = createTheme({
@@ -134,6 +142,9 @@ function App() {
                                 <Route path="/customerdonation" element={<CustomerDonation/>}/>
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
                                 <Route path="/purchasehistory" element={<PurchaseHistory/>} />
+                                <Route path="/membershipsignup" element={<MembershipSignup/>} />
+                               
+                                <Route path="/customerexhibition" element={<CustomerExhibition/>} />
                             </Route>
 
                              {/* private routes for admins and staff */}

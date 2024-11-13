@@ -206,7 +206,7 @@ const GiftShopItemsReport = () => {
                         <TableBody>
                             {giftShopItems.map(item => {
                                 return (
-                                    <TableRow key={item.giftShopItemID}>
+                                    <TableRow >
                                         <TableCell>{item.giftShopItemID}</TableCell>
                                         <TableCell>{item?.title}</TableCell>
                                         <TableCell>{categories.find(c => c.categoryID === item.categoryID)?.title}</TableCell>

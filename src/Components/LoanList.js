@@ -19,6 +19,7 @@ const LoanList = () => {
     const [loans, setLoans] = useState([]);
     const [loanTypeConversions, setLoanTypeConversions] = useState({});
     const [isCreating, setIsCreating] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedArtifacts, setSelectedArtifacts] = useState([]);
@@ -47,7 +48,7 @@ const LoanList = () => {
 
         fetchLoans();
         fetchLoanTypes();
-    }, [])
+    }, [refreshTrigger])
 
     const handleCreateLoan = () => {
         setIsCreating(true);
@@ -55,6 +56,7 @@ const LoanList = () => {
 
     const handleBackButton = () => {
         setIsCreating(false);
+        setRefreshTrigger(!refreshTrigger);
     }
 
     const handleDrawerClose = () => {
@@ -127,7 +129,10 @@ const LoanList = () => {
                                         </TableCell>
                                         <TableCell>
                                             <IconButton color="secondary"
-                                                        onClick={() => handleDelete(loan.loanID)}>
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDelete(loan.loanID);
+                                                        }}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </TableCell>
