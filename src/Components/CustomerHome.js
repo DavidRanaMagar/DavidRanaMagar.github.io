@@ -9,6 +9,7 @@ const paths = [
     { path: '/purchasehistory', label: 'Gift Shop Purchase History' },
     { path: '/customerdonation', label: 'Donate' },
     { path: '/membershipSignup', label: 'Membership Signup' },
+    { path: '/customerexhibition', label:'View Exhibitions'},
 ];
 
 const CustomerHome = () => {
