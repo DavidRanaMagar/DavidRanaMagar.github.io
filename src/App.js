@@ -35,6 +35,13 @@ import GiftShopItemList from "./Components/GiftShopItemList";
 import PurchaseHistory from "./Components/PurchaseHistory";
 
 
+import MembershipSignup from "./Components/MembershipSignup";
+
+
+
+
+
+
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
@@ -134,6 +141,8 @@ function App() {
                                 <Route path="/customerdonation" element={<CustomerDonation/>}/>
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
                                 <Route path="/purchasehistory" element={<PurchaseHistory/>} />
+                                <Route path="/membershipsignup" element={<MembershipSignup/>} />
+                               
                             </Route>
 
                              {/* private routes for admins and staff */}

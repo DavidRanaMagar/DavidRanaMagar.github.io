@@ -8,6 +8,7 @@ const paths = [
     { path: '/products', label: 'Products' },
     { path: '/purchasehistory', label: 'Gift Shop Purchase History' },
     { path: '/customerdonation', label: 'Donate' },
+    { path: '/membershipSignup', label: 'Membership Signup' },
 ];
 
 const CustomerHome = () => {
