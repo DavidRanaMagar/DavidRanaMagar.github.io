@@ -162,6 +162,7 @@ const Register = () => {
                             name="dob"
                             type="date"
                             value={customer.dob}
+                            InputLabelProps={{ shrink: true }}
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"

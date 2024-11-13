@@ -31,19 +31,45 @@ ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend
 
 const EmployeeHoursReport = ({ employeeID }) => {
     const [employeeHours, setEmployeeHours] = useState([]);
+    const [jobTitleConversions, setJobTitleConversions] = useState({});
+    const [departmentConversions, setDepartmentConversions] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
     useEffect(() => {
-        // Fetch employee hours on initial render
+        const fetchJobTitles = async () => {
+            try {
+                const response = await axios.get('/jobTitle');
+
+                setJobTitleConversions(Object.fromEntries(
+                    response.data.map(job => [job.jobTitleID, job.title])
+                ));
+            } catch (error) {
+                console.error('Error fetching job titles:', error);
+            }
+        };
+
+        const fetchDepartments = async () => {
+            try {
+                const response = await axios.get('/department');
+
+                setDepartmentConversions(Object.fromEntries(
+                    response.data.map(dept => [dept.departmentID, dept.title])
+                ));
+            } catch (error) {
+                console.error('Error fetching Departments:', error);
+            }
+        };
+
+
         fetchEmployeeHours();
+        fetchJobTitles();
+        fetchDepartments();
     }, [employeeID]);
 
-    // Function to fetch employee hours
     const fetchEmployeeHours = async () => {
         try {
             const response = await axios.get(`/employeeHours/${employeeID}`);
@@ -159,13 +185,13 @@ const EmployeeHoursReport = ({ employeeID }) => {
                                 <TableCell><Typography variant="h6">First Name: </Typography> {employee.firstName} {employee.lastName}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell><Typography variant="h6">Job Title: </Typography> {employee.jobTitle}</TableCell>
+                                <TableCell><Typography variant="h6">Job Title: </Typography> {jobTitleConversions[employee.jobTitle]}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell><Typography variant="h6">Email: </Typography> {employee.email}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell><Typography variant="h6">Department: </Typography> {employee.department}</TableCell>
+                                <TableCell><Typography variant="h6">Department: </Typography> {departmentConversions[employee.department]}</TableCell>
                             </TableRow>
                         </TableHead>
                     </Table>

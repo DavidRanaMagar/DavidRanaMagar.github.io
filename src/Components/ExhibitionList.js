@@ -19,6 +19,7 @@ const ExhibitionList = () => {
     const [exhibitions, setExhibitions] = useState([]);
     const [locationConversions, setLocationConversions] = useState({});
     const [isCreating, setIsCreating] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedArtifacts, setSelectedArtifacts] = useState([]);
@@ -55,6 +56,7 @@ const ExhibitionList = () => {
 
     const handleBackButton = () => {
         setIsCreating(false);
+        setRefreshTrigger(!refreshTrigger);
     }
 
     const handleDrawerClose = () => {
@@ -131,7 +133,10 @@ const ExhibitionList = () => {
                                         <TableCell>{locationConversions[exhibition.locationID]}</TableCell>
                                         <TableCell>
                                             <IconButton color="secondary"
-                                                        onClick={() => handleDelete(exhibition.exhibitionID)}>
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDelete(exhibition.exhibitionID);
+                                                        }}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </TableCell>
