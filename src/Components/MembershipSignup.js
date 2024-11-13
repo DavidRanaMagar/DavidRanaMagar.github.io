@@ -9,14 +9,15 @@ const MembershipSignup = () => {
     const [membershipType, setMembershipType] = useState('');
     const [membershipLength, setMembershipLength] = useState('');
     const [membershipTypes, setMembershipTypes] = useState([]);
+    const [totalCost, setTotalCost] = useState(0);
 
     const membershipRates = {
-        1: 50,  // example rate
-        2: 90,  // example rate
-        3: 30,   // example rate
-        4: 45,
-        5: 125,
-        6: 45
+        1: 50,  // example rate for Individual
+        2: 90,  // example rate for Family
+        3: 30,  // example rate for Senior
+        4: 45,  // example rate for Military
+        5: 125, // example rate for Patron
+        6: 45   // example rate for Student
     };
 
     useEffect(() => {
@@ -67,6 +68,16 @@ const MembershipSignup = () => {
         return formatDate(endDate);
     };
 
+    const calculateTotalCost = () => {
+        const baseRate = membershipRates[membershipType] || 0;
+        const cost = membershipLength === 'Year' ? baseRate * 12 : baseRate;
+        setTotalCost(cost);
+    };
+
+    useEffect(() => {
+        calculateTotalCost();
+    }, [membershipType, membershipLength]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -75,18 +86,16 @@ const MembershipSignup = () => {
             return;
         }
 
-        const selectedType = membershipTypes.find(type => type.membershipTypeCode === membershipType);
-        const rate = selectedType ? selectedType.rate : 0;
         const startDate = formatDate(new Date());
         const endDate = calculateEndDate(new Date(startDate), membershipLength);
 
         const dataToSend = {
             customerID: customerID || '',
             membershipType: membershipType,
-            rate: membershipRates[membershipType],
+            rate: totalCost,
             startDate: startDate,
             endDate: endDate,
-            renewalDate: endDate,  // assuming renewal on the end date
+            renewalDate: endDate,
             createdBy: 'online user',
             updatedBy: 'online user'
         };
@@ -137,6 +146,9 @@ const MembershipSignup = () => {
                             <MenuItem value="Month">Month</MenuItem>
                             <MenuItem value="Year">Year</MenuItem>
                         </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Total Cost: ${totalCost}</Typography>
                     </Grid>
                 </Grid>
                 <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
