@@ -48,7 +48,7 @@ const ExhibitionList = () => {
 
         fetchExhibitions();
         fetchLocations();
-    }, [])
+    }, [refreshTrigger])
 
     const handleCreateExhibition = () => {
         setIsCreating(true);

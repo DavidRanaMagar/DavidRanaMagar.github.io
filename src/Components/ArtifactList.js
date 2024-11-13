@@ -23,6 +23,7 @@ const ArtifactList = () => {
     const [selectedArtifactID, setSelectedArtifactID] = useState(null);
     const [artifactStatusConversions, setArtifactStatusConversions] = useState({});
     const [isCreating, setIsCreating] = useState(false);
+    const [refetchTrigger, setRefetchTrigger] = useState(false)
 
     useEffect(() => {
         const fetchArtifacts = async () => {
@@ -46,7 +47,7 @@ const ArtifactList = () => {
         };
         fetchArtifacts();
         fetchStatuses();
-    }, []);
+    }, [refetchTrigger]);
 
     // Open form for editing
     const handleRowClick = (artifactID) => {
@@ -64,6 +65,7 @@ const ArtifactList = () => {
     const clearSelection = () => {
         setSelectedArtifactID(null);
         setIsCreating(false); // Exit create mode when form is closed
+        setRefetchTrigger(!refetchTrigger);
     };
 
     const handleDelete = async (artifactID) => {
