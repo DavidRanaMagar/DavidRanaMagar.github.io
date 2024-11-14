@@ -13,9 +13,6 @@ const Register = () => {
         phone: '',
         dob: '',
         sex: '',
-        creditCardNumber: '',
-        expiryDate: '',
-        cvv: '',
         user: {
             username: '',
             password: '',
@@ -23,30 +20,16 @@ const Register = () => {
             createdBy: 'new user',
             updatedBy: 'new user'
         },
-        customerAddress: {
-            streetAddress: '',
-            city: '',
-            state: '',
-            postalCode: '',
-            country: ''
-        }
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name in customer.customerAddress) {
-            // If the input is related to the customer address, update the address object
-            setCustomer(prevCustomer => ({
-                ...prevCustomer,
-                customerAddress: { ...prevCustomer.customerAddress, [name]: value}
-            }));
-        } else if (name in customer.user) {
+        if (name in customer.user) {
             setCustomer(prevCustomer => ({
                 ...prevCustomer,
                 user: { ...prevCustomer.user, [name]: value }
             }));
         } else {
-            // Otherwise, update the main customer object
             setCustomer({ ...customer, [name]: value });
         }
     };
@@ -64,7 +47,6 @@ const Register = () => {
             } else {
                 const dataToSend = {
                     ...customer,
-                    customerAddress: customer.customerAddress, // Ensure right format
                     user: customer.user
                 };
 
@@ -180,7 +162,7 @@ const Register = () => {
                             margin="normal"
                             required
                         >
-                            <MenuItem key={0} value={0}>
+                            <MenuItem key={5} value={5}>
                                 Male
                             </MenuItem>
                             <MenuItem key={1} value={1}>
@@ -196,105 +178,6 @@ const Register = () => {
                                 Prefer not to say
                             </MenuItem>
                         </TextField>
-                    </Grid2>
-
-                    {/* Address Fields */}
-                    <Grid2 item size={12}>
-                        <Typography variant="h6">Address</Typography>
-                    </Grid2>
-                    <Grid2 item size={12}>
-                        <TextField
-                            label="Street Address"
-                            name="streetAddress"
-                            value={customer.customerAddress.streetAddress}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={3}>
-                        <TextField
-                            label="City"
-                            name="city"
-                            value={customer.customerAddress.city}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={3}>
-                        <TextField
-                            label="State"
-                            name="state"
-                            value={customer.customerAddress.state}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={3}>
-                        <TextField
-                            label="Postal Code"
-                            name="postalCode"
-                            value={customer.customerAddress.postalCode}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={3}>
-                        <TextField
-                            label="Country"
-                            name="country"
-                            value={customer.customerAddress.country}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-
-                    {/* Credit Card Details */}
-                    <Grid2 item size={12}>
-                        <Typography variant="h6">Payment Details</Typography>
-                    </Grid2>
-                    <Grid2 item size={4}>
-                        <TextField
-                            label="Credit Card Number"
-                            name="creditCardNumber"
-                            value={customer.creditCardNumber}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={4}>
-                        <TextField
-                            label="Expiry Date"
-                            name="expiryDate"
-                            type="month"
-                            value={customer.expiryDate}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={4}>
-                        <TextField
-                            label="CVV"
-                            name="cvv"
-                            value={customer.cvv}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
                     </Grid2>
                 </Grid2>
                 <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>

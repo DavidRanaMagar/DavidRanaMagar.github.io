@@ -11,16 +11,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
         phone: '',
         dob: '',
         sex: '',
-        creditCardNumber: '',
-        expiryDate: '',
-        cvv: '',
-        customerAddress: { // Nest the address object
-            streetAddress: '',
-            city: '',
-            state: '',
-            postalCode: '',
-            country: ''
-        }
     });
 
     // Fetch customer data if customerID is provided
@@ -36,16 +26,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                         phone: response.data.phone || '',
                         dob: response.data.dob || '',
                         sex: response.data.sex || '',
-                        creditCardNumber: response.data.creditCardNumber || '',
-                        expiryDate: response.data.expiryDate ? response.data.expiryDate.slice(0, 7) : '',
-                        cvv: response.data.cvv || '',
-                        customerAddress: {
-                            streetAddress: response.data.customerAddress.streetAddress || '',
-                            city: response.data.customerAddress.city || '',
-                            state: response.data.customerAddress.state || '',
-                            postalCode: response.data.customerAddress.postalCode || '',
-                            country: response.data.customerAddress.country || '',
-                        }
                     });
                 } catch (error) {
                     console.error('Error fetching customer data:', error);
@@ -58,16 +38,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                     phone: '',
                     dob: '',
                     sex: '',
-                    creditCardNumber: '',
-                    expiryDate: '',
-                    cvv: '',
-                    customerAddress: {
-                        streetAddress: '',
-                        city: '',
-                        state: '',
-                        postalCode: '',
-                        country: ''
-                    }
                 });
             }
         };
@@ -77,16 +47,7 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
     // Handle form input changes
     const handleInputChange = (e) => {
         const {name, value} = e.target;
-        if (name in customer.customerAddress) {
-            setCustomer(prev => ({
-                ...prev,
-                customerAddress: {...prev.customerAddress, [name]: value
-                }
-            }));
-        } else {
-            // Otherwise, update the main customer object
-            setCustomer({...customer, [name]: value});
-        }
+        setCustomer({...customer, [name]: value});
     };
 
     // Handle form submit
@@ -96,8 +57,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
         try {
             const dataToSend = {
                 ...customer,
-                // Ensure customerAddress is in the right format when sending
-                customerAddress: customer.customerAddress
             };
 
             if (customerID) {
@@ -124,7 +83,7 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
             <form onSubmit={handleSubmit}>
                 <Grid2 container spacing={2}>
                     {/* Customer Details */}
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="First Name"
                             name="firstName"
@@ -135,7 +94,7 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Last Name"
                             name="lastName"
@@ -184,11 +143,11 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                             select
                             label="Sex"
                             name="sex"
-                            value={customer.gender}
+                            value={customer.sex}
                             onChange={handleInputChange}
                             fullWidth
                         >
-                            <MenuItem key={0} value={0}>
+                            <MenuItem key={5} value={5}>
                                 Male
                             </MenuItem>
                             <MenuItem key={1} value={1}>
@@ -204,105 +163,6 @@ const CustomerForm = ({customerID, setSelectedCustomerID}) => {
                                 Prefer not to say
                             </MenuItem>
                         </TextField>
-                    </Grid2>
-
-                    {/* Address Fields */}
-                    <Grid2 item size={12}>
-                        <Typography variant="h6">Address</Typography>
-                    </Grid2>
-                    <Grid2 item size={12}>
-                        <TextField
-                            label="Street Address"
-                            name="streetAddress"
-                            value={customer.customerAddress.streetAddress}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="City"
-                            name="city"
-                            value={customer.customerAddress.city}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="State"
-                            name="state"
-                            value={customer.customerAddress.state}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Postal Code"
-                            name="postalCode"
-                            value={customer.customerAddress.postalCode}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Country"
-                            name="country"
-                            value={customer.customerAddress.country}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-
-                    {/* Credit Card Details */}
-                    <Grid2 item size={12}>
-                        <Typography variant="h6">Payment Details</Typography>
-                    </Grid2>
-                    <Grid2 item size={12}>
-                        <TextField
-                            label="Credit Card Number"
-                            name="creditCardNumber"
-                            value={customer.creditCardNumber}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="Expiry Date"
-                            name="expiryDate"
-                            type="month"
-                            value={customer.expiryDate}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 item size={6}>
-                        <TextField
-                            label="CVV"
-                            name="cvv"
-                            value={customer.cvv}
-                            onChange={handleInputChange}
-                            fullWidth
-                            margin="normal"
-                            required
-                        />
                     </Grid2>
                 </Grid2>
                 <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>

@@ -134,7 +134,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
             <form onSubmit={handleSubmit}>
                 <Typography variant="h6" gutterBottom>Personal Information</Typography>
                 <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="First Name"
                             name="firstName"
@@ -145,7 +145,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Last Name"
                             name="lastName"
@@ -156,7 +156,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel htmlFor="Date of Birth" shrink>
                                 Date of Birth
@@ -171,7 +171,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             />
                         </FormControl>
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel htmlFor="Hire Date" shrink>
                                 Hire Date
@@ -186,7 +186,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             />
                         </FormControl>
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             select
                             label="Gender"
@@ -195,7 +195,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             onChange={handleInputChange}
                             fullWidth
                         >
-                            <MenuItem key={0} value={0}>
+                            <MenuItem key={5} value={5}>
                                 Male
                             </MenuItem>
                             <MenuItem key={1} value={1}>
@@ -216,7 +216,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
 
                 <Typography variant="h6" gutterBottom sx={{mt: 2}}>Contact Information</Typography>
                 <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Phone Number"
                             name="phoneNumber"
@@ -226,7 +226,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Email"
                             name="email"
@@ -239,7 +239,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
 
                 <Typography variant="h6" gutterBottom sx={{mt: 2}}>Address</Typography>
                 <Grid2 container spacing={2}>
-                    <Grid2 item size={12}>
+                    <Grid2 size={12}>
                         <TextField
                             label="Street Address"
                             name="streetAddress"
@@ -249,7 +249,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="City"
                             name="city"
@@ -259,7 +259,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="State"
                             name="state"
@@ -269,7 +269,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Postal Code"
                             name="postalCode"
@@ -279,7 +279,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Country"
                             name="country"
@@ -293,7 +293,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
 
                 <Typography variant="h6" gutterBottom sx={{mt: 2}}>Job Details</Typography>
                 <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             select
                             label="Job Title"
@@ -310,7 +310,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             ))}
                         </TextField>
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Salary"
                             name="salary"
@@ -320,7 +320,7 @@ const EmployeeForm = ({employeeID, setSelectedEmployeeID}) => {
                             required
                         />
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                         <TextField
                             select
                             label="Department"
