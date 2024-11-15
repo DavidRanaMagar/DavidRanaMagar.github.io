@@ -20,7 +20,9 @@ const CustomerExhibition = () => {
     useEffect(() => {
         const fetchExhibitions = async () => {
             try {
-                const response = await axios.get('/exhibition');
+                const response = await axios.post('/exhibition/date', {
+                    date: new Date(),
+                });
                 setExhibitions(response.data);
             } catch (error) {
                 console.error('Error fetching exhibition data:', error);

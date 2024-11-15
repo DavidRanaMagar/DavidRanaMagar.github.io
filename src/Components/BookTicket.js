@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Grid, MenuItem, TextField, Typography, Box } from '@mui/material';
+import {Button, Container, MenuItem, TextField, Typography, Box, Grid2} from '@mui/material';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
 
 const BookTicket = () => {
     const { auth } = useAuth();
     const [customerID, setCustomerID] = useState(null);
+    const [exhibitionID, setExhibitionID] = useState(null);
     const [date, setDate] = useState('');
     const [timeSlot, setTimeSlot] = useState('');
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const [ticketTypes, setTicketTypes] = useState([]);
     const [tickets, setTickets] = useState({});
-    const [totalPrice, setTotalPrice] = useState(0);
+    const [exhibitions, setExhibitions] = useState([]);
     const timeSlots = ['10:00 AM', '12:00 PM', '2:00 PM', '4:00 PM'];
     const timeConversion = {
         '10:00 AM': '10:00:00',
@@ -18,6 +21,22 @@ const BookTicket = () => {
         '2:00 PM': '14:00:00',
         '4:00 PM': '16:00:00',
     };
+
+    useEffect(() => {
+        const fetchExhibitions = async () => {
+            try {
+                const response = await axios.post('/exhibition/date', {
+                    date: new Date(date),
+                });
+                setExhibitions(response.data);
+            } catch (error) {
+                setExhibitions([]);
+                console.error('Error fetching exhibitions:', error);
+            }
+        };
+
+        fetchExhibitions();
+    }, [date]);
 
     useEffect(() => {
         const fetchTypes = async () => {
@@ -47,14 +66,6 @@ const BookTicket = () => {
         fetchTypes();
         fetchCustomer();
     }, [auth]);
-
-    const calculateTotalPrice = () => {
-        const total = ticketTypes.reduce((acc, ticket) => {
-            const quantity = tickets[ticket.ticketTypeCode] || 0;
-            return acc + ticket.ticketPrice * quantity;
-        }, 0);
-        setTotalPrice(total);
-    };
 
     useEffect(() => {
         const calculateTotalPrice = () => {
@@ -108,6 +119,7 @@ const BookTicket = () => {
                                 timeSlot: selectedTime,
                                 ticketStatus: '1',
                                 customerID: customerID,
+                                exhibitionID: exhibitionID
                             });
                             return response.data.ticketID;
                         })
@@ -158,11 +170,11 @@ const BookTicket = () => {
                     Book Tickets
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Select Date and Time</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
+                    <Grid2 container spacing={2}>
+                        <Grid2 item size={12}>
+                            <Typography variant="h6">Select an Exhibition </Typography>
+                        </Grid2>
+                        <Grid2 item size={4}>
                             <TextField
                                 label="Date"
                                 type="date"
@@ -171,8 +183,23 @@ const BookTicket = () => {
                                 onChange={(e) => setDate(e.target.value)}
                                 InputLabelProps={{ shrink: true }}
                             />
-                        </Grid>
-                        <Grid item xs={6}>
+                        </Grid2>
+                        <Grid2 item size={4}>
+                            <TextField
+                                label="Exhbition"
+                                select
+                                fullWidth
+                                value={exhibitionID}
+                                onChange={(e) => setExhibitionID(e.target.value)}
+                            >
+                                {exhibitions.map((exhibition) => (
+                                    <MenuItem key={exhibition.exhibitionID} value={exhibition.exhibitionID}>
+                                        {exhibition.title}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid2>
+                        <Grid2 item size={4}>
                             <TextField
                                 label="Time Slot"
                                 select
@@ -186,17 +213,16 @@ const BookTicket = () => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                        </Grid>
-
-                        <Grid item xs={12}>
+                        </Grid2>
+                        <Grid2 item size={12}>
                             <Typography variant="h6">Select Tickets</Typography>
-                        </Grid>
+                        </Grid2>
                         {ticketTypes.map((ticket) => (
                             <React.Fragment key={ticket.ticketTypeCode}>
-                                <Grid item xs={6}>
+                                <Grid2 item size={6}>
                                     <Typography variant="body1">{ticket.ticketType}</Typography>
-                                </Grid>
-                                <Grid item xs={3}>
+                                </Grid2>
+                                <Grid2 item size={3}>
                                     <TextField
                                         label="Quantity"
                                         type="number"
@@ -207,22 +233,22 @@ const BookTicket = () => {
                                         }
                                         InputProps={{ inputProps: { min: 0, max: 20 } }}
                                     />
-                                </Grid>
-                                <Grid item xs={3}>
+                                </Grid2>
+                                <Grid2 item size={3}>
                                     <Typography variant="body1">${ticket.ticketPrice}</Typography>
-                                </Grid>
+                                </Grid2>
                             </React.Fragment>
                         ))}
 
-                        <Grid item xs={12}>
+                        <Grid2 item size={12}>
                             <Typography variant="h6">Total Price: ${totalPrice}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Grid2>
+                        <Grid2 item size={12}>
                             <Button variant="contained" color="primary" fullWidth type="submit">
                                 Book Tickets
                             </Button>
-                        </Grid>
-                    </Grid>
+                        </Grid2>
+                    </Grid2>
                 </form>
             </Box>
         </Container>

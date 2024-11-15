@@ -5,37 +5,17 @@ import axios from '../api/axios';
 
 const ExhibitionForm = () => {
     const [locations, setLocations] = useState([]);
-    const [selectedTime, setSelectedTime] = useState('');
     const [artifacts, setArtifacts] = useState([]);
     const [selectedArtifacts, setSelectedArtifacts] = useState([]);
     const [exhibition, setExhibition] = useState({
         title: '',
         startDate: '',
         endDate: '',
-        timeSlot: '',
         locationID: '',
         artist: '',
         createdBy: 'curator',
         updatedBy: 'curator',
     });
-    const timeSlots = [
-        '10:00 AM',
-        '11:00 AM',
-        '12:00 PM',
-        '1:00 PM',
-        '2:00 PM',
-        '3:00 PM',
-        '4:00 PM'
-    ]
-    const timeConversion = {
-        '10:00 AM': '10:00:00',
-        '11:00 AM': '11:00:00',
-        '12:00 PM': '12:00:00',
-        '1:00 PM': '13:00:00',
-        '2:00 PM': '14:00:00',
-        '3:00 PM': '15:00:00',
-        '4:00 PM': '16:00:00'
-    };
 
     useEffect(() => {
         const fetchLocations = async () => {
@@ -100,17 +80,16 @@ const ExhibitionForm = () => {
                 title: '',
                 startDate: '',
                 endDate: '',
-                timeSlot: '',
                 locationID: '',
                 artist: '',
                 createdBy: 'curator',
                 updatedBy: 'curator',
             })
-            setSelectedTime('');
 
             alert('Exhibition created successfully!');
         } catch (error) {
             console.error('Error creating exhibition:', error);
+            alert('Failed to create exhibition!');
         }
     };
 
@@ -133,12 +112,23 @@ const ExhibitionForm = () => {
                     Enter Exhibition Details
                 </Typography>
                 <Grid2 container spacing={2}>
-                    <Grid2 size={12}>
+                    <Grid2 size={6}>
                         <TextField
                             label="Title"
                             value={exhibition.title}
                             onChange={(e) =>
                                 setExhibition({ ...exhibition, title: e.target.value })
+                            }
+                            fullWidth
+                            required
+                        />
+                    </Grid2>
+                    <Grid2 size={6}>
+                        <TextField
+                            label="Artist"
+                            value={exhibition.artist}
+                            onChange={(e) =>
+                                setExhibition({ ...exhibition, artist: e.target.value })
                             }
                             fullWidth
                             required
@@ -171,37 +161,6 @@ const ExhibitionForm = () => {
                         />
                     </Grid2>
                     <Grid2 size={4}>
-                        <TextField
-                            select
-                            label="Time Slot"
-                            value={selectedTime}
-                            onChange={(e) => {
-                                const selectedTimeSlot = e.target.value;
-                                setSelectedTime(selectedTimeSlot);
-                                setExhibition({...exhibition, timeSlot: timeConversion[selectedTimeSlot]});
-                            }}
-                            fullWidth
-                            required
-                        >
-                            {timeSlots.map((timeSlot, index) => (
-                                <MenuItem key={index} value={timeSlot}>
-                                    {timeSlot}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid2>
-                    <Grid2 size={6}>
-                        <TextField
-                            label="Artist"
-                            value={exhibition.artist}
-                            onChange={(e) =>
-                                setExhibition({ ...exhibition, artist: e.target.value })
-                            }
-                            fullWidth
-                            required
-                        />
-                    </Grid2>
-                    <Grid2 size={6}>
                         <TextField
                             select
                             label="Location"

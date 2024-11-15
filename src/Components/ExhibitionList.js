@@ -106,7 +106,6 @@ const ExhibitionList = () => {
                                     <TableCell><Typography variant="h6">Artist</Typography></TableCell>
                                     <TableCell><Typography variant="h6">Start Date</Typography></TableCell>
                                     <TableCell><Typography variant="h6">End Date</Typography></TableCell>
-                                    <TableCell><Typography variant="h6">Time</Typography></TableCell>
                                     <TableCell><Typography variant="h6">Location</Typography></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -129,7 +128,6 @@ const ExhibitionList = () => {
                                                 year: "numeric"
                                             })}
                                         </TableCell>
-                                        <TableCell>{exhibition.timeSlot}</TableCell>
                                         <TableCell>{locationConversions[exhibition.locationID]}</TableCell>
                                         <TableCell>
                                             <IconButton color="secondary"

@@ -108,6 +108,7 @@ const MyTickets = ({ userID }) => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell variant="h5">Ticket ID</TableCell>
+                                        <TableCell variant="h5">Event</TableCell>
                                         <TableCell variant="h5">Event Date</TableCell>
                                         <TableCell variant="h5">Time Slot</TableCell>
                                         <TableCell variant="h5">Ticket Status</TableCell>
@@ -118,6 +119,7 @@ const MyTickets = ({ userID }) => {
                                     {tickets.map(ticket => (
                                         <TableRow key={ticket.ticketID}>
                                             <TableCell>{ticket.ticketID}</TableCell>
+                                            <TableCell>{ticket.exhibition.title}</TableCell>
                                             <TableCell>{ticket.eventDate}</TableCell>
                                             <TableCell>{ticket.timeSlot}</TableCell>
                                             <TableCell>{getTicketStatus(ticket.ticketStatus)}</TableCell>
