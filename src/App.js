@@ -37,7 +37,7 @@ import CustomerExhibition from './Components/CustomerExhibition';
 
 
 import MembershipSignup from "./Components/MembershipSignup";
-
+import MembershipExpiryNotification from './Components/MemberShipExpiryNotification';
 
 
 
@@ -144,6 +144,7 @@ function App() {
                                 <Route path="/purchasehistory" element={<PurchaseHistory/>} />
                                 <Route path="/membershipsignup" element={<MembershipSignup/>} />
                                
+                                <Route path="/membershipexpirynotification" element={<MembershipExpiryNotification/>} />
                                 <Route path="/customerexhibition" element={<CustomerExhibition/>} />
                             </Route>
 

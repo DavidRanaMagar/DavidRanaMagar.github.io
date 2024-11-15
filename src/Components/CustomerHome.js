@@ -10,6 +10,7 @@ const paths = [
     { path: '/customerdonation', label: 'Donate' },
     { path: '/membershipSignup', label: 'Membership Signup' },
     { path: '/customerexhibition', label:'View Exhibitions'},
+    { path: '/membershipexpirynotification', label:'MemberShip Status'},
 ];
 
 const CustomerHome = () => {
