@@ -63,22 +63,23 @@ const MembershipSignup = () => {
         const endDate = new Date(startDate);
         if (length === 'Year') {
             endDate.setFullYear(endDate.getFullYear() + 1);
-        } else {
+        } else if (length === 'Month') {
             endDate.setMonth(endDate.getMonth() + 1);
+        } else if (length === 'Week') {
+            endDate.setDate(endDate.getDate() + 7);
         }
         return formatDate(endDate);
     };
 
-    // Calculate the total cost based on monthly or yearly rates
+    // Calculate the total cost based on weekly, monthly, or yearly rates
     const calculateTotalCost = () => {
         const rate = membershipRates[membershipType] || 0;
         if (membershipLength === 'Year') {
-            // For yearly, we multiply the rate by 1
-            setTotalCost(rate * 1);
-        } else {
-            // For monthly, we divide the rate by 12 and round up
-            const monthlyRate = Math.ceil(rate / 12) +20;
-            setTotalCost(monthlyRate);
+            setTotalCost(rate);
+        } else if (membershipLength === 'Month') {
+            setTotalCost(Math.ceil(rate / 7));
+        } else if (membershipLength === 'Week') {
+            setTotalCost(Math.ceil(rate / 10));
         }
     };
 
@@ -153,6 +154,7 @@ const MembershipSignup = () => {
                             margin="normal"
                             required
                         >
+                            <MenuItem value="Week">Week</MenuItem>
                             <MenuItem value="Month">Month</MenuItem>
                             <MenuItem value="Year">Year</MenuItem>
                         </TextField>
