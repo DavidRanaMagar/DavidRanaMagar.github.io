@@ -118,7 +118,7 @@ const MembershipSignup = () => {
             alert('Sign Up Successful');
         } catch (error) {
             console.error('Error Signing Up:', error);
-            alert('Failed to Sign Up');
+            alert('Customer must be 18 years or older to register for membership');
         }
     };
 
