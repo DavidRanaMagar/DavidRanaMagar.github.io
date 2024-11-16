@@ -7,10 +7,10 @@ const paths = [
     { path: '/mytickets', label: 'My Tickets' },
     { path: '/products', label: 'Products' },
     { path: '/purchasehistory', label: 'Gift Shop Purchase History' },
-    { path: '/customerdonation', label: 'Donate' },
     { path: '/membershipSignup', label: 'Membership Signup' },
-    { path: '/customerexhibition', label:'View Exhibitions'},
     { path: '/membershipexpirynotification', label:'MemberShip Status'},
+    { path: '/customerexhibition', label:'View Exhibitions'},
+    { path: '/customerdonation', label: 'Donate' },
 ];
 
 const CustomerHome = () => {

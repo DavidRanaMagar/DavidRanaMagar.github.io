@@ -53,8 +53,10 @@ const MembershipExpiryNotification = () => {
     }, [auth]);
 
     // If customer data or messages are not available, display loading message
-    if (!customerID || messages.length === 0) {
+    if (!customerID && messages.length === 0) {
         return <Typography variant="h6">Loading membership details...</Typography>;
+    } else if (messages.length === 0) {
+        return <Typography variant="h6">No Membership Notifications</Typography>;
     }
 
     return (
