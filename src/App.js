@@ -34,8 +34,7 @@ import ArtifactList from "./Components/ArtifactList";
 import GiftShopItemList from "./Components/GiftShopItemList";
 import PurchaseHistory from "./Components/PurchaseHistory";
 import CustomerExhibition from './Components/CustomerExhibition';
-
-
+import VisitorsReport from "./Components/VisitorsReport";
 import MembershipSignup from "./Components/MembershipSignup";
 import MembershipExpiryNotification from './Components/MemberShipExpiryNotification';
 
@@ -133,6 +132,7 @@ function App() {
                                 <Route path="/ticketsreport" element={<TicketsReport/>}/>
                                 <Route path="/donationsreport" element={<DonationsReport/>}/>
                                 <Route path="/departments" element={<DepartmentList/>}/>
+                                <Route path="/visitorsreport" element={<VisitorsReport/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'customer']}/>}>
