@@ -23,6 +23,7 @@ const LoginPage = () => {
             if (response.data) {
                 const { userId, role } = response.data;
                 setAuth({ userId, role });
+                await axios.post('/userLoginLog', {userID: userId}) //user login log table
                 setUsername('');
                 setPassword('');
                 if (role === 'customer') {
