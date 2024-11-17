@@ -29,8 +29,30 @@ Download [Node.js](https://nodejs.org/en/download/package-manager)
    
 #### `npm install`
 
+### 4. Configuration
+   Currently, App is hitting hosted server api for data. If you have hosted backend server locally and want to get access to locally
+hosted server. you have to make few changes in package.json file and /src/api/axios.js file
 
-### 4. Usage
+you have to change 
+```jsunicoderegexp
+"proxy": "http://3.94.130.218:3001"
+```
+to 
+```jsunicoderegexp
+"proxy": "http://localhost:3001"
+```
+
+and in axios.js
+```javascript
+baseURL: 'http://3.94.130.218:3001'
+```
+to
+
+```javascript
+baseURL: 'http://localhost:3001'
+```
+
+### 5. Usage
 #### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser
