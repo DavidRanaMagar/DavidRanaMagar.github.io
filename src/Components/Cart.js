@@ -63,7 +63,7 @@ function Cart({cartItems, removeFromCart, updateCartQuantity, setCartItems}) {
                 )
             );
 
-            await axios.post('/saleTransaction', {
+            const transactionResponse = await axios.post('/saleTransaction', {
                 customerID: customerID,
                 transactionAmount: total,
                 paymentMethod: 'Credit Card',
@@ -74,7 +74,12 @@ function Cart({cartItems, removeFromCart, updateCartQuantity, setCartItems}) {
             });
 
             setCartItems([]);
-            alert('Your Items were successfully ordered!');
+            if (transactionResponse.data.discountApplied) {
+                alert('Your Items were successfully ordered and 50% Birthday Discount Applied!');
+            } else {
+                alert('Your Items were successfully ordered!');
+            }
+
         } catch (error) {
             console.error("Error placing the order:", error);
             alert('An error occurred placing order.');

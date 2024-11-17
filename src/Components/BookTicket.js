@@ -159,7 +159,7 @@ const BookTicket = () => {
             });
 
             if (transactionResponse.data.discountApplied) {
-                alert('Tickets successfully ordered and Birthday Discount Applied!');
+                alert('Tickets successfully ordered and 50% Birthday Discount Applied!');
             } else {
                 alert('Tickets successfully ordered!');
             }
