@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import EditIcon from "@mui/icons-material/Edit";
 
-const EmployeeSearch = () => {
+const Ticketing = () => {
         const [tickets, setTickets] = useState([]);
         const [loading, setLoading] = useState(false);
         const [error, setError] = useState(null);
@@ -69,13 +69,13 @@ const EmployeeSearch = () => {
                 const response = await axios.get('/ticket/search', {params: filteredParams});
                 setTickets(Array.isArray(response.data) ? response.data : []);
             } catch (err) {
-                setError('Failed to fetch employee data: ' + err.message);
+                setError('Failed to fetch Ticket data: ' + err.message);
             } finally {
                 setLoading(false);
             }
         };
 
-        // Automatically fetch employees every time searchParams changes
+        // Automatically fetch ticket every time searchParams changes
         useEffect(() => {
             handleSearch();
         }, [searchParams]);
@@ -223,4 +223,4 @@ const EmployeeSearch = () => {
     }
 ;
 
-export default EmployeeSearch;
+export default Ticketing;
