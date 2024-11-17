@@ -15,6 +15,7 @@ const paths = [
     { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
     { path: '/donationsreport', label: 'Donations Report' },
     { path: '/visitorsreport', label: 'Visitors Report' },
+    { path: '/ticketing', label: 'Ticketing' },
 ];
 
 const AdminHome = () => {

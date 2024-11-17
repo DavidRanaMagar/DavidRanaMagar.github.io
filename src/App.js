@@ -144,7 +144,6 @@ function App() {
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
                                 <Route path="/purchasehistory" element={<PurchaseHistory/>} />
                                 <Route path="/membershipsignup" element={<MembershipSignup/>} />
-                               
                                 <Route path="/membershipexpirynotification" element={<MembershipExpiryNotification/>} />
                                 <Route path="/customerexhibition" element={<CustomerExhibition/>} />
                             </Route>
