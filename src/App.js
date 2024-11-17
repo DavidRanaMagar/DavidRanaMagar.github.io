@@ -37,6 +37,7 @@ import CustomerExhibition from './Components/CustomerExhibition';
 import VisitorsReport from "./Components/VisitorsReport";
 import MembershipSignup from "./Components/MembershipSignup";
 import MembershipExpiryNotification from './Components/MemberShipExpiryNotification';
+import Ticketing from "./Components/Ticketing";
 
 
 
@@ -151,6 +152,7 @@ function App() {
                              {/* private routes for admins and staff */}
                             <Route element={<RequireAuth allowedRoles={['admin', 'staff']} />}>
                                 <Route path="/staffhome" element={<StaffHome />} />
+                                <Route path="/ticketing" element={<Ticketing/>}/>
                             </Route>
 
                             {/* private routes for admins and manager */}
@@ -158,6 +160,7 @@ function App() {
                                 <Route path="/managerhome" element={<ManagerHome />} />
                                 <Route path="/employeeHours" element={<EmployeeSearch/>}/>
                                 <Route path="/employees" element={<EmployeeList/>}/>
+                                <Route path="/ticketing" element={<Ticketing/>}/>
                             </Route>
 
                             <Route element={<RequireAuth allowedRoles={['admin', 'curator']} />}>
