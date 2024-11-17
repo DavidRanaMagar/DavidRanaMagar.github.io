@@ -1,70 +1,115 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Museum-Database Frontend
 
-In the project directory, you can run:
+Museum Database: The Museum of Fine Arts (MFA), Houston needs a
+database to keep track of their art collections, exhibitions, ticket sales and gift
+shop revenue. Consider all aspects of what it takes to run a Museum and the
+data you need to collect, to be able to produce reports regarding the
+successful functioning of the museum.
 
-### `npm start`
+This program acts as the frontend end user view. We created this program using javascript
+framework React.js. This program request the data from our backend server using http endpoints.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Getting started
 
-### `npm test`
+### 1. Install Node.js
+Download [Node.js](https://nodejs.org/en/download/package-manager)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Clone the project
+   Clone the repository:
+   ```bash
+    git clone https://github.com/DavidRanaMagar/DavidRanaMagar.github.io.git
+   ```
+### 3. Get in the project file and install all the dependencies
+   ```bash 
+        cd DavidRanaMagar.github.io
+   ```
+   
+#### `npm install`
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Usage
+#### `npm start`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Customer View:
 
-### `npm run eject`
+- Book Ticket
+- My Tickets
+- Products
+- Gift Shop Purchase History
+- Membership Signup
+- Membership Status
+- View Exhibitions
+- Donate
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Admin
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- View/Create Departments
+- View/Create Employees
+- View/Create Exhibitions
+- View/Create Customers
+- View/Record Loan
+- View/Modify Departments
+- View/Modify Artifacts
+- View/Modify Gift Shop Item
+- Employee Hours Report
+- Ticket Sales Report
+- Gift Shop Sales Report
+- Donations Report
+- Visitors Report
+- Ticketing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Manager
+- Employee Hours Report
+- View/Create Employees
+- Ticketing
 
-## Learn More
+### Curator
+- View/Create Exhibitions
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Collections Manager
+- View/Modify Artifacts
+- View/Record Loan
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Gift Shop Inventory Manager
+- View/Modify Gift Shop Item
+- Gift Shop Sales Report
 
-### Code Splitting
+### Staff
+- Ticketing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Reports and Queries
+### Ticket Sales Report
+- Ticket ID
+- Customer ID
+- Ticket Type
+- Purchase Date
+- Event Date
+- Time Slot
+- Ticket Status
+- Ticket Price
 
-### Analyzing the Bundle Size
+### Gift Shop Sales Report
+- Product ID
+- Name
+- Category
+- Price
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Visitors Report
+#### EXHIBITION VISITOR COUNT
+- Exhibition: Number Of Visitors
 
-### Making a Progressive Web App
+#### TOTAL VISITORS AND VISITORS LIST
+- Last Name
+- CustomerID
+- Sex
+- Age
+- Event
+- Ticket Type
+- Event Date
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
