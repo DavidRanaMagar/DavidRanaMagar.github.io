@@ -13,7 +13,6 @@ const paths = [
     { path: '/giftShopItems', label: 'View/Modify Gift Shop Item' },
     { path: '/ticketsreport', label: 'Ticket Sales Report' },
     { path: '/giftshopitemreport', label: 'Gift Shop Sales Report' },
-    { path: '/donationsreport', label: 'Donations Report' },
     { path: '/visitorsreport', label: 'Visitors Report' },
     { path: '/ticketing', label: 'Ticketing' },
 ];
