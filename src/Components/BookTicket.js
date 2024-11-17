@@ -89,9 +89,10 @@ const BookTicket = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const today = new Date();
-        const selectedDate = new Date(date);
+        today.setHours(0, 0, 0, 0); // Already adjusted for time zone, sets hours to midnight for accurate comparison
+        const selectedDate = new Date(date + 'T00:00:00'); // normalize to GMT time zone, sets hours to midnight for accurate comparison
 
-        if (selectedDate <= today || date === '') {
+        if (selectedDate < today || date === '') {
             alert('Choose a valid date please.');
             return;
         }
@@ -111,6 +112,7 @@ const BookTicket = () => {
                 Object.entries(tickets)
                     .filter(([_, quantity]) => quantity > 0)
                     .flatMap(([ticketTypeCode, quantity]) =>
+                        // multiple posts for account for quantity
                         Array.from({ length: quantity }).map(async () => {
                             const response = await axios.post('/ticket', {
                                 ticketType: ticketTypeCode,
@@ -146,7 +148,7 @@ const BookTicket = () => {
                 )
             );
 
-            await axios.post('/saleTransaction', {
+            const transactionResponse = await axios.post('/saleTransaction', {
                 customerID: customerID,
                 transactionAmount: totalPrice,
                 paymentMethod: 'Credit Card',
@@ -156,7 +158,11 @@ const BookTicket = () => {
                 updatedBy: 'online user',
             });
 
-            alert('Tickets successfully ordered!');
+            if (transactionResponse.data.discountApplied) {
+                alert('Tickets successfully ordered and Birthday Discount Applied!');
+            } else {
+                alert('Tickets successfully ordered!');
+            }
         } catch (error) {
             console.error('Error placing the order:', error);
             alert('An error occurred placing order.');
