@@ -23,8 +23,8 @@ Download [Node.js](https://nodejs.org/en/download/package-manager)
     git clone https://github.com/DavidRanaMagar/DavidRanaMagar.github.io.git
    ```
 ### 3. Get in the project file and install all the dependencies
-   ```bash 
-        cd DavidRanaMagar.github.io
+   ```bash
+   cd DavidRanaMagar.github.io
    ```
    
 #### `npm install`
