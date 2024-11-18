@@ -22,6 +22,7 @@ const MembershipRenewal = () => {
     const [membershipTypes, setMembershipTypes] = useState({}); 
     const [renewalDurations, setRenewalDurations] = useState({}); 
     const [individualCosts, setIndividualCosts] = useState({});
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     useEffect(() => {
         const fetchCustomer = async () => {
@@ -29,13 +30,18 @@ const MembershipRenewal = () => {
                 const response = await axios.get(`/customer/user/${auth.userId}`);
                 const customerId = response.data.customerID;
                 setCustomerID(customerId);
-                fetchMemberships(customerId);
             } catch (error) {
                 console.error('Error fetching customerID:', error);
             }
         };
 
-        const fetchMemberships = async (customerID) => {
+        if (auth.userId) {
+            fetchCustomer();
+        }
+    }, [auth]);
+
+    useEffect(() => {
+        const fetchMemberships = async () => {
             try {
                 const response = await axios.get(`/membership/customer/${customerID}`);
                 setMemberships(response.data);
@@ -44,10 +50,10 @@ const MembershipRenewal = () => {
             }
         };
 
-        if (auth.userId) {
-            fetchCustomer();
+        if (customerID) {
+            fetchMemberships();
         }
-    }, [auth]);
+    }, [customerID, refreshTrigger]);
 
     useEffect(() => {
         const fetchMembershipTypes = async () => {
@@ -127,8 +133,9 @@ const MembershipRenewal = () => {
             alert('Please select a valid positive renewal duration.');
             return;
         }
-        const renewDate = new Date().toISOString().split('T')[0];
+
         const endDate = calculateNewEndDate(currentEndDate, duration);
+        const renewDate = endDate;
         try {
             const response = await axios.put(`/membership/${membershipID}/renew`, {
                 renewDate,
@@ -139,6 +146,7 @@ const MembershipRenewal = () => {
             console.error('Error renewing membership:', error);
             alert('Failed to renew membership.');
         }
+        setRefreshTrigger(!refreshTrigger);
     };
 
     return (
