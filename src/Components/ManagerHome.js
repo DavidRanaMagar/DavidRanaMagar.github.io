@@ -4,7 +4,6 @@ import { Box, Button, Container, Typography } from '@mui/material';
 
 const paths = [
     { path: '/employees', label: 'View/Create Employees' },
-    { path: '/employeeHours', label: 'Employee Hours Report' },
     { path: '/ticketing', label: 'Ticketing' },
 ];
 
