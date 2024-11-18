@@ -8,6 +8,7 @@ const MembershipExpiryNotification = () => {
     const [customerID, setCustomerID] = useState(null);
     const [customerName, setCustomerName] = useState('');
     const [messages, setMessages] = useState([]); // Store messages as an array
+    const [membershipID, setMembershipID] = useState(null);
 
     useEffect(() => {
         if (!auth.userId) {
@@ -59,6 +60,7 @@ const MembershipExpiryNotification = () => {
         return <Typography variant="h6">No Membership Notifications</Typography>;
     }
 
+
     return (
         <Container maxWidth="md">
             <Typography variant="h4">Membership Status</Typography>
@@ -74,6 +76,17 @@ const MembershipExpiryNotification = () => {
                         </Typography>
                     ))}
                 </Grid>
+                <Grid item xs={12}>
+    <Button
+        variant="contained"
+        color="primary"
+        component="a"
+        href="/membershiprenewal"
+    >
+        Renew Membership
+    </Button>
+</Grid>
+  
             </Grid>
         </Container>
     );

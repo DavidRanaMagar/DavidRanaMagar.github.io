@@ -38,7 +38,7 @@ import VisitorsReport from "./Components/VisitorsReport";
 import MembershipSignup from "./Components/MembershipSignup";
 import MembershipExpiryNotification from './Components/MemberShipExpiryNotification';
 import Ticketing from "./Components/Ticketing";
-
+import MembershipRenewal from './Components/MembershipRenewal';
 
 
 
@@ -144,6 +144,7 @@ function App() {
                                 <Route path="/mytickets" element={<MyTickets userID={auth.userId} />} />
                                 <Route path="/purchasehistory" element={<PurchaseHistory/>} />
                                 <Route path="/membershipsignup" element={<MembershipSignup/>} />
+                                <Route path="/membershiprenewal" element={<MembershipRenewal/>} />
                                 <Route path="/membershipexpirynotification" element={<MembershipExpiryNotification/>} />
                                 <Route path="/customerexhibition" element={<CustomerExhibition/>} />
                             </Route>
