@@ -135,3 +135,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser
 - Ticket Type
 - Event Date
 
+
+### To Access Hosted Application(Frontend Server): [http://3.93.21.42:3000](http://3.93.21.42:3000)
+
