@@ -9,6 +9,9 @@ redirect_from:
 
 {% include base_path %}
 
+
+[Download Resume](../files/Resume.pdf)
+
 Education
 ======
 * COSC, University of Houston, 2025 (expected)
