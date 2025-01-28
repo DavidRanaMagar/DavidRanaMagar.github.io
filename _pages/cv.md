@@ -16,7 +16,7 @@ Education
 Work experience
 ======
 * SOFTWARE DEVELOPER
-  * SB SOLUTIONS | KTM, NEPAL | JUN 2019 - AUG 2019
+  * SB SOLUTIONS \| KTM, NEPAL \| JUN 2019 - AUG 2019
     * Begin new "account opening for bank" project along with loan processing.
     * Lead a team of four to successfully demo ready in 1.5 months
     * Attracted two more bank client
@@ -24,7 +24,7 @@ Work experience
     * Used technology: Spring boot, SQL, Angular, RESTful Users
 
 * JUNIOR SOFTWARE DEVELOPER
-  * SB SOLUTIONS | KTM, NEPAL | MAR 2019 - AUG 2019
+  * SB SOLUTIONS \| KTM, NEPAL \| MAR 2019 - AUG 2019
   * Migrate legacy code of "loan processing" system to the new standard.
   * Initialized the development of the project
   * Made demo ready in 3 months with team contribution which attracted more than 5 bank clients.
@@ -32,7 +32,7 @@ Work experience
   * Used technology, Spring boot, SQL, Angular, RESTful
 
 * INTERN SOFTWARE DEVELOPER
-  * SB SOLUTIONS | KTM, NEPAL | JAN 2019 - MAR 2019
+  * SB SOLUTIONS \| KTM, NEPAL \| JAN 2019 - MAR 2019
   * Helped debug the current program.
   * Solve the various problems in the program with direct communication with the client.
   * Made client happy by solving their problem, increased customer satisfaction
