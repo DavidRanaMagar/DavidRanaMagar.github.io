@@ -9,5 +9,5 @@ redirect_from:
 
 [![University of Houston Computer Science Department](../images/uh_cs_logo.jpeg)](https://cs.uh.edu)
 
-<a href="https://example.com" style="font-size: 50px; vertical-align: middle; text-decoration: none;">
+<a href="https://cs.uh.edu" style="font-size: 50px; vertical-align: middle; text-decoration: none;">
 University of Houston Computer Science Department</a>
