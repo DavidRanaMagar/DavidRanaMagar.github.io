@@ -11,54 +11,39 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* COSC, University of Houston, 2025 (expected)
 
 Work experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * Github University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+* SOFTWARE DEVELOPER
+  * SB SOLUTIONS | KTM, NEPAL | JUN 2019 - AUG 2019
+    * Begin new "account opening for bank" project along with loan processing.
+    * Lead a team of four to successfully demo ready in 1.5 months
+    * Attracted two more bank client
+    * Had a close discussion with the client to tweak based on needs
+    * Used technology: Spring boot, SQL, Angular, RESTful Users
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* JUNIOR SOFTWARE DEVELOPER
+  * SB SOLUTIONS | KTM, NEPAL | MAR 2019 - AUG 2019
+  * Migrate legacy code of "loan processing" system to the new standard.
+  * Initialized the development of the project
+  * Made demo ready in 3 months with team contribution which attracted more than 5 bank clients.
+  * Helped new intern to understand program and technology
+  * Used technology, Spring boot, SQL, Angular, RESTful
 
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
+* INTERN SOFTWARE DEVELOPER
+  * SB SOLUTIONS | KTM, NEPAL | JAN 2019 - MAR 2019
+  * Helped debug the current program.
+  * Solve the various problems in the program with direct communication with the client.
+  * Made client happy by solving their problem, increased customer satisfaction
+  * Used technology: Spring boot, Thymeleaf HTML, CSS, Javascript
+
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Git
+* Java
+* Spring Boot
+* RESTful API
+* React
+* SQL Database
 
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
