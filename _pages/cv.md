@@ -49,4 +49,5 @@ Skills
 * RESTful API
 * React
 * SQL Database
+* Django
 
