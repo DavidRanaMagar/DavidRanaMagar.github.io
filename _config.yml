@@ -8,7 +8,7 @@
 
 # Basic Site Settings
 locale                   : "en-US"
-title                    : "David Rana"
+title                    : " David Rana"
 title_separator          : "-"
 name                     : &name "David Rana"
 description              : &description "Currently "
@@ -24,8 +24,7 @@ author:
   avatar           : "profile.png"
   name             : "David Rana"
   pronouns         : # example: "she/her"  
-  bio              : "David Rana currently student in University of Houston pursuing CS, stilling trying to figure out 
-  what to be specialize in."
+  bio              : "David Rana currently student in University of Houston pursuing CS, stilling trying to figure out what to be specialize in."
   location         : "Houston, TX"
 #  employer         : "Red Brick University"
   uri              : # URL
